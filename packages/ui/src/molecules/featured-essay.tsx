@@ -22,12 +22,14 @@ export interface FeaturedEssayProps {
   className?: string;
 }
 
-/* Warm the B&W photo toward the paper tone and fade its edges, so the
- * rectangle dissolves into the page instead of ending in a hard line. */
+/* Warm the B&W photo toward the paper tone and fade its side/bottom edges,
+ * so the rectangle dissolves into the page instead of ending in a hard
+ * line. The top edge is left unfaded — the mountain runs crisp up into
+ * the hero. */
 const IMAGE_GRADE =
   "grayscale(1) sepia(0.22) saturate(0.55) brightness(1.06) contrast(0.94)";
 const EDGE_MASK =
-  "linear-gradient(to bottom, transparent, black 32%), linear-gradient(to right, transparent, black 18%, black 84%, transparent), linear-gradient(to top, transparent, black 20%)";
+  "linear-gradient(to right, transparent, black 18%, black 84%, transparent), linear-gradient(to top, transparent, black 20%)";
 
 /**
  * The homepage's "featured essay" band, straight from the design handoff:
