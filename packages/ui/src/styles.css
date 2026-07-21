@@ -1,0 +1,96 @@
+/**
+ * codeberg design tokens
+ * Source of truth: design-handoff/personal-webpage-and-brand-identity/project/codeberg Brand System.dc.html
+ */
+
+/* Tailwind's automatic content detection doesn't follow the pnpm workspace
+   symlink for @repo/ui, so classes used only inside this package (not
+   re-used verbatim in an app) would otherwise be tree-shaken out. */
+@source "./**/*.{ts,tsx}";
+
+@theme {
+  /* ---- Color ---- */
+  --color-paper: #f6f3ed; /* background */
+  --color-ink: #111111; /* type / blocks / knockout bg */
+  --color-copy: #2a2a2a; /* body copy ink */
+  --color-muted: #6f6f6a; /* metadata, secondary text */
+  --color-line: #d9d9d6; /* panels / rules / borders */
+  --color-accent: #c52b34; /* codeberg red */
+  --color-accent-hover: #9c1f27;
+  --color-code-amber: #e8a04a; /* code block keyword highlight */
+
+  /* ---- Type families ---- */
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* ---- Type scale ----
+   * Font weight is intentionally NOT bundled here — pair each size with an
+   * explicit font-weight utility at the call site (see comments below). This
+   * keeps size and weight independently overridable without utility
+   * specificity conflicts. */
+
+  /* homepage hero — pair with font-black (900) */
+  --text-hero: clamp(3.25rem, 9vw, 7.5rem);
+  --text-hero--line-height: 0.86;
+  --text-hero--letter-spacing: -0.02em;
+
+  /* cover / essay headline — pair with font-black (900) */
+  --text-display: clamp(2.5rem, 7vw, 5.25rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.02em;
+
+  /* section headline — pair with font-extrabold (800) */
+  --text-h1: clamp(1.875rem, 5vw, 3.25rem);
+  --text-h1--line-height: 1.02;
+  --text-h1--letter-spacing: -0.02em;
+
+  /* sub-section headline — pair with font-bold (700) */
+  --text-h2: clamp(1.375rem, 3vw, 2.125rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.01em;
+
+  /* in-body headline — pair with font-bold (700) */
+  --text-h3: clamp(1.25rem, 2.4vw, 1.625rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.01em;
+
+  /* intro / lede paragraphs */
+  --text-lede: clamp(1.125rem, 1.7vw, 1.3125rem);
+  --text-lede--line-height: 1.6;
+
+  /* baseline body copy */
+  --text-body: 1rem;
+  --text-body--line-height: 1.55;
+
+  /* uppercase mono labels (buttons, tags, nav) */
+  --text-label: 0.75rem;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.14em;
+
+  /* uppercase mono metadata (dates, byline) */
+  --text-meta: 0.6875rem;
+  --text-meta--line-height: 1.4;
+  --text-meta--letter-spacing: 0.08em;
+
+  /* ---- Layout ---- */
+  --container-page: 1180px; /* max-w-page */
+  --spacing-gutter: clamp(1.25rem, 5vw, 4rem); /* page horizontal padding */
+  --spacing-section: clamp(3.5rem, 8vw, 6.875rem); /* major section rhythm */
+  --spacing-section-sm: clamp(2.75rem, 6vw, 5rem); /* minor section rhythm */
+}
+
+@layer base {
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+  /* No global `a { color }` default on purpose: the source mockup sets one,
+     but a blanket rule bleeds via inheritance into anything an anchor
+     wraps (e.g. an svg using `fill: currentColor`, or a child span with no
+     color of its own) — every link-like component here sets its own color
+     explicitly instead. Add a scoped `.prose a { ... }` rule if/when body
+     copy needs a link default. */
+  ::selection {
+    @apply bg-accent text-paper;
+  }
+}

@@ -9,13 +9,8 @@ import { Header } from "@repo/ui/molecules/header";
 import { Newsletter } from "@repo/ui/molecules/newsletter";
 import { ProjectCard } from "@repo/ui/molecules/project-card";
 import { SectionHeading } from "@repo/ui/molecules/section-heading";
-
-const NAV_LINKS = [
-  { label: "Essays", href: "#essays" },
-  { label: "Projects", href: "#projects" },
-  { label: "System", href: "/brand-system" },
-  { label: "Contact", href: "#connect", accent: true },
-];
+import { NAV_LINKS } from "../nav";
+import { useDocumentTitle } from "../useDocumentTitle";
 
 const ESSAYS = [
   {
@@ -31,6 +26,7 @@ const ESSAYS = [
     title: "Designing with intent, not templates",
     excerpt: "How constraints lead to stronger, more original design solutions.",
     readTime: "6 min read",
+    href: "/essay",
   },
   {
     index: "03",
@@ -49,6 +45,8 @@ const PROJECTS = [
 ];
 
 export default function Home() {
+  useDocumentTitle("codeberg — ideas in code & design");
+
   return (
     <Container>
       <Header links={NAV_LINKS} />
@@ -89,6 +87,7 @@ export default function Home() {
             }
             excerpt="On treating loops, glyphs, and grids as the embroidery of the modern web."
             readTime="8 min read"
+            href="/essay"
             imageSrc="/mountain-hero.jpg"
             imageAlt="A mountain peak breaking through cloud cover"
           />
