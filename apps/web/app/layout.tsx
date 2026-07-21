@@ -35,6 +35,12 @@ export default function RootLayout({
       <body
         className={`${archivo.variable} ${newsreader.variable} ${jetbrainsMono.variable}`}
       >
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-3 focus:font-mono focus:text-label focus:uppercase focus:text-paper"
+        >
+          Skip to content
+        </a>
         {children}
       </body>
     </html>

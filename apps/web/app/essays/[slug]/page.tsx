@@ -50,14 +50,20 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
     <Container>
       <Header links={NAV_LINKS} />
 
+      <main id="main">
       {/* BREADCRUMB */}
-      <div className="border-t-2 border-ink py-3.5 font-mono text-meta uppercase text-muted">
+      <nav
+        aria-label="Breadcrumb"
+        className="border-t-2 border-ink py-3.5 font-mono text-meta uppercase text-muted"
+      >
         <Link href="/#essays" className="text-muted">
           Essays
         </Link>
-        <span className="px-2 text-accent">/</span>
+        <span aria-hidden="true" className="px-2 text-accent">
+          /
+        </span>
         {essay.category}
-      </div>
+      </nav>
 
       <article>
         {/* ARTICLE HEADER */}
@@ -149,6 +155,7 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
 
       {/* NEWSLETTER */}
       <Newsletter className="mb-14 sm:mb-20" />
+      </main>
 
       <Footer className="mb-10" />
     </Container>

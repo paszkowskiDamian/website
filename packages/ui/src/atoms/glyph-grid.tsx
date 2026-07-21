@@ -84,6 +84,9 @@ export function GlyphGrid({
 
   useEffect(() => {
     if (!interval) return;
+    // Purely decorative animation — halt it entirely for users who ask for
+    // reduced motion.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => {
       const next = gridRef.current.map((row) =>
         row.map((cell) => ({ ...cell, hot: false })),
@@ -101,6 +104,7 @@ export function GlyphGrid({
 
   return (
     <div
+      aria-hidden="true"
       className={`select-none font-mono text-sm font-bold tracking-[0.1em] ${className ?? ""}`}
       style={{
         width: `${cols * CELL_WIDTH_CH}ch`,

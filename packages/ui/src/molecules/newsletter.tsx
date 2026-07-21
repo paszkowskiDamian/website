@@ -38,6 +38,7 @@ export function Newsletter({ className, onSubscribe }: NewsletterProps) {
             type="email"
             name="email"
             required
+            aria-label="Email address"
             placeholder="Your email address"
             className="min-w-[200px] flex-1 bg-transparent px-4 py-[15px] font-mono text-label text-ink outline-none placeholder:text-muted"
           />
@@ -45,7 +46,9 @@ export function Newsletter({ className, onSubscribe }: NewsletterProps) {
             Subscribe
           </Button>
         </form>
-        <p className="mt-3 font-mono text-meta text-muted">{message}</p>
+        <p aria-live="polite" className="mt-3 font-mono text-meta text-muted">
+          {message}
+        </p>
       </div>
     </section>
   );

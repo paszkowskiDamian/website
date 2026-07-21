@@ -44,6 +44,7 @@ export default function BrandSystemPage() {
       <Container>
         <Header links={NAV_LINKS} className="border-b-2 border-ink" />
 
+        <main id="main">
         {/* COVER */}
         <section className="py-10 sm:py-16">
           <div className="mb-5 font-mono text-meta uppercase tracking-[0.28em] text-accent">
@@ -366,6 +367,7 @@ export default function BrandSystemPage() {
             </div>
           </div>
         </section>
+        </main>
       </Container>
 
       {/* FOOTER */}

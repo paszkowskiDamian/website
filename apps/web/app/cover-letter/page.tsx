@@ -16,7 +16,7 @@ export default function CoverLetter() {
         </Link>
       </div>
 
-      <div className="mx-auto max-w-[880px] bg-paper p-8 text-ink sm:p-16">
+      <main id="main" className="mx-auto max-w-[880px] bg-paper p-8 text-ink sm:p-16">
         {/* LETTERHEAD */}
         <header className="mb-9 flex items-center justify-between gap-6 border-b-2 border-ink pb-[18px]">
           <div className="flex items-center gap-3.5">
@@ -92,7 +92,7 @@ export default function CoverLetter() {
           <span>Alex Berg</span>
           <span>alex@codeberg.dev</span>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

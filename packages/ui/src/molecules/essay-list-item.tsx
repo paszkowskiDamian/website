@@ -29,10 +29,10 @@ export function EssayListItem({
       </span>
       <div className="min-w-[240px] flex-1">
         <div className="mb-1.5 font-mono text-meta uppercase text-muted">{date}</div>
-        <div className="text-h3 font-bold leading-tight text-ink">{title}</div>
+        <h3 className="text-h3 font-bold leading-tight text-ink">{title}</h3>
         <p className="mt-2 max-w-[46ch] font-serif text-copy">{excerpt}</p>
       </div>
-      <ArrowLink href={href} className="flex-none">
+      <ArrowLink href={href} aria-label={`Read: ${title} (${readTime})`} className="flex-none">
         {readTime}
       </ArrowLink>
     </div>

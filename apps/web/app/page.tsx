@@ -23,6 +23,7 @@ export default function Home() {
     <Container>
       <Header links={NAV_LINKS} />
 
+      <main id="main">
       {/* HERO + FEATURED ESSAY */}
       <section className="grid grid-cols-1 gap-10 py-8 sm:grid-cols-[auto_1fr_1.15fr] sm:items-stretch sm:py-10">
         <div className="hidden self-stretch sm:block">
@@ -101,6 +102,7 @@ export default function Home() {
           <GlyphGrid cols={40} rows={1} />
         </div>
       </section>
+      </main>
 
       <Footer className="mt-10 sm:mt-16" />
     </Container>
