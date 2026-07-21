@@ -1,0 +1,32 @@
+---
+title: Building design systems that scale
+date: 2025-04-24
+excerpt: Lessons from shipping and maintaining a system across products.
+readTime: 9 min read
+category: Design Systems
+tags:
+  - Design systems
+  - Tokens
+  - Teams
+---
+
+A design system doesn't fail at the component level. Buttons are easy. It fails in the seams — the moment two products need the same component to do slightly different things, and nobody agreed in advance on who bends.
+
+## Tokens before components
+
+The layer that actually scales is the one with no opinions about UI: color, type, spacing, radii, expressed as named decisions. Components churn with product needs; the token contract can survive a full visual redesign.
+
+1. Name tokens for their role, never their value — `accent`, not `red-600`.
+2. Let every platform consume the same source of truth, even if the format differs.
+3. Version the tokens like an API, because that's what they are.
+
+## The system is a product, with users
+
+Adoption is won in the gaps between office hours: documentation that answers the question at 2am, changelogs that explain why, escape hatches that don't feel like punishment. Teams route around a system that says "no" too often — a good one makes the right thing the lazy thing.
+
+<PullQuote
+  quote="Every abstraction you expose is a promise you keep for years."
+  attribution="Notes from maintaining Gridly"
+/>
+
+Ship the smallest system that two products actually share, and grow it only along the lines where they keep agreeing. That's not a compromise — that's the system finding its true shape.

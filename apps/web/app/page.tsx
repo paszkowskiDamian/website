@@ -9,41 +9,16 @@ import { Header } from "@repo/ui/molecules/header";
 import { Newsletter } from "@repo/ui/molecules/newsletter";
 import { ProjectCard } from "@repo/ui/molecules/project-card";
 import { SectionHeading } from "@repo/ui/molecules/section-heading";
+import { getAllEssays, getProjects, getSite } from "../lib/content";
 import { NAV_LINKS } from "../lib/nav";
 
-const ESSAYS = [
-  {
-    index: "01",
-    date: "May 28, 2025",
-    title: "Redux Observable — A practical guide",
-    excerpt: "Managing async state with Redux Observable in modern React apps.",
-    readTime: "7 min read",
-  },
-  {
-    index: "02",
-    date: "May 12, 2025",
-    title: "Designing with intent, not templates",
-    excerpt: "How constraints lead to stronger, more original design solutions.",
-    readTime: "6 min read",
-    href: "/essay/",
-  },
-  {
-    index: "03",
-    date: "Apr 24, 2025",
-    title: "Building design systems that scale",
-    excerpt: "Lessons from shipping and maintaining a system across products.",
-    readTime: "9 min read",
-  },
-];
-
-const PROJECTS = [
-  { seed: 11, title: "Peakfolio", description: "A minimal portfolio starter for developers." },
-  { seed: 29, title: "Satori UI", description: "A component library for modern React apps." },
-  { seed: 47, title: "Firelight CMS", description: "A headless CMS for content-focused sites." },
-  { seed: 83, title: "Gridly", description: "Simple layouts for complex ideas." },
-];
-
 export default function Home() {
+  const essays = getAllEssays();
+  const featured = essays.find((e) => e.featured) ?? essays[0]!;
+  const recent = essays.filter((e) => e !== featured);
+  const projects = getProjects();
+  const site = getSite();
+
   return (
     <Container>
       <Header links={NAV_LINKS} />
@@ -75,39 +50,41 @@ export default function Home() {
           </div>
           <FeaturedEssay
             className="min-h-[420px] sm:min-h-[560px]"
-            title={
-              <>
-                Code as
-                <br />
-                folk ornament
-              </>
-            }
-            excerpt="On treating loops, glyphs, and grids as the embroidery of the modern web."
-            readTime="8 min read"
-            href="/essay/"
-            imageSrc="/mountain-hero.jpg"
-            imageAlt="A mountain peak breaking through cloud cover"
+            title={featured.title}
+            excerpt={featured.excerpt}
+            readTime={featured.readTime}
+            href={`/essays/${featured.slug}/`}
+            imageSrc={featured.heroImage ?? "/mountain-hero.jpg"}
+            imageAlt={featured.heroAlt ?? ""}
           />
         </div>
       </section>
 
       {/* RECENT ESSAYS */}
       <section id="essays" className="pt-8 sm:pt-12">
-        <SectionHeading viewAllHref="#" className="mb-2">
+        <SectionHeading viewAllHref="/#essays" className="mb-2">
           Recent Essays
         </SectionHeading>
-        {ESSAYS.map((essay) => (
-          <EssayListItem key={essay.index} {...essay} />
+        {recent.map((essay, i) => (
+          <EssayListItem
+            key={essay.slug}
+            index={String(i + 1).padStart(2, "0")}
+            date={essay.displayDate}
+            title={essay.title}
+            excerpt={essay.excerpt}
+            readTime={essay.readTime}
+            href={`/essays/${essay.slug}/`}
+          />
         ))}
       </section>
 
       {/* SELECTED PROJECTS */}
       <section id="projects" className="pt-11 sm:pt-20">
-        <SectionHeading viewAllHref="#" className="mb-7">
+        <SectionHeading viewAllHref="/#projects" className="mb-7">
           Selected Projects
         </SectionHeading>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
-          {PROJECTS.map((project) => (
+          {projects.map((project) => (
             <ProjectCard key={project.seed} {...project} />
           ))}
         </div>
@@ -119,7 +96,7 @@ export default function Home() {
       {/* CONNECT */}
       <section id="connect" className="pt-11 sm:pt-20">
         <h2 className="mb-6 text-h2 font-extrabold text-ink">Let&apos;s connect</h2>
-        <ConnectRow />
+        <ConnectRow links={site.connect} />
         <div className="mt-7 overflow-hidden">
           <GlyphGrid cols={40} rows={1} />
         </div>

@@ -1,0 +1,50 @@
+---
+title: Designing with intent, not templates
+date: 2025-05-12
+excerpt: How constraints lead to stronger, more original design solutions.
+readTime: 6 min read
+category: Design Systems
+tags:
+  - Design systems
+  - Process
+  - Craft
+heroImage: /mountain-hero.jpg
+heroAlt: A workspace stripped to essentials
+heroCaption: Fig. 01 — A workspace stripped to essentials.
+---
+
+There's a quiet myth in product design that more options mean more freedom. Open any tool today and you're handed infinite templates, presets, and starting points. Yet the work that lasts almost never comes from that abundance — it comes from a designer who chose a constraint and followed it all the way down.
+
+A template answers a question you haven't asked yet. It optimizes for the average of a thousand projects that aren't yours. Intent works the other way around: you decide what this specific thing needs to do, and every decision after that has something to push against.
+
+## Constraints are a design tool
+
+When you limit the palette to two colors, every use of the accent has to earn its place. When you commit to a single typeface family, hierarchy comes from weight and scale instead of novelty. The limits do the editing for you.
+
+<PullQuote
+  quote="A constraint isn't the absence of choice. It's a decision you only have to make once."
+  attribution="On working within a system"
+/>
+
+The same logic scales to code. A design system encodes intent into defaults, so the easy path and the correct path are the same path. Here's a spacing scale expressed as tokens rather than magic numbers:
+
+```js
+// one scale, no magic numbers
+const space = {
+  xs: 4, sm: 8, md: 16,
+  lg: 32, xl: 64,
+};
+export const gap = (k) => space[k] ?? space.md;
+```
+
+### Three questions before a template
+
+1. What is the one job this screen must do well?
+2. What can I remove and still keep that job intact?
+3. Which single constraint will guide every later call?
+
+None of this is about working harder. It's about moving the hard thinking to the front, where a few good decisions can quietly make a hundred small ones for you.
+
+![The same layout, reduced to a single accent](/mountain-hero.jpg "Fig. 02 — The same layout, reduced to a single accent.")
+
+Start with intent. Let the template be something you arrive at — never where you begin.

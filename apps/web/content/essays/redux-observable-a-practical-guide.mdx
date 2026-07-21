@@ -1,0 +1,39 @@
+---
+title: Redux Observable — A practical guide
+date: 2025-05-28
+excerpt: Managing async state with Redux Observable in modern React apps.
+readTime: 7 min read
+category: Engineering
+tags:
+  - Redux
+  - RxJS
+  - React
+---
+
+Every Redux app eventually meets the same wall: the store is synchronous, and the world is not. Requests race, sockets stream, users type faster than APIs answer. Redux Observable's answer is to model all of it as one thing — a stream of actions you can transform with RxJS.
+
+## Epics in one sentence
+
+An epic is a function from a stream of actions to a stream of actions. Actions in, actions out, nothing dispatched by hand:
+
+```ts
+const searchEpic = (action$) =>
+  action$.pipe(
+    ofType("search/queryChanged"),
+    debounceTime(300),
+    switchMap(({ payload }) =>
+      from(api.search(payload)).pipe(
+        map((results) => ({ type: "search/loaded", payload: results })),
+        catchError((err) => of({ type: "search/failed", payload: err.message })),
+      ),
+    ),
+  );
+```
+
+That `switchMap` is the entire cancellation story: a new keystroke unsubscribes the stale request automatically. The imperative version of this logic is a page of flags and abort controllers.
+
+## When it earns its keep
+
+For a form submit, a thunk is fine — reach for epics when time gets involved: debouncing, retries with backoff, polling that pauses when the tab is hidden, sockets multiplexed into store updates. Those read as three-line pipelines in RxJS and as bug reports in most other styles.
+
+Model time explicitly, and async state stops being the scary part of the codebase.

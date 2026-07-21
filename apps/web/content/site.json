@@ -1,0 +1,13 @@
+{
+  "author": {
+    "name": "Alex Berg",
+    "role": "Founder, codeberg",
+    "bio": "Designer and developer building codeberg — a one-person studio working where code, design, and culture meet."
+  },
+  "connect": [
+    { "label": "GitHub", "href": "#", "shape": "circle" },
+    { "label": "Dribbble", "href": "#", "shape": "circle" },
+    { "label": "LinkedIn", "href": "#", "shape": "square" },
+    { "label": "Email", "href": "#", "shape": "rect" }
+  ]
+}

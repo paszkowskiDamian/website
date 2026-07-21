@@ -6,3 +6,22 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
 }
+
+/* Ordered lists inside essay bodies: mono accent "01 02 03" markers,
+   matching the design handoff's numbered question list. */
+.numbered-list {
+  counter-reset: essay-item;
+}
+.numbered-list > li {
+  counter-increment: essay-item;
+  display: flex;
+  gap: 0.875rem;
+}
+.numbered-list > li::before {
+  content: counter(essay-item, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--color-accent);
+  flex: none;
+  padding-top: 0.15em;
+}
