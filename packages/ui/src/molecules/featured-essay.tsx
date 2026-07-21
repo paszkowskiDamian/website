@@ -10,11 +10,22 @@ export interface FeaturedEssayProps {
   href?: string;
   imageSrc: string;
   imageAlt: string;
+  /** object-position for the photo — which part of it shows through. */
+  imagePosition?: string;
+  /** Extra zoom on the photo, clipped by the band. */
+  imageZoom?: number;
   /** How far the photo bleeds up past the top of the band, into the section
    * above (the design lets it run under the hero). */
   bleedClassName?: string;
   className?: string;
 }
+
+/* Warm the B&W photo toward the paper tone and fade its edges, so the
+ * rectangle dissolves into the page instead of ending in a hard line. */
+const IMAGE_GRADE =
+  "grayscale(1) sepia(0.22) saturate(0.55) brightness(1.06) contrast(0.94)";
+const EDGE_MASK =
+  "linear-gradient(to bottom, transparent, black 22%), linear-gradient(to right, transparent, black 10%, black 92%, transparent), linear-gradient(to top, transparent, black 12%)";
 
 /**
  * The homepage's "featured essay" band, straight from the design handoff:
@@ -30,17 +41,33 @@ export function FeaturedEssay({
   href = "#",
   imageSrc,
   imageAlt,
+  imagePosition = "31% 50%",
+  imageZoom = 1.2,
   bleedClassName = "top-[clamp(-96px,-9vw,-56px)]",
   className,
 }: FeaturedEssayProps) {
   return (
     <div className={`relative min-h-[clamp(380px,46vw,500px)] ${className ?? ""}`}>
       {/* Full-bleed photo behind, extending above the band */}
-      <div className={`absolute inset-x-0 bottom-0 ${bleedClassName}`}>
+      <div
+        className={`absolute inset-x-0 bottom-0 overflow-hidden ${bleedClassName}`}
+        style={{
+          maskImage: EDGE_MASK,
+          WebkitMaskImage: EDGE_MASK,
+          maskComposite: "intersect",
+          WebkitMaskComposite: "source-in",
+        }}
+      >
         <img
           src={imageSrc}
           alt={imageAlt}
-          className="h-full w-full object-cover grayscale"
+          className="h-full w-full object-cover"
+          style={{
+            objectPosition: imagePosition,
+            transform: `scale(${imageZoom})`,
+            transformOrigin: "62% 62%",
+            filter: IMAGE_GRADE,
+          }}
         />
         <div className="pointer-events-none absolute bottom-[clamp(14px,3vw,34px)] right-[clamp(16px,3vw,44px)] mix-blend-screen">
           <GlyphGrid
