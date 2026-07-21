@@ -14,9 +14,8 @@ export interface FeaturedEssayProps {
   imagePosition?: string;
   /** Extra zoom on the photo, clipped by the band. */
   imageZoom?: number;
-  /** Horizontal push of the photo (CSS length/percent), applied after
-   * object-position bottoms out — positive moves the subject right. */
-  imageShiftX?: string;
+  /** transform-origin of the zoom — where the photo grows from. */
+  imageOrigin?: string;
   /** How far the photo bleeds up past the top of the band, into the section
    * above (the design lets it run under the hero). */
   bleedClassName?: string;
@@ -44,9 +43,9 @@ export function FeaturedEssay({
   href = "#",
   imageSrc,
   imageAlt,
-  imagePosition = "0% 50%",
-  imageZoom = 1.2,
-  imageShiftX = "12%",
+  imagePosition = "18% 50%",
+  imageZoom = 1.5,
+  imageOrigin = "0% 59%",
   bleedClassName = "top-[clamp(-96px,-9vw,-56px)]",
   className,
 }: FeaturedEssayProps) {
@@ -62,21 +61,16 @@ export function FeaturedEssay({
           WebkitMaskComposite: "source-in",
         }}
       >
-        {/* The right-shift only applies from sm up: on phones the panel
-            covers most of the band, and shifting would hide the peak in
-            the narrow visible sliver. */}
         <img
           src={imageSrc}
           alt={imageAlt}
-          className="h-full w-full origin-[62%_62%] scale-[var(--fe-zoom)] object-cover sm:translate-x-[var(--fe-shift)]"
-          style={
-            {
-              "--fe-shift": imageShiftX,
-              "--fe-zoom": imageZoom,
-              objectPosition: imagePosition,
-              filter: IMAGE_GRADE,
-            } as React.CSSProperties
-          }
+          className="h-full w-full object-cover"
+          style={{
+            objectPosition: imagePosition,
+            transform: `scale(${imageZoom})`,
+            transformOrigin: imageOrigin,
+            filter: IMAGE_GRADE,
+          }}
         />
         <div className="pointer-events-none absolute bottom-[clamp(14px,3vw,34px)] right-[clamp(16px,3vw,44px)] mix-blend-screen">
           <GlyphGrid
