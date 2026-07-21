@@ -83,8 +83,10 @@ export function Header({ links, homeHref = "/", className }: HeaderProps) {
         id="mobile-nav"
         aria-label="Main"
         inert={!open}
-        className={`absolute inset-x-0 top-full z-20 grid overflow-hidden border-b border-line bg-paper transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none sm:hidden ${
-          open ? "grid-rows-[1fr] border-t-2 border-t-ink" : "grid-rows-[0fr] border-b-transparent"
+        className={`absolute inset-x-0 top-full z-20 grid overflow-hidden bg-paper transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none sm:hidden ${
+          open
+            ? "grid-rows-[1fr] border-b border-t-2 border-b-line border-t-ink"
+            : "grid-rows-[0fr]"
         }`}
       >
         <div className="min-h-0 overflow-hidden">

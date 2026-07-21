@@ -103,6 +103,56 @@ export function getProjects(): Project[] {
   ) as Project[];
 }
 
+export interface PortfolioImage {
+  /** CSS aspect-ratio, e.g. "21/9" */
+  ratio: string;
+  /** Hint shown in the slot until a real image is dropped in. */
+  placeholder?: string;
+  src?: string;
+  alt?: string;
+}
+
+export interface PortfolioChapter {
+  id: string;
+  layout: "feature" | "split" | "dark" | "pair";
+  title: string;
+  meta: string;
+  paragraphs: { label?: string; text: string }[];
+  links: { label: string; href: string; variant?: "accent" | "paper" }[];
+  aside?: { label: string; text: string }[];
+  quote?: string;
+  heroImage?: PortfolioImage;
+  inlineImage?: PortfolioImage;
+  tallImage?: PortfolioImage;
+  sideImage?: PortfolioImage;
+  pairImages?: PortfolioImage[];
+}
+
+export interface PortfolioConfig {
+  kicker: string;
+  title: string;
+  intro: string;
+  chapters: PortfolioChapter[];
+  interlude: string[];
+  photography: {
+    id: string;
+    title: string;
+    intro: string;
+    photos: (PortfolioImage & { caption: string; meta: string })[];
+  };
+  cta: {
+    title: string;
+    text: string;
+    button: { label: string; href: string };
+  };
+}
+
+export function getPortfolio(): PortfolioConfig {
+  return JSON.parse(
+    fs.readFileSync(path.join(CONTENT_DIR, "portfolio.json"), "utf8"),
+  ) as PortfolioConfig;
+}
+
 export interface SiteConfig {
   author: {
     name: string;

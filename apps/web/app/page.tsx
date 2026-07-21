@@ -79,7 +79,7 @@ export default function Home() {
 
       {/* SELECTED PROJECTS */}
       <section id="projects" className="pt-11 sm:pt-20">
-        <SectionHeading viewAllHref="/#projects" className="mb-7">
+        <SectionHeading viewAllHref="/portfolio/" className="mb-7">
           Selected Projects
         </SectionHeading>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">

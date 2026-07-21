@@ -1,0 +1,110 @@
+{
+  "kicker": "Portfolio — four stories",
+  "title": "work, told\nproperly",
+  "intro": "A grid of thumbnails tells you nothing about how a thing got made. So instead: four projects, each with the problem that started it, the decisions that shaped it, and where it landed — followed by the photographs I make when I put the laptop away.",
+  "chapters": [
+    {
+      "id": "ch-01",
+      "layout": "feature",
+      "title": "Peakfolio",
+      "meta": "Product — 2025 — Design lead & engineer",
+      "heroImage": { "ratio": "21/9", "placeholder": "Drop the Peakfolio hero — a full product screen works best" },
+      "paragraphs": [
+        {
+          "label": "The problem",
+          "text": "Developers kept telling me the same thing: they had years of work and nowhere to put it that didn't feel like a template. Every portfolio builder optimized for launch speed, and every result looked identical."
+        },
+        {
+          "label": "What I built",
+          "text": "A platform where the theming engine is the product: design tokens all the way down, MDX essays as first-class citizens, and a procedural cover system so no two sites ship looking the same. I led design and built the front end over eight months."
+        }
+      ],
+      "aside": [
+        { "label": "Where it landed", "text": "Public beta in spring 2025; 4,000 sites live by year end." },
+        { "label": "Stack", "text": "React, MDX, design-token pipeline" }
+      ],
+      "links": [{ "label": "Explore the case study", "href": "#" }]
+    },
+    {
+      "id": "ch-02",
+      "layout": "split",
+      "title": "Firelight CMS",
+      "meta": "Product — 2024 — Founding designer",
+      "paragraphs": [
+        {
+          "text": "Editorial teams don't think in database fields — they think in drafts, edits, and deadlines. Firelight started as a weekend prototype for a newsroom friend who was fighting her CMS more than her copy."
+        },
+        {
+          "text": "That line became the spec. The editor reads like a manuscript, versioning works like a track-changes conversation, and the structured content lives underneath, invisible until a developer needs it. I designed the whole surface and half the API."
+        }
+      ],
+      "quote": "\"The best CMS is the one the writer forgets they're using.\"",
+      "inlineImage": { "ratio": "16/9", "placeholder": "Drop a detail shot — the editor UI" },
+      "tallImage": { "ratio": "3/4", "placeholder": "Drop a tall Firelight image — mobile view or poster crop" },
+      "links": [{ "label": "Explore Firelight", "href": "#" }]
+    },
+    {
+      "id": "ch-03",
+      "layout": "dark",
+      "title": "Gridly",
+      "meta": "Open source — 2024 — Maintainer",
+      "paragraphs": [
+        {
+          "text": "Gridly is the project that wasn't supposed to be one. I extracted the constraint-based layout engine from Peakfolio, wrote a README at 2am, and woke up to strangers filing issues. Two years later it's the piece of my work most people have touched without knowing my name — which is exactly what good infrastructure should be."
+        },
+        {
+          "text": "Maintaining it taught me more about API design than any product role: every abstraction you expose is a promise you keep for years."
+        }
+      ],
+      "sideImage": { "ratio": "4/3", "placeholder": "Drop a Gridly image — terminal or docs screenshot" },
+      "links": [
+        { "label": "Read the docs", "href": "#" },
+        { "label": "GitHub", "href": "#", "variant": "paper" }
+      ]
+    },
+    {
+      "id": "ch-04",
+      "layout": "pair",
+      "title": "Ridgeline",
+      "meta": "Product — 2023 — Design & data viz",
+      "pairImages": [
+        { "ratio": "4/3", "placeholder": "Drop a Ridgeline dashboard shot" },
+        { "ratio": "4/3", "placeholder": "Drop a field photo — the trails behind the data" }
+      ],
+      "paragraphs": [
+        {
+          "text": "Ridgeline is where the two halves of this page meet: a dashboard for trail and elevation analytics that started because I wanted better maps of the routes I was photographing. The charts had to feel like the terrain — so elevation profiles render as layered ridgeline plots, and the palette comes straight from fog, stone, and late light."
+        }
+      ],
+      "aside": [
+        {
+          "label": "Where it landed",
+          "text": "Acquired by a mapping company in 2024; the ridgeline chart lives on in their app."
+        }
+      ],
+      "links": [{ "label": "Explore Ridgeline", "href": "#" }]
+    }
+  ],
+  "interlude": ["Everything above was made sitting down.", "Everything below is why I stand up."],
+  "photography": {
+    "id": "photography",
+    "title": "Away from the screen",
+    "intro": "Mostly 35mm, mostly mountains, mostly early. Photography is where I go to stop optimizing — no grid system, no tokens, just weather and patience. These rotate as I develop new rolls.",
+    "photos": [
+      { "ratio": "3/4", "caption": "Dolomites", "meta": "35mm", "placeholder": "Portrait photo" },
+      { "ratio": "4/3", "caption": "Coastline", "meta": "Digital", "src": "/mountain-hero.jpg", "alt": "A mountain peak breaking through cloud cover" },
+      { "ratio": "1/1", "caption": "Concrete study", "meta": "35mm", "placeholder": "Square photo" },
+      { "ratio": "4/3", "caption": "Fog line", "meta": "35mm", "placeholder": "Landscape photo" },
+      { "ratio": "3/4", "caption": "Ridge at dawn", "meta": "Digital", "placeholder": "Portrait photo" },
+      { "ratio": "4/3", "caption": "Salt flats", "meta": "35mm", "placeholder": "Landscape photo" },
+      { "ratio": "1/1", "caption": "Window grid", "meta": "Digital", "placeholder": "Square photo" },
+      { "ratio": "3/4", "caption": "Pine, backlit", "meta": "35mm", "placeholder": "Portrait photo" },
+      { "ratio": "4/3", "caption": "Low tide", "meta": "35mm", "placeholder": "Landscape photo" }
+    ]
+  },
+  "cta": {
+    "title": "Have a project\nin mind?",
+    "text": "I take on a small number of design and build engagements each year. Tell me what you're making.",
+    "button": { "label": "Start a conversation", "href": "#" }
+  }
+}
