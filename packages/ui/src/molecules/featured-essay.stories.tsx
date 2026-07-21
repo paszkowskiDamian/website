@@ -20,8 +20,8 @@ const meta = {
     imageAlt: "A mountain peak breaking through cloud cover",
   },
   render: (args) => (
-    <div className="mx-auto max-w-page px-gutter pt-16">
-      <FeaturedEssay {...args} className="min-h-[420px] sm:min-h-[560px]" />
+    <div className="mx-auto max-w-page px-gutter pt-32">
+      <FeaturedEssay {...args} />
     </div>
   ),
 } satisfies Meta<typeof FeaturedEssay>;
