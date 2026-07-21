@@ -25,7 +25,7 @@ export interface FeaturedEssayProps {
 const IMAGE_GRADE =
   "grayscale(1) sepia(0.22) saturate(0.55) brightness(1.06) contrast(0.94)";
 const EDGE_MASK =
-  "linear-gradient(to bottom, transparent, black 22%), linear-gradient(to right, transparent, black 10%, black 92%, transparent), linear-gradient(to top, transparent, black 12%)";
+  "linear-gradient(to bottom, transparent, black 32%), linear-gradient(to right, transparent, black 18%, black 84%, transparent), linear-gradient(to top, transparent, black 20%)";
 
 /**
  * The homepage's "featured essay" band, straight from the design handoff:
@@ -41,7 +41,7 @@ export function FeaturedEssay({
   href = "#",
   imageSrc,
   imageAlt,
-  imagePosition = "31% 50%",
+  imagePosition = "16% 50%",
   imageZoom = 1.2,
   bleedClassName = "top-[clamp(-96px,-9vw,-56px)]",
   className,
