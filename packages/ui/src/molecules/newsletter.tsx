@@ -41,7 +41,7 @@ export function Newsletter({ className, onSubscribe }: NewsletterProps) {
             placeholder="Your email address"
             className="min-w-[200px] flex-1 bg-transparent px-4 py-[15px] font-mono text-label text-ink outline-none placeholder:text-muted"
           />
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" className="max-sm:w-full">
             Subscribe
           </Button>
         </form>
