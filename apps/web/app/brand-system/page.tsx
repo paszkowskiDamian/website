@@ -13,18 +13,12 @@ import { Header } from "@repo/ui/molecules/header";
 import { PaginationNav } from "@repo/ui/molecules/pagination-nav";
 import { ProjectCard } from "@repo/ui/molecules/project-card";
 import { SectionHeading } from "@repo/ui/molecules/section-heading";
+import { NAV_LINKS } from "../../lib/nav";
 
 export const metadata: Metadata = {
   title: "Brand System — codeberg",
   description: "The complete brand identity and design system for codeberg.",
 };
-
-const NAV_LINKS = [
-  { label: "Essays", href: "/#essays" },
-  { label: "Projects", href: "/#projects" },
-  { label: "System", href: "/brand-system", accent: true },
-  { label: "Contact", href: "/#connect" },
-];
 
 const SWATCHES = [
   { name: "Off-white", hex: "#F6F3ED", usage: "Background", bordered: true, bg: "bg-paper", text: "text-ink" },
