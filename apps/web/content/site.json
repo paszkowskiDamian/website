@@ -7,7 +7,7 @@
     { "label": "Essays", "href": "/#essays" },
     { "label": "Portfolio", "href": "/portfolio/" },
     { "label": "System", "href": "/brand-system/" },
-    { "label": "Contact", "href": "/portfolio/#connect", "accent": true }
+    { "label": "Contact", "href": "/contact/", "accent": true }
   ],
   "author": {
     "name": "Damian Paszkowski",

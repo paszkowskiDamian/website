@@ -208,6 +208,36 @@ export function getHomePage(): HomePageConfig {
   ) as HomePageConfig;
 }
 
+export interface ContactPageConfig {
+  meta: PageMeta;
+  kicker: string;
+  /** Rendered as one heading with a line break between entries. */
+  titleLines: string[];
+  intro: string;
+  aside: { label: string; text: string }[];
+  form: ContactFormCopy;
+}
+
+export interface ContactFormCopy {
+  nameLabel: string;
+  namePlaceholder: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  messageLabel: string;
+  messagePlaceholder: string;
+  submitLabel: string;
+  sendingLabel: string;
+  idleMessage: string;
+  successMessage: string;
+  errorMessage: string;
+}
+
+export function getContactPage(): ContactPageConfig {
+  return JSON.parse(
+    fs.readFileSync(path.join(CONTENT_DIR, "pages", "contact.json"), "utf8"),
+  ) as ContactPageConfig;
+}
+
 export interface BrandSystemConfig {
   meta: PageMeta;
   cover: { kicker: string; title: string; intro: string };

@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "title": "Contact — codeberg",
+    "description": "Get in touch with codeberg — collaborations, commissions, or just a good conversation."
+  },
+  "kicker": "Contact",
+  "titleLines": ["let's", "talk"],
+  "intro": "I take on a small number of design and build engagements each year, and I'm always happy to trade notes on code, design, and culture. Tell me what you're making.",
+  "aside": [
+    {
+      "label": "Response time",
+      "text": "Usually within two working days. If it's urgent, say so in the subject line."
+    },
+    {
+      "label": "Good fits",
+      "text": "Design systems, brand-led websites, and small products that need both design and engineering care."
+    }
+  ],
+  "form": {
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "messageLabel": "Message",
+    "messagePlaceholder": "What are you making?",
+    "submitLabel": "Send message",
+    "sendingLabel": "Sending…",
+    "idleMessage": "Your message goes straight to my inbox.",
+    "successMessage": "✓ Thanks — your message is on its way.",
+    "errorMessage": "Something went wrong sending your message. Please try again in a moment."
+  }
+}
