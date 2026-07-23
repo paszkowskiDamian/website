@@ -5,15 +5,11 @@
   },
   "kicker": "Contact",
   "titleLines": ["let's", "talk"],
-  "intro": "I take on a small number of design and build engagements each year, and I'm always happy to trade notes on code, design, and culture. Tell me what you're making.",
+  "intro": "I take on a handful of design and build engagements each year, and I'm always happy to trade notes on code, design, and culture. Tell me what you're making.",
   "aside": [
     {
-      "label": "Response time",
-      "text": "Usually within two working days. If it's urgent, say so in the subject line."
-    },
-    {
       "label": "Good fits",
-      "text": "Design systems, brand-led websites, and small products that need both design and engineering care."
+      "text": "Design systems, brand-led websites, and focused products that need both design and engineering care."
     }
   ],
   "form": {
