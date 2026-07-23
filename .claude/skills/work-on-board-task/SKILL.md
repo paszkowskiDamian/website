@@ -80,5 +80,34 @@ the board may have been reorganized.
    Keep the description under Trello's 2048-char limit — condense the original text
    (drop "Current state" prose that the implementation made stale) before appending
    if needed.
-5. When the PR merges, move the card to DONE. If the session watches the PR
-   (`subscribe_pr_activity`), do this on the merge event.
+## Watching the PR
+
+Opening the PR is not the end of the task — drive it to merged. Immediately after
+opening it, call `subscribe_pr_activity` (owner, repo, pull number). Events then
+arrive in the session as `<github-webhook-activity>` messages; never poll or `sleep`
+while waiting.
+
+Handle each event:
+
+- **Review comment / requested change** — address it: push the fix if it's right and
+  in scope, or reply on the thread explaining why not (with the attribution footer).
+  Every reviewer request gets a visible outcome — a commit or a reply, never silence.
+- **CI failure** — diagnose and push a fix; repeat on each new failure until green.
+  If the same failure reproduces on `main` (pre-existing), say so once on the thread
+  instead of "fixing" it, and re-check when the base recovers.
+- **Merge conflict notice** — merge the latest `main` into the branch, resolve,
+  re-run the local checks, push.
+- **Echoes of your own comments, or duplicates** of something already handled — skip
+  silently.
+
+Don't narrate every push with a PR comment — the diff is the record. Comment when a
+round resolves the review, hits a real blocker, or needs the reviewer's input.
+
+Webhooks miss some transitions (CI success, merges), so before ending the turn,
+schedule a self check-in with `send_later` (~1 hour out): re-check PR state and CI,
+act on anything actionable, re-arm the next check-in silently if nothing changed.
+
+When the PR **merges**: move the card to DONE, unsubscribe (`unsubscribe_pr_activity`),
+and stop the check-ins. If the PR is closed unmerged, unsubscribe and move the card
+back to TODO (or INPROGRESS if continuing another way) with a note on the card
+explaining what happened.
