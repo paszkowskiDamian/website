@@ -4,6 +4,7 @@ import { GlyphGrid } from "@repo/ui/atoms/glyph-grid";
 import { Container } from "@repo/ui/layouts/container";
 import { Footer } from "@repo/ui/molecules/footer";
 import { Header } from "@repo/ui/molecules/header";
+import { PhotoGallery } from "@repo/ui/molecules/photo-gallery";
 import {
   getPortfolio,
   getSite,
@@ -378,20 +379,7 @@ export default function Portfolio() {
           <p className="mb-[clamp(26px,3vw,40px)] max-w-[56ch] font-serif text-[clamp(17px,1.8vw,21px)] leading-[1.65] text-copy">
             {portfolio.photography.intro}
           </p>
-          <div className="columns-[clamp(180px,26vw,300px)] gap-[clamp(12px,1.8vw,20px)]">
-            {portfolio.photography.photos.map((photo) => (
-              <figure
-                key={photo.caption}
-                className="mb-[clamp(12px,1.8vw,20px)] break-inside-avoid"
-              >
-                <ImageSlot image={photo} />
-                <figcaption className="mt-2 flex justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
-                  <span>{photo.caption}</span>
-                  <span>{photo.meta}</span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          <PhotoGallery photos={portfolio.photography.photos} />
         </section>
 
         {/* CONNECT CTA */}
