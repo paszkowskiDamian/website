@@ -27,6 +27,19 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   return {
     title: `${essay.title} — ${site.meta.title}`,
     description: essay.excerpt,
+    openGraph: {
+      type: "article",
+      title: essay.title,
+      description: essay.excerpt,
+      publishedTime: essay.date,
+      authors: [site.author.name],
+      tags: essay.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: essay.title,
+      description: essay.excerpt,
+    },
   };
 }
 

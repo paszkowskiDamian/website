@@ -95,7 +95,7 @@ export function getEssay(slug: string): Essay {
 }
 
 export interface Project {
-  seed: number;
+  /** Cover art is derived from the title (FNV-1a hash) — no stored seed. */
   title: string;
   description: string;
   href?: string;

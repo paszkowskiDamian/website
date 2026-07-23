@@ -5,7 +5,6 @@ const meta = {
   title: "Molecules/ProjectCard",
   component: ProjectCard,
   args: {
-    seed: 11,
     title: "Peakfolio",
     description: "A minimal portfolio starter for developers.",
   },

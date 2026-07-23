@@ -86,7 +86,7 @@ export default function Home() {
         </SectionHeading>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
           {projects.map((project) => (
-            <ProjectCard key={project.seed} {...project} />
+            <ProjectCard key={project.title} {...project} />
           ))}
         </div>
       </section>

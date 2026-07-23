@@ -24,8 +24,25 @@ const jetbrainsMono = JetBrains_Mono({
 const site = getSite();
 
 export const metadata: Metadata = {
+  // Absolute URL base for og:image and friends. Set NEXT_PUBLIC_SITE_URL at
+  // build time once the production domain is wired up; scrapers resolve the
+  // relative image path against the page URL in the meantime.
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+    : undefined,
   title: site.meta.title,
   description: site.meta.description,
+  openGraph: {
+    type: "website",
+    siteName: site.meta.title,
+    title: site.meta.title,
+    description: site.meta.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.meta.title,
+    description: site.meta.description,
+  },
 };
 
 export default function RootLayout({

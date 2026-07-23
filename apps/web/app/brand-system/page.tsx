@@ -296,7 +296,6 @@ export default function BrandSystemPage() {
             <div className="border border-line bg-paper p-7">
               <div className="mb-[22px] font-mono text-meta uppercase text-muted">Project card</div>
               <ProjectCard
-                seed={7}
                 title="Peakfolio"
                 description="A minimal portfolio starter for developers."
               />
