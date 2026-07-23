@@ -74,7 +74,7 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
         aria-label="Breadcrumb"
         className="border-t-2 border-ink py-3.5 font-mono text-meta uppercase text-muted"
       >
-        <Link href="/#essays" className="text-muted">
+        <Link href="/essays/" className="text-muted">
           Essays
         </Link>
         <span aria-hidden="true" className="px-2 text-accent">
@@ -157,7 +157,7 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
           <div className="mb-2 font-mono text-meta uppercase text-muted">Written by</div>
           <div className="mb-1.5 text-xl font-bold text-ink">{author.name}</div>
           <p className="mb-2.5 max-w-[52ch] font-serif text-base text-copy">{author.bio}</p>
-          <ArrowLink href="/#essays">More essays</ArrowLink>
+          <ArrowLink href="/essays/">More essays</ArrowLink>
         </div>
       </section>
 

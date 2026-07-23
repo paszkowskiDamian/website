@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "title": "Essays — codeberg",
+    "description": "The full archive of essays on design systems, engineering, and design culture — browsable by category."
+  },
+  "kicker": "The archive",
+  "title": "All Essays",
+  "intro": "Everything published so far, newest first. Narrow the list by category — the filter lives in the URL, so a filtered view can be shared or bookmarked.",
+  "filters": {
+    "allLabel": "All",
+    "categoriesLabel": "Category",
+    "clearLabel": "Clear filter",
+    "emptyMessage": "No essays in this category — clear the filter and try again."
+  }
+}
