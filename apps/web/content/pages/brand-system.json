@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "title": "Brand System — codeberg",
+    "description": "The complete brand identity and design system for codeberg."
+  },
+  "cover": {
+    "kicker": "Digital folklore × deconstructivist web",
+    "title": "Building digital folklore.",
+    "intro": "The complete brand identity and design system for **codeberg** — a one-person studio working where code, design, and culture meet. Code, type, and symbols treated as modern folk ornament."
+  },
+  "conceptStrip": {
+    "phrases": [
+      "Modern tools, old patterns",
+      "Ideas in code & design",
+      "Where code becomes pattern"
+    ],
+    "accentPhrase": "Crafted systems for digital culture"
+  },
+  "mark": {
+    "heading": "The mark",
+    "labels": {
+      "primary": "Primary mark",
+      "lockup": "Horizontal lockup",
+      "onBlack": "On black",
+      "tile": "App icon / tile"
+    },
+    "note": "A faceted berg — the peak that gives **code·berg** its name. Built from a single pentagon split by one vertical fold and a central sub-peak, it reads as mountain, prism, and cursor caret at once. Minimum size 24px; keep clearspace equal to the width of one facet on all sides."
+  },
+  "palette": {
+    "heading": "Palette",
+    "swatches": [
+      {
+        "name": "Off-white",
+        "hex": "#F6F3ED",
+        "usage": "Background",
+        "bordered": true,
+        "bg": "bg-paper",
+        "text": "text-ink"
+      },
+      {
+        "name": "codeberg red",
+        "hex": "#C52B34",
+        "usage": "Accent",
+        "bordered": false,
+        "bg": "bg-accent",
+        "text": "text-white"
+      },
+      {
+        "name": "Near-black",
+        "hex": "#111111",
+        "usage": "Type / blocks",
+        "bordered": false,
+        "bg": "bg-ink",
+        "text": "text-paper"
+      },
+      {
+        "name": "Dark gray",
+        "hex": "#2A2A2A",
+        "usage": "Body ink",
+        "bordered": false,
+        "bg": "bg-copy",
+        "text": "text-paper"
+      },
+      {
+        "name": "Soft gray",
+        "hex": "#D9D9D6",
+        "usage": "Panels / rules",
+        "bordered": false,
+        "bg": "bg-line",
+        "text": "text-ink"
+      },
+      {
+        "name": "Muted text",
+        "hex": "#6F6F6A",
+        "usage": "Metadata",
+        "bordered": true,
+        "bg": "bg-paper",
+        "text": "text-muted"
+      }
+    ],
+    "note": "Off-white dominates. Red is bold but never neon — reserved for panels, labels, links, and ornament. Black appears sparingly for maximum contrast. Resist adding accent colors; the identity is strongest when the palette stays tight."
+  },
+  "typography": {
+    "heading": "Typography",
+    "families": [
+      {
+        "label": "Display · Archivo",
+        "sampleClassName": "text-[64px] font-black leading-none tracking-[-0.02em]",
+        "note": "700 / 800 / 900 · headlines"
+      },
+      {
+        "label": "Reading · Newsreader",
+        "sampleClassName": "font-serif text-[64px] leading-none",
+        "note": "400 / 500 · essay body"
+      },
+      {
+        "label": "Mono · JetBrains Mono",
+        "sampleClassName": "font-mono text-[60px] font-medium leading-none",
+        "note": "Labels, metadata, code"
+      }
+    ],
+    "scale": [
+      {
+        "label": "Display",
+        "sample": "ideas in code",
+        "className": "text-display font-black leading-none tracking-[-0.02em] text-ink"
+      },
+      {
+        "label": "H1",
+        "sample": "Designing with intent",
+        "className": "text-h1 font-extrabold tracking-[-0.02em] text-ink"
+      },
+      {
+        "label": "H2",
+        "sample": "Building systems that scale",
+        "className": "text-h2 font-bold tracking-[-0.01em] text-ink"
+      },
+      {
+        "label": "Body",
+        "sample": "Good design isn't decoration — it's decision-making.",
+        "className": "font-serif text-lede text-copy"
+      },
+      {
+        "label": "Label",
+        "sample": "Featured essay",
+        "className": "font-mono text-label uppercase tracking-[0.2em] text-accent"
+      },
+      {
+        "label": "Meta",
+        "sample": "May 12, 2025 · 6 min read",
+        "className": "font-mono text-meta uppercase text-muted"
+      }
+    ]
+  },
+  "pattern": {
+    "heading": "Pattern system",
+    "intro": "The soul of the identity. Folk ornament — embroidery, runes, textile borders — rebuilt from ASCII marks. Repetitive, geometric, modular, typographic. Always rhythmic, never random.",
+    "cells": {
+      "rail": "Vertical rail",
+      "field": "Texture field",
+      "motifs": "Motif sets"
+    },
+    "motifSample": "/\\/\\ /\\/\\ /\\/\\\n<> <> <> <>\n[] [] [] []\n:: :: :: ::\n^ v ^ v ^ v",
+    "tickerRows": [
+      {
+        "text": "+ ⌃ + ⌄ + × + ⌃ + ⌄ + × + ⌃ + ⌄ + × + ⌃ + ⌄ + × + ⌃ + ⌄ + × +",
+        "tone": "accent"
+      },
+      {
+        "text": "<><><><><><><><><><><><><><><><><><><><>",
+        "tone": "ink"
+      },
+      {
+        "text": "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "tone": "muted"
+      },
+      {
+        "text": "· + · × · + · · + · × · + · · + · × · + · · + · × · + · · + · × · +",
+        "tone": "accent"
+      }
+    ],
+    "glyphSetNote": "Glyph set: / \\ < > [ ] + + : : . . ^ ^ v v x x { } ⌃ ⌄ ⌵ · —"
+  },
+  "geometry": {
+    "heading": "Geometric language",
+    "panel": {
+      "kicker": "Red panel + angular cut",
+      "text": "Red geometric blocks cut into grayscale imagery to create energy and contrast — echoing the faceted logo."
+    }
+  },
+  "components": {
+    "heading": "Components"
+  },
+  "footer": {
+    "copyright": "© 2025 codeberg · Building digital folklore",
+    "cta": {
+      "label": "View live homepage",
+      "href": "/"
+    }
+  }
+}

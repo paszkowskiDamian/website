@@ -12,7 +12,6 @@ import { Newsletter } from "@repo/ui/molecules/newsletter";
 import { PaginationNav } from "@repo/ui/molecules/pagination-nav";
 import { getAllEssays, getEssay, getSite } from "../../../lib/content";
 import { mdxComponents } from "../../../lib/mdx-components";
-import { NAV_LINKS } from "../../../lib/nav";
 
 interface Params {
   slug: string;
@@ -24,8 +23,9 @@ export function generateStaticParams(): Params[] {
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const essay = getEssay((await params).slug);
+  const site = getSite();
   return {
-    title: `${essay.title} — codeberg`,
+    title: `${essay.title} — ${site.meta.title}`,
     description: essay.excerpt,
   };
 }
@@ -48,7 +48,7 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
 
   return (
     <Container>
-      <Header links={NAV_LINKS} />
+      <Header links={site.nav} />
 
       <main id="main">
       {/* BREADCRUMB */}
@@ -154,10 +154,10 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
       )}
 
       {/* NEWSLETTER */}
-      <Newsletter className="mb-14 sm:mb-20" />
+      <Newsletter {...site.newsletter} className="mb-14 sm:mb-20" />
       </main>
 
-      <Footer className="mb-10" />
+      <Footer copyright={site.footer.copyright} className="mb-10" />
     </Container>
   );
 }

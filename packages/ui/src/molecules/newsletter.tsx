@@ -4,13 +4,31 @@ import { useState } from "react";
 import { Button } from "../atoms/button";
 import { GlyphGrid } from "../atoms/glyph-grid";
 
-export interface NewsletterProps {
+export interface NewsletterCopy {
+  heading: string;
+  text: string;
+  placeholder: string;
+  buttonLabel: string;
+  idleMessage: string;
+  successMessage: string;
+}
+
+export interface NewsletterProps extends NewsletterCopy {
   className?: string;
   onSubscribe?: (email: string) => void;
 }
 
-export function Newsletter({ className, onSubscribe }: NewsletterProps) {
-  const [message, setMessage] = useState("No spam. Unsubscribe anytime.");
+export function Newsletter({
+  heading,
+  text,
+  placeholder,
+  buttonLabel,
+  idleMessage,
+  successMessage,
+  className,
+  onSubscribe,
+}: NewsletterProps) {
+  const [message, setMessage] = useState(idleMessage);
 
   return (
     <section
@@ -20,17 +38,15 @@ export function Newsletter({ className, onSubscribe }: NewsletterProps) {
         <GlyphGrid cols={3} rows={8} />
       </div>
       <div className="min-w-[260px] flex-1">
-        <h2 className="mb-2 text-h2 font-extrabold text-ink">Stay in the loop</h2>
-        <p className="mb-5 max-w-[46ch] font-serif text-copy">
-          Notes on new essays, projects, and experiments — straight to your inbox.
-        </p>
+        <h2 className="mb-2 text-h2 font-extrabold text-ink">{heading}</h2>
+        <p className="mb-5 max-w-[46ch] font-serif text-copy">{text}</p>
         <form
           className="flex max-w-[460px] flex-wrap border-[1.5px] border-ink"
           onSubmit={(e) => {
             e.preventDefault();
             const email = new FormData(e.currentTarget).get("email");
             if (typeof email === "string") onSubscribe?.(email);
-            setMessage("✓ Thanks — check your inbox to confirm.");
+            setMessage(successMessage);
             e.currentTarget.reset();
           }}
         >
@@ -39,11 +55,11 @@ export function Newsletter({ className, onSubscribe }: NewsletterProps) {
             name="email"
             required
             aria-label="Email address"
-            placeholder="Your email address"
+            placeholder={placeholder}
             className="min-w-[200px] flex-1 bg-transparent px-4 py-[15px] font-mono text-label text-ink outline-none placeholder:text-muted"
           />
           <Button type="submit" variant="primary" className="max-sm:w-full">
-            Subscribe
+            {buttonLabel}
           </Button>
         </form>
         <p aria-live="polite" className="mt-3 font-mono text-meta text-muted">

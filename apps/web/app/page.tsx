@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { ArrowLink } from "@repo/ui/atoms/arrow-link";
 import { GlyphGrid } from "@repo/ui/atoms/glyph-grid";
 import { Container } from "@repo/ui/layouts/container";
@@ -8,10 +9,11 @@ import { Header } from "@repo/ui/molecules/header";
 import { Newsletter } from "@repo/ui/molecules/newsletter";
 import { ProjectCard } from "@repo/ui/molecules/project-card";
 import { SectionHeading } from "@repo/ui/molecules/section-heading";
-import { getAllEssays, getProjects } from "../lib/content";
-import { NAV_LINKS } from "../lib/nav";
+import { getAllEssays, getHomePage, getProjects, getSite } from "../lib/content";
 
 export default function Home() {
+  const site = getSite();
+  const page = getHomePage();
   const essays = getAllEssays();
   const featured = essays.find((e) => e.featured) ?? essays[0]!;
   const recent = essays.filter((e) => e !== featured);
@@ -19,7 +21,7 @@ export default function Home() {
 
   return (
     <Container>
-      <Header links={NAV_LINKS} />
+      <Header links={site.nav} />
 
       <main id="main">
       {/* HERO */}
@@ -30,17 +32,17 @@ export default function Home() {
 
         <div className="min-w-[280px] flex-1 basis-[340px]">
           <h1 className="text-hero font-black leading-[0.86] text-ink">
-            ideas
-            <br />
-            in code
-            <br />
-            &amp; design
+            {page.hero.titleLines.map((line, i) => (
+              <Fragment key={line}>
+                {i > 0 && <br />}
+                {line}
+              </Fragment>
+            ))}
           </h1>
           <p className="mb-5 mt-6 max-w-[34ch] font-serif text-lede text-copy">
-            Essays on design systems, front-end development, creative process,
-            and the tools that shape digital products.
+            {page.hero.lede}
           </p>
-          <ArrowLink href="/brand-system/">About codeberg</ArrowLink>
+          <ArrowLink href={page.hero.cta.href}>{page.hero.cta.label}</ArrowLink>
         </div>
 
         <div className="hidden flex-none pt-2 sm:block">
@@ -55,14 +57,14 @@ export default function Home() {
         excerpt={featured.excerpt}
         readTime={featured.readTime}
         href={`/essays/${featured.slug}/`}
-        imageSrc={featured.heroImage ?? "/mountain-hero.jpg"}
+        imageSrc={featured.heroImage ?? page.featured.fallbackImage}
         imageAlt={featured.heroAlt ?? ""}
       />
 
       {/* RECENT ESSAYS */}
       <section id="essays" className="pt-8 sm:pt-12">
-        <SectionHeading viewAllHref="/#essays" className="mb-2">
-          Recent Essays
+        <SectionHeading viewAllHref={page.sections.essays.viewAllHref} className="mb-2">
+          {page.sections.essays.title}
         </SectionHeading>
         {recent.map((essay, i) => (
           <EssayListItem
@@ -79,8 +81,8 @@ export default function Home() {
 
       {/* SELECTED PROJECTS */}
       <section id="projects" className="pt-11 sm:pt-20">
-        <SectionHeading viewAllHref="/portfolio/" className="mb-7">
-          Selected Projects
+        <SectionHeading viewAllHref={page.sections.projects.viewAllHref} className="mb-7">
+          {page.sections.projects.title}
         </SectionHeading>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
           {projects.map((project) => (
@@ -90,10 +92,10 @@ export default function Home() {
       </section>
 
       {/* NEWSLETTER */}
-      <Newsletter className="mt-12 sm:mt-[88px]" />
+      <Newsletter {...site.newsletter} className="mt-12 sm:mt-[88px]" />
       </main>
 
-      <Footer className="mt-10 sm:mt-16" />
+      <Footer copyright={site.footer.copyright} className="mt-10 sm:mt-16" />
     </Container>
   );
 }

@@ -10,12 +10,12 @@ import {
   type PortfolioChapter,
   type PortfolioImage,
 } from "../../lib/content";
-import { NAV_LINKS } from "../../lib/nav";
+
+const portfolioMeta = getPortfolio().meta;
 
 export const metadata: Metadata = {
-  title: "Portfolio — codeberg",
-  description:
-    "Four projects, told properly — the problem, the decisions, and where each landed — plus photographs from away from the screen.",
+  title: portfolioMeta.title,
+  description: portfolioMeta.description,
 };
 
 /** Renders line breaks from "\n" in JSON strings. */
@@ -291,7 +291,7 @@ export default function Portfolio() {
 
   return (
     <Container className="overflow-hidden">
-      <Header links={NAV_LINKS} />
+      <Header links={site.nav} />
 
       <main id="main">
         {/* HERO */}
@@ -425,7 +425,7 @@ export default function Portfolio() {
         </section>
       </main>
 
-      <Footer className="mt-10 sm:mt-16" />
+      <Footer copyright={site.footer.copyright} className="mt-10 sm:mt-16" />
     </Container>
   );
 }
