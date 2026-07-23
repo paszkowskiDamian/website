@@ -5,6 +5,7 @@
   },
   "nav": [
     { "label": "Essays", "href": "/essays/" },
+    { "label": "Projects", "href": "/projects/" },
     { "label": "Portfolio", "href": "/portfolio/" },
     { "label": "System", "href": "/brand-system/" },
     { "label": "Contact", "href": "/portfolio/#connect", "accent": true }
