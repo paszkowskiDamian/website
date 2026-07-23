@@ -18,6 +18,17 @@ import type { NewsletterCopy } from "@repo/ui/molecules/newsletter";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
+export interface Author {
+  name: string;
+  role: string;
+  bio: string;
+  /**
+   * Path to a portrait under `public/`, e.g. "/avatar.jpg". Optional — the UI
+   * falls back to a plain colored circle when unset.
+   */
+  avatar?: string;
+}
+
 export interface EssayMeta {
   slug: string;
   title: string;
@@ -35,6 +46,11 @@ export interface EssayMeta {
   heroImage?: string;
   heroAlt?: string;
   heroCaption?: string;
+  /**
+   * Optional per-essay author override from frontmatter. Any provided fields
+   * are merged over the site-wide author from site.json.
+   */
+  author?: Partial<Author>;
 }
 
 export interface Essay extends EssayMeta {
@@ -70,6 +86,7 @@ function parseEssayFile(filename: string): Essay {
     heroImage: data.heroImage as string | undefined,
     heroAlt: data.heroAlt as string | undefined,
     heroCaption: data.heroCaption as string | undefined,
+    author: data.author as Partial<Author> | undefined,
     body: content,
   };
 }
@@ -166,11 +183,7 @@ export function getPortfolio(): PortfolioConfig {
 export interface SiteConfig {
   meta: PageMeta;
   nav: NavLink[];
-  author: {
-    name: string;
-    role: string;
-    bio: string;
-  };
+  author: Author;
   connect: ConnectLink[];
   newsletter: NewsletterCopy;
   footer: {
