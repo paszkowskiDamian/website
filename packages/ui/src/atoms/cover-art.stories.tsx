@@ -38,11 +38,12 @@ export const Gallery: Story = {
 };
 
 /**
- * The three tile-pattern compositions (mid-century folk tiles + glyph
- * ornament rows), pinned via the `seed` override: mirrored full-bleed tiles,
- * tiles over a glyph band, and glyph rows framing a tile band.
+ * The three pattern-system compositions, pinned via the `seed` override:
+ * a ticker-row texture field, a motif-set rail beside the berg mark, and
+ * ticker rows framing the mark — all built from the brand-system page's
+ * own documented ornament vocabulary, not an invented grammar.
  */
-export const TilePatterns: Story = {
+export const PatternCompositions: Story = {
   render: () => (
     <div className="grid grid-cols-3 gap-0.5 border border-line bg-line">
       {[5, 26, 9, 25, 10, 24].map((seed) => (

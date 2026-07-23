@@ -1,13 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { ImageResponse } from "next/og";
-import {
-  fnv1a,
-  makeRng,
-  makeTilePattern,
-  tilePath,
-  type TileTone,
-} from "@repo/ui/atoms/cover-tiles";
+import { fnv1a, makeRng, makeTickerRows, type OrnamentTone } from "@repo/ui/atoms/cover-ornament";
 
 /**
  * Build-time OG image renderer. Runs under `output: "export"` — every image is
@@ -15,16 +9,16 @@ import {
  *
  * satori cannot resolve CSS custom properties, so the brand hexes are inlined
  * here (this is the one place outside styles.css where they may appear). The
- * tile-pattern geometry itself comes from the shared generator in
- * @repo/ui/atoms/cover-tiles so OG images and site covers share one language.
+ * ticker-row ornament comes from the shared generator in
+ * @repo/ui/atoms/cover-ornament so OG images and site covers share one
+ * language — the brand-system page's own "pattern system" ticker rows.
  */
 const PAPER = "#F6F3ED";
 const INK = "#111111";
 const ACCENT = "#C52B34";
 const MUTED = "#6F6F6A";
-const LINE = "#D9D9D6";
 
-const TILE_TONES: Record<TileTone, string> = { quiet: LINE, mid: MUTED, accent: ACCENT };
+const TICKER_TONES: Record<OrnamentTone, string> = { accent: ACCENT, ink: INK, muted: MUTED };
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -35,29 +29,21 @@ function loadFont(file: string): Buffer {
   return readFileSync(path.join(process.cwd(), "assets", "fonts", file));
 }
 
-/** The tile pattern as plain SVG — satori renders SVG elements natively. */
-function TileBand({ seed, cols, rows, cell }: { seed: number; cols: number; rows: number; cell: number }) {
-  const w = cols * cell;
-  const h = rows * cell;
-  const seam = 2;
-  const pattern = makeTilePattern(makeRng(seed), cols, rows);
+/** A stack of ticker rows as plain flex divs — satori renders these natively. */
+function TickerBand({ seed, w, h, rowCount }: { seed: number; w: number; h: number; rowCount: number }) {
+  // safeOnly: the vendored OG font may not carry every glyph in the full set.
+  const rows = makeTickerRows(makeRng(seed), rowCount, { safeOnly: true, length: 20 });
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`}>
-      <rect width={w} height={h} fill={PAPER} />
-      {pattern.flatMap((row, ri) =>
-        row.map((c, ci) => {
-          const d = tilePath(c, ci * cell, ri * cell, cell);
-          return d ? <path key={`${ri}-${ci}`} d={d} fill={TILE_TONES[c.tone]} /> : null;
-        }),
-      )}
-      {/* hairline tile seams in ink */}
-      {Array.from({ length: cols + 1 }, (_, i) => (
-        <rect key={`v${i}`} x={Math.min(Math.max(i * cell - seam / 2, 0), w - seam)} y={0} width={seam} height={h} fill={INK} />
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: w, height: h, padding: "0 36px" }}>
+      {rows.map((row, i) => (
+        <div
+          key={i}
+          style={{ display: "flex", fontFamily: "JetBrains Mono", fontSize: 34, fontWeight: 500, letterSpacing: 2, overflow: "hidden", whiteSpace: "nowrap", color: TICKER_TONES[row.tone] }}
+        >
+          {row.text}
+        </div>
       ))}
-      {Array.from({ length: rows + 1 }, (_, i) => (
-        <rect key={`h${i}`} x={0} y={Math.min(Math.max(i * cell - seam / 2, 0), h - seam)} width={w} height={seam} fill={INK} />
-      ))}
-    </svg>
+    </div>
   );
 }
 
@@ -72,9 +58,7 @@ export interface OgCoverProps {
 }
 
 export function ogCover({ kicker, title, footer, seedText }: OgCoverProps): ImageResponse {
-  // 6 rows × 105px = 630px: the tile band spans the full card height.
-  const cell = 105;
-  const cols = 4;
+  const bandWidth = 420;
   const titleSize = title.length > 44 ? 54 : title.length > 26 ? 66 : 88;
   return new ImageResponse(
     (
@@ -124,10 +108,10 @@ export function ogCover({ kicker, title, footer, seedText }: OgCoverProps): Imag
             </div>
           </div>
         </div>
-        {/* ink hairline between panel and tiles */}
+        {/* ink hairline between panel and pattern */}
         <div style={{ display: "flex", width: 2, backgroundColor: INK }} />
-        {/* generative tile band, seeded by the page title */}
-        <TileBand seed={fnv1a(seedText)} cols={cols} rows={6} cell={cell} />
+        {/* generative ticker-row band, seeded by the page title */}
+        <TickerBand seed={fnv1a(seedText)} w={bandWidth} h={OG_SIZE.height} rowCount={9} />
       </div>
     ),
     {

@@ -1,11 +1,11 @@
 import type { CSSProperties, ReactNode } from "react";
 import {
   fnv1a,
+  makeMotifStack,
   makeRng,
-  makeTilePattern,
-  tilePath,
-  type TileTone,
-} from "./cover-tiles";
+  makeTickerRows,
+  type OrnamentTone,
+} from "./cover-ornament";
 import { BERG_PATH } from "./logo";
 
 // Reference the brand's CSS custom properties (defined once in styles.css)
@@ -46,11 +46,8 @@ const QUARTER_STYLES: Record<Corner, CSSProperties> = {
   br: { right: 0, bottom: 0, borderRadius: "100% 0 0 0" },
 };
 
-/** Tone roles from the shared tile generator, mapped onto the brand CSS variables. */
-const TILE_TONES: Record<TileTone, string> = { quiet: SOFT, mid: GRAY, accent: RED };
-
-/** Glyph kit for the static ornament rows ("code as folk ornament"). */
-const ORNAMENT_GLYPHS = ["+", "×", "·", "^", "⌄", "/", "\\", ":", "—", "x", "<", ">"] as const;
+/** Ticker/motif tone roles, mapped onto the brand CSS variables (paper field only). */
+const ORNAMENT_TONES: Record<OrnamentTone, string> = { accent: RED, ink: BLACK, muted: GRAY };
 
 export interface CoverArtProps {
   /** Drives the artwork: the cover is derived deterministically from this text (FNV-1a hash). */
@@ -61,9 +58,10 @@ export interface CoverArtProps {
 }
 
 /**
- * The "cover system": generative project/essay art built from a tight kit of
- * parts (circles, arcs, quarter-rounds, dot fields, angular panels, glyph
- * ornament rows, mid-century tile patterns, the berg mark) recombined on a
+ * The "cover system": generative project/essay art built from the design
+ * system's own vocabulary — the geometry section's shapes (circles, arcs,
+ * quarter-rounds, dot fields, angular red panel + cut), the pattern
+ * system's ticker rows and motif sets, and the berg mark — recombined on a
  * seeded grid across the brand's four-color palette.
  */
 export function CoverArt({ title, seed, className }: CoverArtProps) {
@@ -127,53 +125,38 @@ export function CoverArt({ title, seed, className }: CoverArtProps) {
       </div>,
     );
   /**
-   * Mid-century tile pattern (owner-confirmed direction): square grid of
-   * rotated primitives on a paper field — muted neutral shapes, sparse red
-   * accents, hairline ink tile seams. `region` must match the grid's aspect
-   * ratio so the SVG fills it without letterboxing.
+   * A "texture field" of ticker rows — the brand-system pattern section's
+   * signature ASCII ornament, stacked to fill `region`. Rhythmic, not random:
+   * each row cycles through a fixed tone sequence (see `cover-ornament`).
    */
-  const tiles = (cols: number, rows: number, region: CSSProperties, mirrorX = false) => {
-    const cell = 96;
-    const seam = 1.2;
-    const w = cols * cell;
-    const h = rows * cell;
-    const pattern = makeTilePattern(rng, cols, rows, { mirrorX });
-    shapes.push(
-      <svg
-        key={key++}
-        viewBox={`0 0 ${w} ${h}`}
-        style={{ position: "absolute", display: "block", ...region }}
-        width="100%"
-        aria-hidden="true"
-      >
-        <rect width={w} height={h} fill={PAPER} />
-        {pattern.flatMap((row, ri) =>
-          row.map((c, ci) => {
-            const d = tilePath(c, ci * cell, ri * cell, cell);
-            return d ? <path key={`${ri}-${ci}`} d={d} fill={TILE_TONES[c.tone]} /> : null;
-          }),
-        )}
-        {/* hairline tile seams in ink */}
-        {Array.from({ length: cols + 1 }, (_, i) => (
-          <rect key={`v${i}`} x={Math.min(Math.max(i * cell - seam / 2, 0), w - seam)} y={0} width={seam} height={h} fill={BLACK} />
-        ))}
-        {Array.from({ length: rows + 1 }, (_, i) => (
-          <rect key={`h${i}`} x={0} y={Math.min(Math.max(i * cell - seam / 2, 0), h - seam)} width={w} height={seam} fill={BLACK} />
-        ))}
-      </svg>,
-    );
-  };
-  /** Static row of ornament glyphs — the brand's folk-ornament texture, non-animated. */
-  const glyphBand = (region: CSSProperties, count: number) =>
+  const tickerBand = (region: CSSProperties, rowCount: number) => {
+    const rows = makeTickerRows(rng, rowCount, { length: 40 });
     shapes.push(
       <div
         key={key++}
         aria-hidden="true"
-        className="select-none font-mono text-sm font-bold tracking-[0.1em]"
-        style={{ position: "absolute", left: 0, right: 0, display: "flex", alignItems: "center", justifyContent: "space-evenly", ...region }}
+        className="flex select-none flex-col justify-between font-mono text-sm font-bold tracking-[0.08em]"
+        style={{ position: "absolute", ...region }}
       >
-        {Array.from({ length: count }, (_, i) => (
-          <span key={i} style={{ color: rng() < 0.22 ? BLACK : RED }}>{pick(ORNAMENT_GLYPHS)}</span>
+        {rows.map((row, i) => (
+          <div key={i} style={{ overflow: "hidden", whiteSpace: "nowrap", color: ORNAMENT_TONES[row.tone] }}>
+            {row.text}
+          </div>
+        ))}
+      </div>,
+    );
+  };
+  /** A short centered stack of distinct motif-set lines, like the brand-system "motif sets" cell. */
+  const motifStack = (region: CSSProperties, count: number) =>
+    shapes.push(
+      <div
+        key={key++}
+        aria-hidden="true"
+        className="flex select-none flex-col items-center justify-center gap-2.5 font-mono text-sm font-bold tracking-[0.08em] text-ink"
+        style={{ position: "absolute", ...region }}
+      >
+        {makeMotifStack(rng, count, { length: 8 }).map((line, i) => (
+          <div key={i} style={{ overflow: "hidden", whiteSpace: "nowrap" }}>{line}</div>
         ))}
       </div>,
     );
@@ -204,21 +187,25 @@ export function CoverArt({ title, seed, className }: CoverArtProps) {
     mark(s.b, 30);
     dots(s.sub, 8, 64, 84);
   } else if (comp === 6) {
-    // Full-bleed folk tiles, mirrored for a symmetric ornament read.
-    tiles(6, 6, { inset: 0 }, true);
+    // Texture field: a full-bleed stack of ticker rows, echoing the
+    // brand-system pattern section directly.
+    tickerBand({ inset: "9%" }, 7);
   } else if (comp === 7) {
-    // Tile field with a glyph ornament band along the base.
-    tiles(5, 4, { left: 0, top: 0, width: "100%", height: "80%" });
-    glyphBand({ top: "80%", bottom: 0 }, 9);
+    // Vertical rail: a motif-set column beside the berg mark, split by a
+    // hairline rule — the "rail" + mark cells combined.
+    shapes.push(<div key={key++} style={{ position: "absolute", left: "38%", top: "12%", bottom: "12%", width: 1.5, background: BLACK }} />);
+    motifStack({ left: 0, width: "38%", top: 0, bottom: 0 }, 3);
+    mark(RED, 34);
   } else {
-    // Glyph rows framing a mirrored tile band — code as folk ornament.
-    glyphBand({ top: 0, height: "20%" }, 7);
-    tiles(5, 3, { left: 0, top: "20%", width: "100%", height: "60%" }, true);
-    glyphBand({ bottom: 0, height: "20%" }, 7);
+    // Ticker rows framing the berg mark — pattern and mark together.
+    tickerBand({ top: "8%", height: "22%" }, 3);
+    mark(BLACK, 30);
+    tickerBand({ bottom: "8%", height: "22%" }, 3);
   }
 
-  // The tile compositions always sit on the paper field (minimal variant of
-  // the reference patterns); the legacy compositions keep their seeded palette.
+  // The pattern-system compositions render on the paper field, matching the
+  // brand-system pattern section itself; the geometric compositions keep
+  // their seeded palette.
   const bg = comp >= 6 ? PAPER : s.bg;
 
   return (
