@@ -1,6 +1,6 @@
 export interface QuoteBlockProps {
   quote: string;
-  attribution: string;
+  attribution?: string;
   className?: string;
 }
 
@@ -12,7 +12,9 @@ export function QuoteBlock({ quote, attribution, className }: QuoteBlockProps) {
       </span>
       <div>
         <p className="mb-2.5 text-h3 font-bold leading-tight text-ink">{quote}</p>
-        <span className="font-mono text-meta text-accent">— {attribution}</span>
+        {attribution ? (
+          <span className="font-mono text-meta text-accent">— {attribution}</span>
+        ) : null}
       </div>
     </blockquote>
   );

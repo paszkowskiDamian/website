@@ -28,7 +28,7 @@ function Figure({ src, alt, title }: ComponentProps<"img">) {
 }
 
 /** Available inside MDX as <PullQuote quote="…" attribution="…" /> */
-function PullQuote({ quote, attribution = "" }: { quote: string; attribution?: string }) {
+function PullQuote({ quote, attribution }: { quote: string; attribution?: string }) {
   return <QuoteBlock quote={quote} attribution={attribution} className="my-10" />;
 }
 
