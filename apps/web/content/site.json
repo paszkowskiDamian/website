@@ -4,21 +4,20 @@
     "description": "Building digital folklore."
   },
   "nav": [
-    { "label": "Essays", "href": "/#essays" },
+    { "label": "Essays", "href": "/essays/" },
     { "label": "Portfolio", "href": "/portfolio/" },
     { "label": "System", "href": "/brand-system/" },
     { "label": "Contact", "href": "/contact/", "accent": true }
   ],
   "author": {
     "name": "Damian Paszkowski",
-    "role": "Founder, codeberg",
-    "bio": "Designer and developer building codeberg — a one-person studio working where code, design, and culture meet."
+    "role": "Full-stack Engineer",
+    "bio": "I'm a product-minded full-stack engineer with eight years in TypeScript and React, the last five in web3 and DeFi at protocols like MakerDAO, Summer.fi, and Arrakis. I own features end to end — UX, architecture, and the Solidity underneath — and I've shipped systems and products that generated millions in revenue."
   },
   "connect": [
-    { "label": "GitHub", "href": "#", "shape": "circle" },
-    { "label": "Dribbble", "href": "#", "shape": "circle" },
-    { "label": "LinkedIn", "href": "#", "shape": "square" },
-    { "label": "Email", "href": "#", "shape": "rect" }
+    { "label": "GitHub", "href": "https://github.com/paszkowskiDamian", "shape": "circle" },
+    { "label": "LinkedIn", "href": "https://www.linkedin.com/in/paszkowskidamian/", "shape": "square" },
+    { "label": "Email", "href": "mailto:paszko.damian@gmail.com", "shape": "rect" }
   ],
   "newsletter": {
     "heading": "Stay in the loop",

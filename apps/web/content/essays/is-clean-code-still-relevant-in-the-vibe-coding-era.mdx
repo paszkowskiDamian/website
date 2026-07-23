@@ -1,0 +1,66 @@
+---
+title: Is Clean Code Still Relevant in the Vibe Coding Era?
+date: 2026-07-23
+excerpt: The tools that generate our software have changed, but the reasons to keep the code underneath clean haven't gone away.
+readTime: 6 min read
+category: Engineering
+tags:
+  - AI
+  - Craft
+  - Clean code
+---
+
+When Steve Jobs was building the first Macintosh, he argued with his engineers about a part of the computer that no customer would ever&nbsp;see.
+
+He wanted the printed circuit board — the green slab of chips and solder buried inside the case — laid out beautifully. Clean lines, chips arranged with some sense of order. The engineers pushed back with the only argument that seemed to matter: the board is *inside the box*. It works or it doesn't. Nobody is ever going to open the case and look at it. Why spend an hour making it pretty?
+
+Jobs didn't buy it. He'd learned the opposite lesson from his father, Paul, who built cabinets and fences in their garage. As he later told his biographer, Walter Isaacson:
+
+<PullQuote
+  quote="When you're a carpenter making a beautiful chest of drawers, you're not going to use a piece of plywood on the back, even though it faces the wall and nobody will ever see it. You know it's there, so you're going to use a beautiful piece of wood on the back. For you to sleep well at night, the aesthetic, the quality, has to be carried all the way through."
+  attribution="Steve Jobs, in Walter Isaacson's biography"
+/>
+
+I've been thinking about that fight a lot lately, because I keep having a version of it — except now the hidden thing we're arguing about is code.
+
+## The inside of the machine
+
+We've entered what people are calling the vibe coding era. You describe what you want, an AI writes it, you run it, and if it works you move on. The code itself has started to feel like the circuit board: something *inside the box*. The user sees the app. They don't see the source. And so a very reasonable-sounding voice shows up and says — like those engineers — why does the inside need to be beautiful? It works. Ship it.
+
+I want to argue the Jobs position. Not for romantic reasons, but for boringly practical ones. Clean code is still relevant in the vibe coding era. Arguably it's *more* relevant, because the code now has more readers than it used to — and every one of them does better work when the inside of the machine is clean.
+
+## The machines read your code too
+
+Code used to have exactly one audience that mattered: other humans. The compiler didn't care whether your function was named `handleUserAuthentication` or `x7`. Only the next person to open the file did.
+
+That's no longer true. The models that now write and extend our software are, underneath everything, machines that work from context. They read what's already there and predict what should come next. And clarity is signal. Clear names, small functions that do one thing, consistent structure, comments that explain *why* — all of it gives the model a clean read on what the code means and what you're trying to do.
+
+Messy code is exactly as confusing to an AI as it is to you at 2am. Tangled logic, three different conventions for the same task, functions that quietly do five things — the model has to guess through all of it, and guessing is where the subtle bugs come from. We spent years telling ourselves clean code was a courtesy to our teammates. It turns out it's also the quality of the raw material we hand the AI.
+
+<PullQuote quote="Garbage context in, garbage code out." />
+
+## Agents copy whatever they find
+
+An agent extends your project by pattern-matching against it. It looks at how things are already done and does the next thing the same way. That's the whole trick — and it cuts both directions.
+
+If your codebase has clear, consistent patterns, the agent copies the *right* one, and the thing stays coherent as it grows. But if your code is inconsistent — if there are three ways to make a database call and two of them are wrong — the agent will faithfully reproduce that mess, at scale, without hesitation. It has no taste. It won't stop to say "actually, this pattern is a bit rotten, let me not spread it." It just spreads it. Every generation inherits the mess and adds to it.
+
+Clean, consistent code is the set of guardrails that keeps AI-assisted growth from turning into entropy.
+
+<PullQuote quote="The patterns you establish early are the ones the machine will repeat a thousand times." />
+
+## Someone still has to open the case
+
+And then there's the moment nobody likes to talk about: the moment a human has to go in by hand.
+
+Because it always comes. The AI gets stuck on a bug it can't see. A decision it baked in three weeks ago turns out to be wrong. Something breaks in production at the worst possible time, and you — a person — have to open the case, understand what's in there, and change it. Vibe coding doesn't remove these moments. It makes them rarer, which paradoxically makes them *higher-stakes*, because you're now dropping into code you didn't write, under pressure, needing to understand it fast.
+
+In that moment, every old virtue of clean code comes roaring back. Readable names. Small functions you can hold in your head. Clear boundaries so you can change one thing without the whole structure shifting under you. Clean code is what makes that emergency survivable. Messy code is what turns a five-minute fix into a lost afternoon.
+
+## Carried all the way through
+
+So the temptation of this era is to treat code as exhaust — something generated rather than written, and therefore not worth caring about. I think that gets it exactly backwards.
+
+The readership of code hasn't shrunk. It's grown. Where once there was just you and your teammates, now there's you, your teammates, the model that writes it, and the fleet of agents that will maintain and repeat it for years. Clean code serves every one of them. It's better context for the AI, better patterns for the agents, and a lifeline for the human who eventually has to open the case.
+
+Jobs' instinct — make the inside beautiful even when no one is looking — sounds like perfectionism. In the vibe coding era it's just good engineering. The aesthetic, the quality, still has to be carried all the way through. The only thing that's changed is who's looking inside. And it turns out, more things are looking than ever.

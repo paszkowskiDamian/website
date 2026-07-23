@@ -8,7 +8,7 @@
     "fallbackImage": "/mountain-hero.jpg"
   },
   "sections": {
-    "essays": { "title": "Recent Essays", "viewAllHref": "/#essays" },
-    "projects": { "title": "Selected Projects", "viewAllHref": "/portfolio/" }
+    "essays": { "title": "Recent Essays", "viewAllHref": "/essays/" },
+    "projects": { "title": "Selected Projects", "viewAllHref": "/projects/" }
   }
 }

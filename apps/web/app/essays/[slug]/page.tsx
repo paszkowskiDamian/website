@@ -17,6 +17,21 @@ interface Params {
   slug: string;
 }
 
+/** Author portrait; falls back to a plain colored circle when no avatar path is set. */
+function AuthorAvatar({ src, name, size }: { src?: string; name: string; size: "sm" | "lg" }) {
+  const sizeClass = size === "sm" ? "h-10 w-10" : "h-16 w-16";
+  if (!src) {
+    return <span className={`${sizeClass} flex-none rounded-full bg-ink`} />;
+  }
+  return (
+    <img
+      src={src}
+      alt={`Portrait of ${name}`}
+      className={`${sizeClass} flex-none rounded-full object-cover grayscale`}
+    />
+  );
+}
+
 export function generateStaticParams(): Params[] {
   return getAllEssays().map((e) => ({ slug: e.slug }));
 }
@@ -35,6 +50,9 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
   const essays = getAllEssays();
   const essay = getEssay(slug);
   const site = getSite();
+
+  // Site-wide author, with optional per-essay frontmatter overrides merged in.
+  const author = { ...site.author, ...essay.author };
 
   // Neighbors in the newest-first list: "previous" = older, "next" = newer.
   const i = essays.findIndex((e) => e.slug === slug);
@@ -56,7 +74,7 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
         aria-label="Breadcrumb"
         className="border-t-2 border-ink py-3.5 font-mono text-meta uppercase text-muted"
       >
-        <Link href="/#essays" className="text-muted">
+        <Link href="/essays/" className="text-muted">
           Essays
         </Link>
         <span aria-hidden="true" className="px-2 text-accent">
@@ -81,10 +99,10 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
             <p className="mt-6 max-w-[52ch] font-serif text-lede text-copy">{essay.excerpt}</p>
             <div className="mt-7 flex flex-wrap items-center gap-5 border-t border-line pt-5">
               <div className="flex items-center gap-3">
-                <span className="h-10 w-10 flex-none rounded-full bg-ink" />
+                <AuthorAvatar src={author.avatar} name={author.name} size="sm" />
                 <div className="leading-tight">
-                  <div className="text-sm font-bold text-ink">{site.author.name}</div>
-                  <div className="font-mono text-xs text-muted">{site.author.role}</div>
+                  <div className="text-sm font-bold text-ink">{author.name}</div>
+                  <div className="font-mono text-xs text-muted">{author.role}</div>
                 </div>
               </div>
               <div className="font-mono text-meta uppercase text-muted">
@@ -134,12 +152,12 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
 
       {/* AUTHOR BIO */}
       <section className="mx-auto mb-14 flex max-w-[840px] flex-wrap items-center gap-6 border border-line p-7 sm:mb-20">
-        <span className="h-16 w-16 flex-none rounded-full bg-ink" />
+        <AuthorAvatar src={author.avatar} name={author.name} size="lg" />
         <div className="min-w-[240px] flex-1">
           <div className="mb-2 font-mono text-meta uppercase text-muted">Written by</div>
-          <div className="mb-1.5 text-xl font-bold text-ink">{site.author.name}</div>
-          <p className="mb-2.5 max-w-[52ch] font-serif text-base text-copy">{site.author.bio}</p>
-          <ArrowLink href="/#essays">More essays</ArrowLink>
+          <div className="mb-1.5 text-xl font-bold text-ink">{author.name}</div>
+          <p className="mb-2.5 max-w-[52ch] font-serif text-base text-copy">{author.bio}</p>
+          <ArrowLink href="/essays/">More essays</ArrowLink>
         </div>
       </section>
 

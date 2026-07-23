@@ -1,6 +1,6 @@
 [
-  { "seed": 11, "title": "Peakfolio", "description": "A minimal portfolio starter for developers." },
-  { "seed": 29, "title": "Satori UI", "description": "A component library for modern React apps." },
-  { "seed": 47, "title": "Firelight CMS", "description": "A headless CMS for content-focused sites." },
-  { "seed": 83, "title": "Gridly", "description": "Simple layouts for complex ideas." }
+  { "seed": 11, "title": "Peakfolio", "description": "A minimal portfolio starter for developers.", "href": "/projects/peakfolio/" },
+  { "seed": 29, "title": "Satori UI", "description": "A component library for modern React apps.", "href": "/projects/satori-ui/" },
+  { "seed": 47, "title": "Firelight CMS", "description": "A headless CMS for content-focused sites.", "href": "/projects/firelight-cms/" },
+  { "seed": 83, "title": "Gridly", "description": "Simple layouts for complex ideas.", "href": "/projects/gridly/" }
 ]
