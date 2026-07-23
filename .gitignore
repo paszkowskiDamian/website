@@ -37,3 +37,6 @@ yarn-error.log*
 .DS_Store
 *.pem
 storybook-static/
+
+# Raw photography exports (unprocessed originals, not for the repo)
+/photography/
