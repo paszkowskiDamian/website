@@ -1,6 +1,6 @@
-# Turborepo starter
+# website
 
-This Turborepo starter is maintained by the Turborepo core team.
+Personal website of Damian Paszkowski — a Turborepo monorepo with a Next.js static-export site in `apps/web`.
 
 ## Deployment
 
