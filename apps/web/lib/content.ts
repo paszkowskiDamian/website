@@ -10,6 +10,7 @@ import type { NewsletterCopy } from "@repo/ui/molecules/newsletter";
  * (server components + `output: "export"`), so plain `fs` is fine.
  *
  * - content/essays/*.mdx — one file per essay, frontmatter + MDX body
+ * - content/projects/*.mdx — one file per project, frontmatter + MDX body
  * - content/projects.json — the "Selected Projects" grid
  * - content/portfolio.json — the portfolio page
  * - content/site.json — site meta, nav, author, social links, shared copy
@@ -105,6 +106,84 @@ export function getProjects(): Project[] {
   return JSON.parse(
     fs.readFileSync(path.join(CONTENT_DIR, "projects.json"), "utf8"),
   ) as Project[];
+}
+
+export interface ProjectDetailMeta {
+  slug: string;
+  title: string;
+  /** One-line summary used as the lede and meta description. */
+  description: string;
+  /** Cover seed for `CoverArt` — mirrors the seed used on the home grid. */
+  seed: number;
+  /** e.g. "Product", "Open source" */
+  kind: string;
+  /** Manual ordering on the /projects/ index (1 = first). */
+  order: number;
+  year?: string;
+  role?: string;
+  stack?: string[];
+  /** "Where it landed" — outcome line shown in the facts rail. */
+  outcome?: string;
+  links: { label: string; href: string }[];
+}
+
+export interface ProjectDetail extends ProjectDetailMeta {
+  body: string;
+}
+
+function parseProjectFile(filename: string): ProjectDetail {
+  const slug = filename.replace(/\.mdx$/, "");
+  const raw = fs.readFileSync(path.join(CONTENT_DIR, "projects", filename), "utf8");
+  const { data, content } = matter(raw);
+
+  for (const key of ["title", "description", "seed", "kind", "order"]) {
+    if (data[key] === undefined) {
+      throw new Error(`projects/${filename}: missing frontmatter field "${key}"`);
+    }
+  }
+
+  return {
+    slug,
+    title: data.title as string,
+    description: data.description as string,
+    seed: data.seed as number,
+    kind: data.kind as string,
+    order: data.order as number,
+    year: data.year === undefined ? undefined : String(data.year),
+    role: data.role as string | undefined,
+    stack: data.stack as string[] | undefined,
+    outcome: data.outcome as string | undefined,
+    links: (data.links as { label: string; href: string }[] | undefined) ?? [],
+    body: content,
+  };
+}
+
+/** All project detail pages, in their frontmatter `order`. */
+export function getAllProjectDetails(): ProjectDetail[] {
+  return fs
+    .readdirSync(path.join(CONTENT_DIR, "projects"))
+    .filter((f) => f.endsWith(".mdx"))
+    .map(parseProjectFile)
+    .sort((a, b) => a.order - b.order);
+}
+
+export function getProjectDetail(slug: string): ProjectDetail {
+  const project = getAllProjectDetails().find((p) => p.slug === slug);
+  if (!project) throw new Error(`Unknown project slug: ${slug}`);
+  return project;
+}
+
+export interface ProjectsPageConfig {
+  meta: PageMeta;
+  kicker: string;
+  title: string;
+  intro: string;
+}
+
+export function getProjectsPage(): ProjectsPageConfig {
+  return JSON.parse(
+    fs.readFileSync(path.join(CONTENT_DIR, "pages", "projects.json"), "utf8"),
+  ) as ProjectsPageConfig;
 }
 
 export interface PortfolioImage {
