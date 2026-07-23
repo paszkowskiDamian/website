@@ -39,7 +39,7 @@ export function Header({ links, homeHref = "/", className }: HeaderProps) {
       </a>
 
       {/* Desktop nav */}
-      <nav aria-label="Main" className="hidden items-center gap-8 sm:flex">
+      <nav aria-label="Main" className="hidden items-center gap-4 sm:flex lg:gap-8">
         {links.map((link) => (
           <a
             key={link.href + link.label}
