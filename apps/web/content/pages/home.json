@@ -9,6 +9,6 @@
   },
   "sections": {
     "essays": { "title": "Recent Essays", "viewAllHref": "/essays/" },
-    "projects": { "title": "Selected Projects", "viewAllHref": "/portfolio/" }
+    "projects": { "title": "Selected Projects", "viewAllHref": "/projects/" }
   }
 }
