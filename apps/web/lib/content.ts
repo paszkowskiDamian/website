@@ -88,6 +88,29 @@ export function getAllEssays(): Essay[] {
   return essays.reverse();
 }
 
+/**
+ * Frontmatter-only view of all essays (no MDX body), newest first.
+ * Safe to pass across the server/client boundary — keeps essay bodies
+ * out of the serialized client payload.
+ */
+export function getAllEssayMetas(): EssayMeta[] {
+  return getAllEssays().map((e) => ({
+    slug: e.slug,
+    title: e.title,
+    date: e.date,
+    displayDate: e.displayDate,
+    excerpt: e.excerpt,
+    readTime: e.readTime,
+    category: e.category,
+    tags: e.tags,
+    featured: e.featured,
+    number: e.number,
+    heroImage: e.heroImage,
+    heroAlt: e.heroAlt,
+    heroCaption: e.heroCaption,
+  }));
+}
+
 export function getEssay(slug: string): Essay {
   const essay = getAllEssays().find((e) => e.slug === slug);
   if (!essay) throw new Error(`Unknown essay slug: ${slug}`);
@@ -206,6 +229,26 @@ export function getHomePage(): HomePageConfig {
   return JSON.parse(
     fs.readFileSync(path.join(CONTENT_DIR, "pages", "home.json"), "utf8"),
   ) as HomePageConfig;
+}
+
+export interface EssaysPageConfig {
+  meta: PageMeta;
+  kicker: string;
+  title: string;
+  intro: string;
+  filters: {
+    allLabel: string;
+    categoriesLabel: string;
+    tagsLabel: string;
+    clearLabel: string;
+    emptyMessage: string;
+  };
+}
+
+export function getEssaysPage(): EssaysPageConfig {
+  return JSON.parse(
+    fs.readFileSync(path.join(CONTENT_DIR, "pages", "essays.json"), "utf8"),
+  ) as EssaysPageConfig;
 }
 
 export interface BrandSystemConfig {
