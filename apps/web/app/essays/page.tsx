@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { ArrowLink } from "@repo/ui/atoms/arrow-link";
 import { GlyphGrid } from "@repo/ui/atoms/glyph-grid";
 import { Container } from "@repo/ui/layouts/container";
 import { Footer } from "@repo/ui/molecules/footer";
@@ -36,6 +37,9 @@ export default function EssaysPage() {
             </div>
             <h1 className="text-hero font-black leading-[0.86] text-ink">{page.title}</h1>
             <p className="mt-6 max-w-[52ch] font-serif text-lede text-copy">{page.intro}</p>
+            <div className="mt-6">
+              <ArrowLink href="/essays/feed.xml">RSS feed</ArrowLink>
+            </div>
           </div>
           <div className="hidden flex-none pt-2 sm:block">
             <GlyphGrid cols={8} rows={4} />
