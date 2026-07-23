@@ -1,0 +1,10 @@
+{
+	// Cloudflare Workers Builds config — static-assets-only Worker.
+	// The site is a Next.js static export; Cloudflare just serves apps/web/out.
+	"name": "website",
+	"compatibility_date": "2026-07-23",
+	"assets": {
+		"directory": "./apps/web/out",
+		"not_found_handling": "404-page"
+	}
+}
