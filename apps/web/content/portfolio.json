@@ -142,62 +142,126 @@
   "photography": {
     "id": "photography",
     "title": "Away from the screen",
-    "intro": "Mostly 35mm, mostly mountains, mostly early. Photography is where I go to stop optimizing — no grid system, no tokens, just weather and patience. These rotate as I develop new rolls.",
+    "intro": "Mostly mountains, mostly early, shot on whatever's in my pocket. Photography is where I go to stop optimizing — no grid system, no tokens, just weather and patience. These rotate as I shoot more.",
     "photos": [
       {
-        "ratio": "3/4",
-        "caption": "Dolomites",
-        "meta": "35mm",
-        "placeholder": "Portrait photo"
-      },
-      {
-        "ratio": "4/3",
-        "caption": "Coastline",
+        "ratio": "1154/1800",
+        "caption": "Ridge above cloud",
         "meta": "Digital",
-        "src": "/mountain-hero.jpg",
-        "alt": "A mountain peak breaking through cloud cover"
+        "src": "/ridge-above-cloud.jpg",
+        "alt": "A jagged rock spire piercing through a sea of clouds"
       },
       {
-        "ratio": "1/1",
+        "ratio": "1012/1800",
         "caption": "Concrete study",
-        "meta": "35mm",
-        "placeholder": "Square photo"
-      },
-      {
-        "ratio": "4/3",
-        "caption": "Fog line",
-        "meta": "35mm",
-        "placeholder": "Landscape photo"
-      },
-      {
-        "ratio": "3/4",
-        "caption": "Ridge at dawn",
         "meta": "Digital",
-        "placeholder": "Portrait photo"
+        "src": "/concrete-study.jpg",
+        "alt": "Abstract underside of a concrete structure, sharp diagonal lines and light"
       },
       {
-        "ratio": "4/3",
-        "caption": "Salt flats",
-        "meta": "35mm",
-        "placeholder": "Landscape photo"
-      },
-      {
-        "ratio": "1/1",
-        "caption": "Window grid",
+        "ratio": "1180/1800",
+        "caption": "Spillway",
         "meta": "Digital",
-        "placeholder": "Square photo"
+        "src": "/spillway.jpg",
+        "alt": "A dam releasing water in a rushing spray, a road crossing above"
       },
       {
-        "ratio": "3/4",
+        "ratio": "1190/1800",
+        "caption": "Lakeside bench",
+        "meta": "Digital",
+        "src": "/lakeside-bench.jpg",
+        "alt": "A figure walking past a bench between two bare trees on a lakeshore"
+      },
+      {
+        "ratio": "1012/1800",
+        "caption": "Skin track",
+        "meta": "Digital",
+        "src": "/skin-track.jpg",
+        "alt": "A line of ski tourers crossing a wide snow bowl below a ridge"
+      },
+      {
+        "ratio": "1012/1800",
+        "caption": "Frozen observatory",
+        "meta": "Digital",
+        "src": "/frozen-observatory.jpg",
+        "alt": "A rime-frosted mountaintop observatory building with tiered balconies"
+      },
+      {
+        "ratio": "1350/1800",
         "caption": "Pine, backlit",
-        "meta": "35mm",
-        "placeholder": "Portrait photo"
+        "meta": "Digital",
+        "src": "/pine-backlit.jpg",
+        "alt": "Bare pine snags on a snow field, backlit by a hazy sun"
       },
       {
-        "ratio": "4/3",
-        "caption": "Low tide",
-        "meta": "35mm",
-        "placeholder": "Landscape photo"
+        "ratio": "1090/1800",
+        "caption": "Terraced hillside",
+        "meta": "Digital",
+        "src": "/terraced-hillside.jpg",
+        "alt": "An olive-terraced hillside above a railway tunnel, cypress trees on the crest"
+      },
+      {
+        "ratio": "1012/1800",
+        "caption": "Temple spire",
+        "meta": "Digital",
+        "src": "/temple-spire.jpg",
+        "alt": "An ornately patterned temple spire against a pale sky"
+      },
+      {
+        "ratio": "1015/1800",
+        "caption": "Cloud cap",
+        "meta": "Digital",
+        "src": "/cloud-cap.jpg",
+        "alt": "A snow-capped peak wearing a lenticular cloud, seen from above"
+      },
+      {
+        "ratio": "1012/1800",
+        "caption": "Ridge traverse",
+        "meta": "Digital",
+        "src": "/ridge-traverse.jpg",
+        "alt": "A lone hiker crossing a narrow snow ridge between peaks"
+      },
+      {
+        "ratio": "1012/1800",
+        "caption": "Tower in fog",
+        "meta": "Digital",
+        "src": "/tower-in-fog.jpg",
+        "alt": "A radio tower's spire emerging from thick fog against a dark sky"
+      },
+      {
+        "ratio": "1012/1800",
+        "caption": "Foggy harbor",
+        "meta": "Digital",
+        "src": "/foggy-harbor.jpg",
+        "alt": "Small boats moored at a lake dock, mountains fading into morning fog"
+      },
+      {
+        "ratio": "1064/1800",
+        "caption": "Diving platform",
+        "meta": "Digital",
+        "src": "/diving-platform.jpg",
+        "alt": "A spiral diving platform in still lake water, framed by bare tree branches"
+      },
+      {
+        "ratio": "1012/1800",
+        "caption": "Rock and snow",
+        "meta": "Digital",
+        "src": "/rock-and-snow.jpg",
+        "alt": "Close-up texture of a jagged snow-streaked peak"
+      },
+      {
+        "ratio": "1015/1800",
+        "caption": "Skinning up",
+        "meta": "Digital",
+        "src": "/skinning-up.jpg",
+        "alt": "Three ski tourers climbing a sunlit slope beneath a rocky ridge"
+      },
+      {
+        "ratio": "1012/1800",
+        "caption": "Bow, open water",
+        "meta": "Digital",
+        "src": "/bow-open-water.jpg",
+        "alt": "The bow of a sailboat cutting across open water toward distant peaks"
       }
     ]
   },
