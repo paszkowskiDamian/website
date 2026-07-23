@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "titleLines": ["ideas", "in code", "& design"],
+    "lede": "Essays on design systems, front-end development, creative process, and the tools that shape digital products.",
+    "cta": { "label": "About codeberg", "href": "/brand-system/" }
+  },
+  "featured": {
+    "fallbackImage": "/mountain-hero.jpg"
+  },
+  "sections": {
+    "essays": { "title": "Recent Essays", "viewAllHref": "/#essays" },
+    "projects": { "title": "Selected Projects", "viewAllHref": "/portfolio/" }
+  }
+}

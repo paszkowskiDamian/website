@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Portfolio — codeberg",
+    "description": "Four projects, told properly — the problem, the decisions, and where each landed — plus photographs from away from the screen."
+  },
   "kicker": "Portfolio — four stories",
   "title": "work, told\nproperly",
   "intro": "A grid of thumbnails tells you nothing about how a thing got made. So instead: four projects, each with the problem that started it, the decisions that shaped it, and where it landed — followed by the photographs I make when I put the laptop away.",
@@ -8,7 +12,10 @@
       "layout": "feature",
       "title": "Peakfolio",
       "meta": "Product — 2025 — Design lead & engineer",
-      "heroImage": { "ratio": "21/9", "placeholder": "Drop the Peakfolio hero — a full product screen works best" },
+      "heroImage": {
+        "ratio": "21/9",
+        "placeholder": "Drop the Peakfolio hero — a full product screen works best"
+      },
       "paragraphs": [
         {
           "label": "The problem",
@@ -20,10 +27,21 @@
         }
       ],
       "aside": [
-        { "label": "Where it landed", "text": "Public beta in spring 2025; 4,000 sites live by year end." },
-        { "label": "Stack", "text": "React, MDX, design-token pipeline" }
+        {
+          "label": "Where it landed",
+          "text": "Public beta in spring 2025; 4,000 sites live by year end."
+        },
+        {
+          "label": "Stack",
+          "text": "React, MDX, design-token pipeline"
+        }
       ],
-      "links": [{ "label": "Explore the case study", "href": "#" }]
+      "links": [
+        {
+          "label": "Explore the case study",
+          "href": "#"
+        }
+      ]
     },
     {
       "id": "ch-02",
@@ -39,9 +57,20 @@
         }
       ],
       "quote": "\"The best CMS is the one the writer forgets they're using.\"",
-      "inlineImage": { "ratio": "16/9", "placeholder": "Drop a detail shot — the editor UI" },
-      "tallImage": { "ratio": "3/4", "placeholder": "Drop a tall Firelight image — mobile view or poster crop" },
-      "links": [{ "label": "Explore Firelight", "href": "#" }]
+      "inlineImage": {
+        "ratio": "16/9",
+        "placeholder": "Drop a detail shot — the editor UI"
+      },
+      "tallImage": {
+        "ratio": "3/4",
+        "placeholder": "Drop a tall Firelight image — mobile view or poster crop"
+      },
+      "links": [
+        {
+          "label": "Explore Firelight",
+          "href": "#"
+        }
+      ]
     },
     {
       "id": "ch-03",
@@ -56,10 +85,20 @@
           "text": "Maintaining it taught me more about API design than any product role: every abstraction you expose is a promise you keep for years."
         }
       ],
-      "sideImage": { "ratio": "4/3", "placeholder": "Drop a Gridly image — terminal or docs screenshot" },
+      "sideImage": {
+        "ratio": "4/3",
+        "placeholder": "Drop a Gridly image — terminal or docs screenshot"
+      },
       "links": [
-        { "label": "Read the docs", "href": "#" },
-        { "label": "GitHub", "href": "#", "variant": "paper" }
+        {
+          "label": "Read the docs",
+          "href": "#"
+        },
+        {
+          "label": "GitHub",
+          "href": "#",
+          "variant": "paper"
+        }
       ]
     },
     {
@@ -68,8 +107,14 @@
       "title": "Ridgeline",
       "meta": "Product — 2023 — Design & data viz",
       "pairImages": [
-        { "ratio": "4/3", "placeholder": "Drop a Ridgeline dashboard shot" },
-        { "ratio": "4/3", "placeholder": "Drop a field photo — the trails behind the data" }
+        {
+          "ratio": "4/3",
+          "placeholder": "Drop a Ridgeline dashboard shot"
+        },
+        {
+          "ratio": "4/3",
+          "placeholder": "Drop a field photo — the trails behind the data"
+        }
       ],
       "paragraphs": [
         {
@@ -82,29 +127,86 @@
           "text": "Acquired by a mapping company in 2024; the ridgeline chart lives on in their app."
         }
       ],
-      "links": [{ "label": "Explore Ridgeline", "href": "#" }]
+      "links": [
+        {
+          "label": "Explore Ridgeline",
+          "href": "#"
+        }
+      ]
     }
   ],
-  "interlude": ["Everything above was made sitting down.", "Everything below is why I stand up."],
+  "interlude": [
+    "Everything above was made sitting down.",
+    "Everything below is why I stand up."
+  ],
   "photography": {
     "id": "photography",
     "title": "Away from the screen",
     "intro": "Mostly 35mm, mostly mountains, mostly early. Photography is where I go to stop optimizing — no grid system, no tokens, just weather and patience. These rotate as I develop new rolls.",
     "photos": [
-      { "ratio": "3/4", "caption": "Dolomites", "meta": "35mm", "placeholder": "Portrait photo" },
-      { "ratio": "4/3", "caption": "Coastline", "meta": "Digital", "src": "/mountain-hero.jpg", "alt": "A mountain peak breaking through cloud cover" },
-      { "ratio": "1/1", "caption": "Concrete study", "meta": "35mm", "placeholder": "Square photo" },
-      { "ratio": "4/3", "caption": "Fog line", "meta": "35mm", "placeholder": "Landscape photo" },
-      { "ratio": "3/4", "caption": "Ridge at dawn", "meta": "Digital", "placeholder": "Portrait photo" },
-      { "ratio": "4/3", "caption": "Salt flats", "meta": "35mm", "placeholder": "Landscape photo" },
-      { "ratio": "1/1", "caption": "Window grid", "meta": "Digital", "placeholder": "Square photo" },
-      { "ratio": "3/4", "caption": "Pine, backlit", "meta": "35mm", "placeholder": "Portrait photo" },
-      { "ratio": "4/3", "caption": "Low tide", "meta": "35mm", "placeholder": "Landscape photo" }
+      {
+        "ratio": "3/4",
+        "caption": "Dolomites",
+        "meta": "35mm",
+        "placeholder": "Portrait photo"
+      },
+      {
+        "ratio": "4/3",
+        "caption": "Coastline",
+        "meta": "Digital",
+        "src": "/mountain-hero.jpg",
+        "alt": "A mountain peak breaking through cloud cover"
+      },
+      {
+        "ratio": "1/1",
+        "caption": "Concrete study",
+        "meta": "35mm",
+        "placeholder": "Square photo"
+      },
+      {
+        "ratio": "4/3",
+        "caption": "Fog line",
+        "meta": "35mm",
+        "placeholder": "Landscape photo"
+      },
+      {
+        "ratio": "3/4",
+        "caption": "Ridge at dawn",
+        "meta": "Digital",
+        "placeholder": "Portrait photo"
+      },
+      {
+        "ratio": "4/3",
+        "caption": "Salt flats",
+        "meta": "35mm",
+        "placeholder": "Landscape photo"
+      },
+      {
+        "ratio": "1/1",
+        "caption": "Window grid",
+        "meta": "Digital",
+        "placeholder": "Square photo"
+      },
+      {
+        "ratio": "3/4",
+        "caption": "Pine, backlit",
+        "meta": "35mm",
+        "placeholder": "Portrait photo"
+      },
+      {
+        "ratio": "4/3",
+        "caption": "Low tide",
+        "meta": "35mm",
+        "placeholder": "Landscape photo"
+      }
     ]
   },
   "cta": {
     "title": "Have a project\nin mind?",
     "text": "I take on a small number of design and build engagements each year. Tell me what you're making.",
-    "button": { "label": "Start a conversation", "href": "#" }
+    "button": {
+      "label": "Start a conversation",
+      "href": "#"
+    }
   }
 }

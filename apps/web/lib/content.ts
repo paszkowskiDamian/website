@@ -2,6 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import type { ConnectLink } from "@repo/ui/molecules/connect-row";
+import type { NavLink } from "@repo/ui/molecules/header";
+import type { NewsletterCopy } from "@repo/ui/molecules/newsletter";
 
 /**
  * File-based content layer. Everything here runs at build time only
@@ -9,7 +11,9 @@ import type { ConnectLink } from "@repo/ui/molecules/connect-row";
  *
  * - content/essays/*.mdx — one file per essay, frontmatter + MDX body
  * - content/projects.json — the "Selected Projects" grid
- * - content/site.json — author, social links, shared site copy
+ * - content/portfolio.json — the portfolio page
+ * - content/site.json — site meta, nav, author, social links, shared copy
+ * - content/pages/*.json — per-page copy (home, brand-system)
  */
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
@@ -128,7 +132,13 @@ export interface PortfolioChapter {
   pairImages?: PortfolioImage[];
 }
 
+export interface PageMeta {
+  title: string;
+  description: string;
+}
+
 export interface PortfolioConfig {
+  meta: PageMeta;
   kicker: string;
   title: string;
   intro: string;
@@ -154,16 +164,97 @@ export function getPortfolio(): PortfolioConfig {
 }
 
 export interface SiteConfig {
+  meta: PageMeta;
+  nav: NavLink[];
   author: {
     name: string;
     role: string;
     bio: string;
   };
   connect: ConnectLink[];
+  newsletter: NewsletterCopy;
+  footer: {
+    /** Copy shown after the © year in the site footer. */
+    copyright: string;
+  };
 }
 
 export function getSite(): SiteConfig {
   return JSON.parse(
     fs.readFileSync(path.join(CONTENT_DIR, "site.json"), "utf8"),
   ) as SiteConfig;
+}
+
+export interface HomePageConfig {
+  hero: {
+    /** Rendered as one heading with a line break between entries. */
+    titleLines: string[];
+    lede: string;
+    cta: { label: string; href: string };
+  };
+  featured: {
+    /** Hero image used when the featured essay has none of its own. */
+    fallbackImage: string;
+  };
+  sections: {
+    essays: { title: string; viewAllHref: string };
+    projects: { title: string; viewAllHref: string };
+  };
+}
+
+export function getHomePage(): HomePageConfig {
+  return JSON.parse(
+    fs.readFileSync(path.join(CONTENT_DIR, "pages", "home.json"), "utf8"),
+  ) as HomePageConfig;
+}
+
+export interface BrandSystemConfig {
+  meta: PageMeta;
+  cover: { kicker: string; title: string; intro: string };
+  conceptStrip: { phrases: string[]; accentPhrase: string };
+  mark: {
+    heading: string;
+    labels: { primary: string; lockup: string; onBlack: string; tile: string };
+    note: string;
+  };
+  palette: {
+    heading: string;
+    swatches: {
+      name: string;
+      hex: string;
+      usage: string;
+      bordered: boolean;
+      bg: string;
+      text: string;
+    }[];
+    note: string;
+  };
+  typography: {
+    heading: string;
+    families: { label: string; sampleClassName: string; note: string }[];
+    scale: { label: string; sample: string; className: string }[];
+  };
+  pattern: {
+    heading: string;
+    intro: string;
+    cells: { rail: string; field: string; motifs: string };
+    motifSample: string;
+    tickerRows: { text: string; tone: "accent" | "ink" | "muted" }[];
+    glyphSetNote: string;
+  };
+  geometry: {
+    heading: string;
+    panel: { kicker: string; text: string };
+  };
+  components: { heading: string };
+  footer: {
+    copyright: string;
+    cta: { label: string; href: string };
+  };
+}
+
+export function getBrandSystem(): BrandSystemConfig {
+  return JSON.parse(
+    fs.readFileSync(path.join(CONTENT_DIR, "pages", "brand-system.json"), "utf8"),
+  ) as BrandSystemConfig;
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, Newsreader, JetBrains_Mono } from "next/font/google";
+import { getSite } from "../lib/content";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -20,9 +21,11 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
+const site = getSite();
+
 export const metadata: Metadata = {
-  title: "codeberg",
-  description: "Building digital folklore.",
+  title: site.meta.title,
+  description: site.meta.description,
 };
 
 export default function RootLayout({

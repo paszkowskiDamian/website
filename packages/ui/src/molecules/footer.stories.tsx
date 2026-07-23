@@ -4,6 +4,7 @@ import { Footer } from "./footer";
 const meta = {
   title: "Molecules/Footer",
   component: Footer,
+  args: { copyright: "codeberg. All rights reserved." },
   parameters: { layout: "fullscreen" },
   render: (args) => (
     <div className="mx-auto max-w-page px-gutter">
