@@ -3,6 +3,11 @@
 	// The site is a Next.js static export; Cloudflare just serves apps/web/out.
 	"name": "website",
 	"compatibility_date": "2026-07-23",
+	// Serve on <name>.<subdomain>.workers.dev, and give every uploaded
+	// version a <version>-<name>.<subdomain>.workers.dev preview URL —
+	// this is what makes PR preview links show up in the bot comment.
+	"workers_dev": true,
+	"preview_urls": true,
 	"assets": {
 		"directory": "./apps/web/out",
 		"not_found_handling": "404-page"

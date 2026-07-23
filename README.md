@@ -2,6 +2,13 @@
 
 This Turborepo starter is maintained by the Turborepo core team.
 
+## Deployment
+
+The site (`apps/web`, a Next.js static export) is deployed with [Cloudflare Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/):
+
+- **Production:** every push to `main` builds with `pnpm turbo build --filter=web` and deploys `apps/web/out` via `npx wrangler deploy` (config in `wrangler.jsonc`).
+- **PR previews:** non-production branches run `npx wrangler versions upload`, and Cloudflare posts a preview URL + build status on the pull request.
+
 ## Using this example
 
 Run the following command:
