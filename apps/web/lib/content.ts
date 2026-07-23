@@ -239,7 +239,6 @@ export interface EssaysPageConfig {
   filters: {
     allLabel: string;
     categoriesLabel: string;
-    tagsLabel: string;
     clearLabel: string;
     emptyMessage: string;
   };

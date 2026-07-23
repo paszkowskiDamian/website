@@ -97,11 +97,11 @@ export function EssaysList({ essays, emptyMessage }: { essays: EssayMeta[]; empt
 }
 
 /**
- * Client-side category/tag filtering over the static essay list.
+ * Client-side category filtering over the static essay list.
  *
- * The active filters are mirrored into `?category=` / `?tag=` URL params so a
- * filtered view is shareable. The site is a static export, so the params are
- * read client-side via useSearchParams — the parent page wraps this component
+ * The active filter is mirrored into the `?category=` URL param so a filtered
+ * view is shareable. The site is a static export, so the param is read
+ * client-side via useSearchParams — the parent page wraps this component
  * in <Suspense>.
  */
 export function EssaysIndex({ essays, copy }: EssaysIndexProps) {
@@ -110,28 +110,23 @@ export function EssaysIndex({ essays, copy }: EssaysIndexProps) {
   const searchParams = useSearchParams();
 
   const categories = [...new Set(essays.map((e) => e.category))].sort();
-  const tags = [...new Set(essays.flatMap((e) => e.tags))].sort();
 
   // Unknown values (stale or hand-edited URLs) fall back to "no filter".
   const rawCategory = searchParams.get("category");
-  const rawTag = searchParams.get("tag");
   const category = rawCategory !== null && categories.includes(rawCategory) ? rawCategory : null;
-  const tag = rawTag !== null && tags.includes(rawTag) ? rawTag : null;
 
-  const setFilter = (key: "category" | "tag", value: string | null) => {
+  const setCategory = (value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value === null) {
-      params.delete(key);
+      params.delete("category");
     } else {
-      params.set(key, value);
+      params.set("category", value);
     }
     const query = params.toString();
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
 
-  const filtered = essays.filter(
-    (e) => (category === null || e.category === category) && (tag === null || e.tags.includes(tag)),
-  );
+  const filtered = essays.filter((e) => category === null || e.category === category);
 
   return (
     <>
@@ -141,16 +136,9 @@ export function EssaysIndex({ essays, copy }: EssaysIndexProps) {
           allLabel={copy.allLabel}
           options={categories}
           selected={category}
-          onSelect={(value) => setFilter("category", value)}
+          onSelect={setCategory}
         />
-        <FilterRow
-          label={copy.tagsLabel}
-          allLabel={copy.allLabel}
-          options={tags}
-          selected={tag}
-          onSelect={(value) => setFilter("tag", value)}
-        />
-        {(category !== null || tag !== null) && (
+        {category !== null && (
           <div className="flex items-center gap-4">
             <span className="font-mono text-meta uppercase text-muted" aria-live="polite">
               {filtered.length} / {essays.length}

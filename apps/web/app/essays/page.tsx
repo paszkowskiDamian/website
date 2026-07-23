@@ -42,7 +42,7 @@ export default function EssaysPage() {
           </div>
         </section>
 
-        {/* FILTERS + LIST — the filters read ?category=/?tag= client-side
+        {/* FILTER + LIST — the filter reads ?category= client-side
             (static export), so the interactive part sits behind Suspense with
             the full unfiltered list as the prerendered fallback. */}
         <section aria-label={page.title}>
