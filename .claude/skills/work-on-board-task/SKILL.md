@@ -11,23 +11,26 @@ work as a PR, and leave a record of what changed on the card.
 
 ## The board
 
-- Board: https://trello.com/b/PT63MPoF/website
-- Board ARI: `ari:cloud:trello::board/workspace/60c15f214584f367dac792a7/6a614262a502b8f34a7304d4`
-- Lists (position order):
+Tasks live on the Trello board named **"website"** in the repo owner's workspace.
+Discover it at runtime — board/list ARIs and URLs are deliberately not hardcoded
+here, so the public repo carries no workspace metadata:
 
-| List | ARI suffix | Meaning |
-|---|---|---|
-| DRAFT | `6a614378133b75a472a64cc7` | Not fully specced — never pick from here |
-| TODO | `6a61437b5b261024f1770d1c` | Ready to be picked up |
-| INPROGRESS | `6a61437ea526e0359ba35abd` | Someone is actively working on it |
-| INREVIEW | `6a6143819c2e2f5199be426f` | PR open, awaiting review |
-| DONE | `6a6143849bf035cb88b710b5` | Merged / finished |
+1. `trelloReadBoard` (`action: "list"`) or `trelloSearch` (`action: "search_boards"`,
+   query `website`) — find the board and note its ARI.
+2. `trelloReadList` (`action: "list_by_board"`) — get the list ARIs.
 
-Full list ARIs are `ari:cloud:trello::list/workspace/60c15f214584f367dac792a7/<suffix>`.
 Use the Trello MCP tools (`mcp__Trello__trelloReadCard`, `mcp__Trello__trelloWriteCard`,
-etc. — load them via ToolSearch if they aren't in context). If an ARI here ever fails,
-re-discover the board with `trelloReadBoard`/`trelloReadList` rather than guessing —
-the board may have been reorganized.
+etc. — load them via ToolSearch if they aren't in context).
+
+Lists, in position order:
+
+| List | Meaning |
+|---|---|
+| DRAFT | Not fully specced — never pick from here |
+| TODO | Ready to be picked up |
+| INPROGRESS | Someone is actively working on it |
+| INREVIEW | PR open, awaiting review |
+| DONE | Merged / finished |
 
 ## Picking a card
 
