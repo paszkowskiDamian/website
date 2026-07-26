@@ -60,7 +60,7 @@ An agent that does exactly what the card asks and explains what it chose not to 
 
 ## I review screenshots now
 
-Every branch deploys to its own preview URL. So my review starts where my readers will end up: on the rendered page.
+Every branch deploys to its own preview URL. The CI tooling doesn't just run the checks — it builds the site from the branch and puts a full, working copy of it on the web before anything touches the main branch. Merging stops being an act of faith: I can click through the actual site — not a local build, not a screenshot in a PR description — and test the change exactly as readers will get it. So my review starts where my readers will end up: on the rendered page.
 
 Recently I shipped a new page this way and noticed its opening paragraph ended with a single word stranded on its own line. An orphan. The kind of thing no linter will ever catch. I commented on the PR with a screenshot and one sentence. A few minutes later: the layout fixed, the last two words bound with a non-breaking space so the orphan can't come back at any screen width, a reply explaining exactly that, and CI already green.
 
