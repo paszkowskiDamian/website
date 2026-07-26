@@ -1,0 +1,87 @@
+---
+title: "How I Work With Claude: Cards, Branches, and Pull Requests"
+date: 2026-07-26
+excerpt: My job moved from writing code to designing the system that produces it — cards, pull requests, and a process distilled from years in agile teams.
+readTime: 7 min read
+category: Engineering
+tags:
+  - AI
+  - Process
+  - Agile
+---
+
+## TL;DR
+
+- I barely write my website's code anymore — I write Trello cards and review pull requests; Claude does the typing.
+- The process is distilled from years in agile teams: small, well-scoped cards, an honest board, and dependencies declared up front — resolved before any code gets written.
+- Every task comes back as a PR with three sections — what changed, what was deliberately left out, how it was verified — and I review the deployed preview, not just the diff.
+- Corrections get folded back into the repo as process files, so every review permanently improves the next task. Plans are worthless; planning is everything.
+
+One day in July, most of my website got built. An essays index with filtering, project detail pages, generative cover art, a photo lightbox, an RSS feed, a contact form — around a dozen pull requests, opened, reviewed, and merged in a single&nbsp;day.
+
+I wrote almost none of that code.
+
+What I wrote — the night before, mostly — was a stack of Trello&nbsp;cards.
+
+## The board is the interface
+
+My website's tasks live on a Trello board with five lists: DRAFT, TODO, INPROGRESS, INREVIEW, DONE. It looks like every kanban board you've ever seen. The difference is who's on the other side of it.
+
+When I tell Claude to take the next task, it reads the board the way a new teammate would. It considers only the TODO list — DRAFT cards are half-formed thoughts and it knows not to touch them. It reads each card's dependencies: cards document what blocks them and what they block, and a card whose blocker isn't in DONE doesn't get picked. Then it takes the first implementable card, and — before writing a single line of code — moves it to INPROGRESS.
+
+That small ritual matters more than it looks. The board isn't a description of the work that happens somewhere else. The board *is* the work. If a card sits in INPROGRESS, something is working on it right now, on its own branch, in its own session. If it's in INREVIEW, there's a pull request waiting for me.
+
+Which means writing the card is the real engineering. A card in DRAFT is a thought; a card in TODO is a contract. Scope, dependencies, what to leave alone because another card owns it — everything I used to hold in my head between me and my editor now has to be written down. It turns out that's not overhead. That's the job.
+
+None of this is invented, by the way. I've spent years working in agile teams, and this board is what survived that experience — the parts that worked, minus the parts that didn't. I learned that small, well-scoped tickets get finished and vague ones rot in INPROGRESS. That the ceremony matters less than a board that tells the truth. And that most "blocked" work is really an undeclared dependency someone discovered too late — usually mid-sprint, usually the expensive way. So here, dependency resolution happens before any code gets written: every card declares what blocks it and what it blocks, and Claude resolves that graph when picking work. A card whose hard blocker isn't in DONE simply doesn't get picked. A soft dependency — "card #12 touches this in parallel" — means keeping the diff surgical so both branches merge cleanly.
+
+<PullQuote quote="Dependency resolution used to be a meeting. Now it's a paragraph at the bottom of a card." />
+
+And I learned card-writing the same way I learned everything else in those teams — by doing it badly first. Every project on my site gets a small generative cover, a miniature drawn by code instead of a designer. My first card about them was essentially one line: "make the project miniatures feel more like the brand." Claude did exactly what the card said — which was precisely the problem, because the card said almost nothing. What came back was technically flawless and aesthetically wrong: a competent answer to a question I never actually asked. The PR got parked, and I went back to the card. The second version took me an hour to write: the tile grammar I wanted (mid-century shapes — half-circles, quarter-circles, petals — snapped to the grid so they join across the seams), how much red is too much red, and that each cover should be derived from its project's title so it never changes between builds. That card came back and merged.
+
+Dwight D. Eisenhower — a man who knew a few things about plans meeting reality — put it better than I can:
+
+<PullQuote
+  quote="Plans are worthless, but planning is everything."
+  attribution="Dwight D. Eisenhower"
+/>
+
+The bad card was a worthless plan. But writing the good one — the planning — was where I discovered what I actually wanted. That's what the board really extracts from me, card by card: not instructions, but decisions.
+
+The board itself, by the way, might not stay in Trello forever. I've been eyeing a move to Notion: it would give me far more room for customization — richer card templates, views shaped around dependencies, statuses that match how I actually work — and it would collapse two tools into one, since Notion is already where my notes and drafts live. One place for memory and task tracking, one place the agent reads for both context and work. But that's the point of having a real process: the contract is the cards, the dependencies, the PR shape — not the logo on the board. If the board moves, the process comes with it.
+
+## The pull request is the contract
+
+Every task comes back the same way: a pull request with three sections. What changed. What was *deliberately left out*, and why. How it was verified.
+
+The middle section is my favorite, and the one I'd never have thought to ask a human for. "Deliberately left out" is where the agent tells me it noticed the edges of its task: *the nav changes belong to card #15, so I didn't touch the header. The seed removal belongs to the covers card being implemented in parallel; at worst we get a small merge conflict in projects.json.* Several sessions often run at once, each with its own card and branch, and they negotiate around each other like colleagues who actually read the standup notes — because the cards told them who owns what.
+
+An agent that does exactly what the card asks and explains what it chose not to do is an agent whose next PR you review faster. Trust, it turns out, is built in the sections of the PR body, not in the diff.
+
+## I review screenshots now
+
+Every branch deploys to its own preview URL. The CI tooling doesn't just run the checks — it builds the site from the branch and puts a full, working copy of it on the web before anything touches the main branch. Merging stops being an act of faith: I can click through the actual site — not a local build, not a screenshot in a PR description — and test the change exactly as readers will get it. So my review starts where my readers will end up: on the rendered page.
+
+Recently I shipped a new page this way and noticed its opening paragraph ended with a single word stranded on its own line. An orphan. The kind of thing no linter will ever catch. I commented on the PR with a screenshot and one sentence. A few minutes later: the layout fixed, the last two words bound with a non-breaking space so the orphan can't come back at any screen width, a reply explaining exactly that, and CI already green.
+
+I still read the diffs — old habits, and sometimes the diff is the point. But my review has moved up a level. The question stopped being "is this code right?" and became "is this *right*?" Typography, tone, whether the thing on the screen is the thing I meant. That's a better use of my attention than checking whether a loop is off by one. The machine is better at the loop than I am. It cannot know what I meant.
+
+## Corrections compound
+
+Here's the part that changed how I think about all of it. In the website's repo there's a folder called `.claude/skills` — a handful of small markdown files that describe, in plain language, how work happens here. How to read the board and pick a card. What a PR body must contain. And, yes: that paragraphs must not end in orphan words.
+
+That last one is in there because I flagged it once. One screenshot, one sentence of feedback — and now it's part of the system, applied to every page that ships after. When I correct a human colleague, the correction lives in their memory and walks out the door with them. When I correct this process, the correction becomes a file in the repo.
+
+<PullQuote quote="Every review I do makes the next task slightly better, permanently." />
+
+This is the compounding loop that makes the whole thing feel less like automation and more like building an institution: the process itself is code now. It gets versioned, reviewed, and improved like everything else. Every correction I fold back into the skills folder is one more operation I never have to think about again — and the thinking I save gets spent where it's actually needed: on the next card, the next call, the next thing only I can decide.
+
+## What my job is now
+
+Someone will want to tell me this isn't real engineering anymore — that I've demoted myself to project manager of a very obedient team. I've thought about it, and I think it gets the history backwards.
+
+Specification, review, feedback loops, managing parallel work without collisions, encoding standards so quality survives without heroics — that was always the hard part of engineering. We just couldn't see it clearly, because it was buried under all the typing. The typing is what I delegated. The rest, I finally get to do full-time.
+
+I write cards. I look at rendered pages. I decide what's right. And every time I catch something, I fold the catch back into the system so I never have to catch it twice.
+
+My website has a team now. I'm just the only human on&nbsp;it.
