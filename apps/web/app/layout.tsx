@@ -26,6 +26,9 @@ const site = getSite();
 export const metadata: Metadata = {
   title: site.meta.title,
   description: site.meta.description,
+  alternates: {
+    types: { "application/rss+xml": "/essays/feed.xml" },
+  },
 };
 
 export default function RootLayout({

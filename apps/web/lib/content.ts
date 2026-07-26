@@ -422,3 +422,17 @@ export function getBrandSystem(): BrandSystemConfig {
     fs.readFileSync(path.join(CONTENT_DIR, "pages", "brand-system.json"), "utf8"),
   ) as BrandSystemConfig;
 }
+
+export interface NotFoundPageConfig {
+  meta: PageMeta;
+  kicker: string;
+  title: string;
+  text: string;
+  cta: { label: string; href: string };
+}
+
+export function getNotFoundPage(): NotFoundPageConfig {
+  return JSON.parse(
+    fs.readFileSync(path.join(CONTENT_DIR, "pages", "not-found.json"), "utf8"),
+  ) as NotFoundPageConfig;
+}

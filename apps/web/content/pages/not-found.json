@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "title": "Page not found — codeberg",
+    "description": "This page doesn't exist."
+  },
+  "kicker": "404",
+  "title": "lost\nthe thread",
+  "text": "There's nothing at this address. The page may have moved, or the link might just be wrong.",
+  "cta": { "label": "Back to home", "href": "/" }
+}
