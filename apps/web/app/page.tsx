@@ -7,9 +7,8 @@ import { FeaturedEssay } from "@repo/ui/molecules/featured-essay";
 import { Footer } from "@repo/ui/molecules/footer";
 import { Header } from "@repo/ui/molecules/header";
 import { Newsletter } from "@repo/ui/molecules/newsletter";
-import { ProjectCard } from "@repo/ui/molecules/project-card";
 import { SectionHeading } from "@repo/ui/molecules/section-heading";
-import { getAllEssays, getHomePage, getProjects, getSite } from "../lib/content";
+import { getAllEssays, getHomePage, getSite } from "../lib/content";
 
 export default function Home() {
   const site = getSite();
@@ -17,7 +16,6 @@ export default function Home() {
   const essays = getAllEssays();
   const featured = essays.find((e) => e.featured) ?? essays[0]!;
   const recent = essays.filter((e) => e !== featured);
-  const projects = getProjects();
 
   return (
     <Container>
@@ -77,18 +75,6 @@ export default function Home() {
             href={`/essays/${essay.slug}/`}
           />
         ))}
-      </section>
-
-      {/* SELECTED PROJECTS */}
-      <section id="projects" className="pt-11 sm:pt-20">
-        <SectionHeading viewAllHref={page.sections.projects.viewAllHref} className="mb-7">
-          {page.sections.projects.title}
-        </SectionHeading>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
-          {projects.map((project) => (
-            <ProjectCard key={project.seed} {...project} />
-          ))}
-        </div>
       </section>
 
       {/* NEWSLETTER */}
