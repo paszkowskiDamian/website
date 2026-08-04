@@ -15,7 +15,6 @@ export default function Home() {
   const page = getHomePage();
   const essays = getAllEssays();
   const featured = essays.find((e) => e.featured) ?? essays[0]!;
-  const recent = essays.filter((e) => e !== featured);
 
   return (
     <Container>
@@ -64,7 +63,7 @@ export default function Home() {
         <SectionHeading viewAllHref={page.sections.essays.viewAllHref} className="mb-2">
           {page.sections.essays.title}
         </SectionHeading>
-        {recent.map((essay, i) => (
+        {essays.map((essay, i) => (
           <EssayListItem
             key={essay.slug}
             index={String(i + 1).padStart(2, "0")}
