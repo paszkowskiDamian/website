@@ -1,0 +1,77 @@
+---
+title: What actually closed the gap
+date: 2026-09-04
+excerpt: We needed synthetic renders to look like real bronze. Almost everything on the intuitive list was worthless, and the biggest win was in nobody's plan.
+readTime: 5 min read
+category: Engineering
+tags:
+  - AI
+  - Rendering
+  - Measurement
+---
+
+To teach a model to read relief from a photograph, you need photographs whose true height map you already know. Real ones don't come with that. So you render your own: build a height field, light it, photograph it in software, and hand the model the&nbsp;pair.
+
+Which creates the problem every synthetic dataset has. Your renders have to look enough like real bronze that a model trained on them survives contact with a real camera. Miss, and you've built a very expensive simulator of your own renderer.
+
+We had a gap. We had a list of things that would close it. The list was mostly wrong.
+
+## Measuring the gap at all
+
+First you need a number, or you're just squinting at thumbnails.
+
+The one we used compares the *power spectral density* of a batch of renders against a batch of target images — how energy is distributed across spatial frequencies. It's a decent proxy for the thing you can't articulate when an image looks CG: the balance between broad shading and fine texture. We tracked the difference in PSD slope, plus a couple of local-contrast terms.
+
+Then we changed exactly one thing at a time and re-measured. That discipline is the entire post; everything below is what it turned up.
+
+## The gap wasn't in the shading
+
+The first result reordered the project.
+
+We rendered *real* height maps — actual scanned relief geometry — with the dumbest possible shading model, plain Lambertian, no shadows, no metal, nothing. Those renders landed within about 0.05 of the real bronze targets on PSD slope.
+
+Then we rendered our *procedural* height fields with the same shading. Those missed by about 0.16 — three times worse — and the sign of the error flipped depending on the mix of procedural sources.
+
+<PullQuote quote="Same renderer, same lighting, same everything. Swap the geometry and most of the gap appears or disappears." />
+
+The problem was that our synthetic height fields didn't look like relief. Random domes and hatched grooves are not what a carved plaque is. They're what a plausible height map is if you've never looked at one closely.
+
+That has a hard consequence for anyone quoting a domain-gap number: **the number is meaningless without stating what geometry produced it.** You can halve your gap by changing shading, or by changing what you're rendering, and the two are not comparable. Most of the papers we read report the first and quietly vary the second.
+
+The fix wasn't a shading term. It was rebuilding the composition vocabulary — silhouettes stepping up through a narrow rim, soft modelling inside, seam grooves, hammered ground, border rims, rows of lettering — so the fields resembled the object we were actually targeting.
+
+## What paid, in order
+
+With geometry fixed, we worked through the shading terms one at a time. The gap on PSD slope went from +0.192 to +0.005. Here's where it went.
+
+**Metal workflow — the single largest win, and it fixed a complaint we'd been treating as a tuning problem.** Everyone kept saying our renders were too bright. The instinct is to fit an exposure curve until the histogram matches. The actual cause is that a diffuse parameterisation gives you a near-white albedo, and bronze doesn't have one — a metal workflow has no diffuse term to be near-white. Switching parameterisation dropped the luminance error from 0.186 to 0.077 for physical reasons rather than fitted ones. Those two fixes look the same on the histogram and behave completely differently on data you haven't seen.
+
+**Near-field light — the largest single spectral term, and nobody proposed it.** We'd been lighting with distant lights, as you do. A distant light makes every pixel a function of its own local gradient and nothing else. Which means the image has no large-scale structure *by construction* — the falloff that gives a real photograph its broad gradient across the panel simply isn't in the model. Moving the key light close took that term from +0.045 to +0.006.
+
+This one still bothers me. It was never on the list. It came out of the measurement, and it was worth more than everything on the list combined.
+
+**Ambient occlusion and cast shadows** were worth about 0.024 — and unlike blur, they *improve* local contrast while buying spectral agreement. Blur buys the same statistic by destroying the information you're trying to teach.
+
+## What didn't pay
+
+**Environment lighting bought nothing spectrally.** Relief normals sit at roughly `n·v = 0.95` — almost everything faces the camera — so the reflection vector barely moves across the panel, and a full environment map is doing the work of a single light. We kept it because it looks nicer. It shifted no metric.
+
+**Camera MTF was a trap.** Lens blur, sensor response, the optical transfer function — it feels like the essence of "looks like a photo," and it's a rich seam of parameters to tune. It accounted for about 0.08 of a roughly 1.1 gap. Two people measured it independently, on different days, because neither of us believed the first result.
+
+<PullQuote quote="The terms that feel like realism and the terms that produce realism have almost no overlap." />
+
+## What's left
+
+The remaining gap is **spatially varying albedo**: local contrast of 0.024 in our renders against 0.082 in real bronze.
+
+Every variation in a render of ours comes from geometry, because geometry is the only thing varying. Real bronze has patina mottling, casting grain, tool marks, wear — colour changes that have nothing to do with shape.
+
+Which is the joke at the centre of the project. That mottling is the next term to add for realism, and it is *precisely* what breaks shape-from-shading, since those methods assume brightness variation means slope variation. Making the training data more real makes the naive solver worse. That's not a bug in either; it's the reason a learned model has to be in the loop at all.
+
+## The method, if there is one
+
+Change one term. Measure. Write down the number even when it's disappointing — especially then, because a term that bought nothing is a budget you get to spend elsewhere.
+
+Every non-Lambertian term in our renderer defaults **off** and is recorded in a sidecar next to each image. Same renderer serves the dataset builder with everything on and solver validation with everything off, and with them off it reproduces the plain Lambertian reference to within 4e-16. Not because we're precious about it — because six months from now, "which shading terms were on when you measured that?" is a question with an answer.
+
+The intuitive list wasn't stupid. It was just a list of things that feel like realism, written by people who had never measured one.
