@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { RATES, useAudio, type AudioTrack } from "./audio-provider";
 
 /** mm:ss, for durations that are always well under an hour. */
@@ -59,8 +60,40 @@ function Scrubber({
  * survive a navigation away from this page.
  */
 export function EssayPlayer({ track }: { track: AudioTrack }) {
-  const { track: current, playing, time, duration, rate, loading, toggle, seek, skip, setRate } =
-    useAudio();
+  const {
+    track: current,
+    playing,
+    time,
+    duration,
+    rate,
+    loading,
+    toggle,
+    seek,
+    skip,
+    setRate,
+    unavailable,
+    markUnavailable,
+  } = useAudio();
+
+  // The manifest proves audio was generated, not that it was published. Ask the
+  // server before trusting it, so an essay whose mp3 never reached storage ends up
+  // with no player at all. Shown optimistically while the check runs: hiding it
+  // until then would push every article down on every load, and a missing file
+  // is the rare case.
+  useEffect(() => {
+    const ctrl = new AbortController();
+    fetch(track.src, { method: "HEAD", signal: ctrl.signal })
+      .then((res) => {
+        if (!res.ok) markUnavailable(track.id);
+      })
+      .catch((err: unknown) => {
+        if ((err as { name?: string } | null)?.name !== "AbortError") markUnavailable(track.id);
+      });
+    return () => ctrl.abort();
+  }, [track.src, track.id, markUnavailable]);
+
+  if (unavailable.has(track.id)) return null;
+
   const active = current?.id === track.id;
   const at = active ? time : 0;
   const total = active && duration ? duration : track.duration;

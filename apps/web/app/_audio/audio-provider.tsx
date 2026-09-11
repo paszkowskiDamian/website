@@ -45,6 +45,9 @@ interface AudioState {
   skip: (delta: number) => void;
   setRate: (rate: number) => void;
   close: () => void;
+  /** Essays whose narration could not be loaded. Both players hide for these. */
+  unavailable: ReadonlySet<string>;
+  markUnavailable: (id: string) => void;
 }
 
 const Ctx = createContext<AudioState | null>(null);
@@ -67,6 +70,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [duration, setDuration] = useState(0);
   const [rate, setRateState] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [unavailable, setUnavailable] = useState<ReadonlySet<string>>(() => new Set());
+  const markUnavailable = useCallback((id: string) => {
+    setUnavailable((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
+  }, []);
 
   // Remember where the listener got to, per essay, so returning to a page
   // resumes rather than restarting. Per-browser only; never leaves the device.
@@ -219,8 +226,26 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       skip,
       setRate,
       close,
+      unavailable,
+      markUnavailable,
     }),
-    [track, playing, time, duration, rate, loading, play, toggle, pause, seek, skip, setRate, close],
+    [
+      track,
+      playing,
+      time,
+      duration,
+      rate,
+      loading,
+      play,
+      toggle,
+      pause,
+      seek,
+      skip,
+      setRate,
+      close,
+      unavailable,
+      markUnavailable,
+    ],
   );
 
   return (
@@ -243,6 +268,21 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         onEnded={() => {
           setPlaying(false);
           if (track) remember(track.id, 0);
+        }}
+        onError={() => {
+          // The manifest promised audio the server cannot deliver — most often an
+          // essay narrated locally but never published. Hide both players for it
+          // rather than leave a control that silently does nothing.
+          if (!track) return;
+          markUnavailable(track.id);
+          setTrack(null);
+          setPlaying(false);
+          setLoading(false);
+          try {
+            sessionStorage.removeItem(SESSION_KEY);
+          } catch {
+            /* private mode */
+          }
         }}
       />
     </Ctx.Provider>

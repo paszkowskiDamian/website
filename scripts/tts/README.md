@@ -82,6 +82,11 @@ root layout so narration survives client-side navigation. `EssayPlayer` (article
 and `MiniPlayer` (docked bar, appears once you navigate away) are only controls pointed
 at it. Nothing else should ever mount an `<audio>` tag.
 
+A player only appears when the audio is really there. At build time, an essay with no
+manifest entry renders no player. At runtime, `EssayPlayer` sends a `HEAD` for its mp3
+and removes itself if the file is missing — the case where an essay was narrated but
+`publish.sh` never ran. A playback error hides both players for that essay as well.
+
 ## Publishing to R2
 
 One-time, with your Cloudflare account:
