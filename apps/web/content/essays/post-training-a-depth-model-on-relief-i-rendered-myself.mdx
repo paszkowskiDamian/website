@@ -79,7 +79,7 @@ The second build rendered 10,000 frames. Removing the 1,478 frames with the leas
 
 I ran a pilot on the laptop first: Depth Anything V2 Small at 518 px, five epochs over 2,646 early samples, about 48 minutes. It improved every metric on the rendered test set, so I set up the full&nbsp;run.
 
-The full run used Depth Anything V2 **Base** at 1036 px crops, ten epochs, batch size two, in bf16. The backbone weights stay frozen. The trained parts are:
+The full run used Depth Anything V2 **Base** at 1036 px crops, ten epochs, batch size two, in bf16. The backbone weights stay frozen. The trained parts&nbsp;are:
 
 - **LoRA adapters** of rank 8 on the DINOv2 attention projections: query, key, value and output.
 - **The DPT neck and depth head**, fully trainable.
