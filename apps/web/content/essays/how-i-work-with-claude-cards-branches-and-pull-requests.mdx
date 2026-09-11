@@ -1,8 +1,8 @@
 ---
 title: "How I Work With Claude: Cards, Branches, and Pull Requests"
 date: 2026-07-26
-excerpt: I write Trello cards and review pull requests, and Claude writes most of the code for this website. The workflow is written down as a skill in the repo, from picking a card to moving it to DONE.
-readTime: 6 min read
+excerpt: I write Trello cards and review pull requests, and Claude writes most of the code for this website. The whole workflow is written down in the repo, from picking a card to merging the change.
+readTime: 3 min read
 category: Engineering
 featured: true
 tags:
@@ -13,79 +13,50 @@ tags:
 
 ## TL;DR
 
-- Tasks for this website live on a Trello board with five lists. I write the cards; Claude picks an unblocked card from TODO, implements it on its own branch and opens a pull request.
-- The whole lifecycle is written down as a skill file in the repo, `work-on-board-task`: how a card is picked, when it moves between lists, how the work is verified, what the PR must contain and what happens until it merges.
-- Every PR says what changed, what was deliberately left out and how it was verified. I review the deployed preview of the branch as well as the diff.
-- When I correct something more than once, the correction goes into a skill file, so the next task starts with it.
+- Tasks for this website live on a Trello board. I write the cards, and Claude picks one, builds it on its own branch and opens a pull request.
+- The steps are written down as a skill file in the repo, so every session follows the same process.
+- Each pull request says what changed, what was left out and how it was checked. I review the change on a preview copy of the site.
+- When I correct something that could happen again, the correction goes into the skill file.
 
-In one day in July, around a dozen pull requests for this website were opened, reviewed and merged: an essays index with filtering, project detail pages, generative cover art, a photo lightbox, an RSS feed and a contact form. I wrote almost none of that code. I had written the Trello cards the night&nbsp;before.
+In one day in July, around a dozen pull requests for this website were opened, reviewed and merged: an essays index with filters, project pages, generated cover art, a photo lightbox, an RSS feed and a contact form. I wrote almost none of that code. I had written the Trello cards the night&nbsp;before.
 
 ## The board
 
-The tasks live on a Trello board called "website", with five lists:
+The board has five lists: DRAFT, TODO, INPROGRESS, INREVIEW and DONE. Only cards in TODO are ready to be picked up. Each card describes what to build and what to leave alone, and at the bottom it lists which cards it depends on and which it&nbsp;blocks.
 
-- **DRAFT**: not fully specified. Never picked.
-- **TODO**: ready to be picked up.
-- **INPROGRESS**: being worked on.
-- **INREVIEW**: a pull request is open and waiting for review.
-- **DONE**: merged.
+Writing those cards is most of my work on a task. I spent years in agile teams before this, and the board keeps what worked there: small tickets, a board that shows what is really happening, and dependencies written down before the work&nbsp;starts.
 
-Each card has a scope section, and at the bottom it lists its **Dependencies** and what it **Blocks**. Writing those sections is most of my work on a task. A card in TODO has to say what to build, what to leave alone because another card owns it, and what has to be finished&nbsp;first.
+## From card to pull request
 
-I spent years in agile teams before this, and the board keeps what worked there: small, well-scoped tickets, a board that reflects what is actually happening, and dependencies declared before the work starts instead of discovered in the middle of&nbsp;it.
+When I ask Claude to take the next task, it follows the `work-on-board-task` skill:
 
-## How a card gets picked
+1. Look only at TODO, and skip any card whose blocker is not in DONE or that needs access Claude does not have, such as a hosting dashboard.
+2. Take the first card that is ready and move it to INPROGRESS before writing any code.
+3. Work on a fresh branch, build only what the card asks for, and run the build, type checks and linter before pushing.
+4. Open a pull request, move the card to INREVIEW and add a short report to the card.
 
-When I ask Claude to take the next task, it follows the steps in the skill:
+Several sessions often run at once, each on its own card and branch. Because the cards say who owns what, their changes rarely&nbsp;collide.
 
-1. List the cards on the board and consider only the TODO list.
-2. Read each candidate's description. A card is not implementable if a hard blocker is not yet in DONE, or if the work needs access the session does not have, such as a hosting dashboard or an account signup.
-3. Treat soft dependencies ("coordinate with card #12") as a reason to keep the diff small, not as a blocker.
-4. Take the first implementable card in list order, unless I name one.
-5. Move that card to INPROGRESS before writing any code.
+Every pull request has three sections: what changed, what was deliberately left out and why, and how it was checked. A typical "left out" note says the header was not touched because card #15 owns the&nbsp;navigation.
 
-The board ID is not hardcoded in the skill. Claude finds the board by name at runtime, so the public repo does not contain any workspace&nbsp;metadata.
+## Until it merges
 
-## Branch, scope and checks
-
-Each card gets a fresh branch cut from the latest `main`, named `claude/<short-card-slug>`. The implementation covers exactly the card's scope. If the description says another card will handle something, Claude leaves it alone and says so in the pull&nbsp;request.
-
-Before pushing, it runs `pnpm turbo build check-types lint` for the changed packages, and Storybook when the shared UI package changed. For content refactors it also searches the static export in `apps/web/out/` to confirm the rendered pages did not&nbsp;change.
-
-Several sessions often run at the same time, each with its own card and branch. Because the cards say who owns what, their changes rarely&nbsp;collide.
-
-## The pull request
-
-Every pull request links its Trello card and has three sections: what changed, what was deliberately left out and why, and how it was verified. A typical "left out" note reads: the nav changes belong to card #15, so the header was not touched; the seed removal belongs to the covers card being implemented in parallel, so at worst there is a small merge conflict in `projects.json`.
-
-After opening the PR, Claude moves the card to INREVIEW. The Trello tools it uses cannot post comments, so it appends a short report to the card description instead: the PR link, a list of what changed, what was left out, and the build and lint results. Trello limits descriptions to 2,048 characters, so older text on the card gets condensed when&nbsp;needed.
-
-## Watching the PR until it merges
-
-Opening the pull request does not finish the task. Claude subscribes to activity on the PR and handles each event:
-
-- **A review comment** gets either a pushed fix or a reply explaining why not. Every request gets a visible answer.
-- **A CI failure** gets diagnosed and fixed. If the same failure happens on `main`, it says so once on the PR instead of patching around it.
-- **A merge conflict** gets resolved by merging the latest `main`, running the checks again and pushing.
-
-Some GitHub events do not arrive as notifications, such as a successful CI run or a merge, so Claude also schedules a check about an hour later and repeats it until the PR is closed. When the PR merges, the card moves to DONE. If it is closed without merging, the card goes back to TODO with a note explaining&nbsp;why.
+Claude keeps watching the pull request after opening it. A review comment gets a fix or a reply. A failing check gets fixed. A merge conflict gets resolved against the latest `main`. When the pull request merges, the card moves to DONE. If it is closed without merging, the card goes back to TODO with a&nbsp;note.
 
 ## Writing better cards
 
-I learned to write these cards by writing a bad one first. Every project on the site has a small generative cover, drawn by code. My first card for it said, more or less, "make the project miniatures feel more like the brand". The PR that came back matched the card and was not what I wanted, because the card had not said what I&nbsp;wanted.
+I learned to write these cards by writing a bad one first. My first card for the generated project covers said, more or less, "make the project miniatures feel more like the brand". The result matched the card and was not what I wanted, because the card never said what I&nbsp;wanted.
 
-I parked the PR and rewrote the card. The second version took an hour. It described the tile shapes (half circles, quarter circles and petals, snapped to a grid so they join across tiles), a limit on how much red a cover can use, and that each cover is derived from its project's title so it stays the same between builds. That PR&nbsp;merged.
+The second version took an hour. It described the shapes (half circles, quarter circles and petals on a grid, so they join across tiles), a limit on how much red a cover can use, and that each cover is generated from the project's title so it stays the same between builds. That one&nbsp;merged.
 
 ## Reviewing the preview
 
-Every branch deploys to its own preview URL through Cloudflare Workers Builds, and the preview link appears on the pull request. I review the site there, as readers will see it, and read the diff as&nbsp;well.
+Every branch deploys to its own preview copy of the site, and the link appears on the pull request. I review the change there, the way readers will see it, and read the code as&nbsp;well.
 
-On one new page, the opening paragraph ended with a single word on its own line. I left a comment on the PR with a screenshot and one sentence. A few minutes later the fix was pushed: the last two words of the paragraph are joined with a non-breaking space so the orphan cannot come back at any screen width, with a reply explaining the change and CI&nbsp;green.
+On one new page, the first paragraph ended with a single word on its own line. I left a comment with a screenshot. A few minutes later the fix was in: the last two words are joined with a non-breaking space, so the lone word cannot come back at any screen&nbsp;width.
 
 ## Corrections go into the skills
 
-The repo has two skill files in `.claude/skills`. `work-on-board-task` is the workflow described above. `implement-essay` covers essays: fetch the draft from Notion, publish only the finished draft text, add it as an MDX file with pull quotes, build, open a PR and watch it until it&nbsp;merges.
+The repo has two skill files. `work-on-board-task` is the process above. `implement-essay` covers essays, from a Notion draft to a published page. The lone-word rule went into `implement-essay` after that comment, and every essay published since follows&nbsp;it.
 
-The orphan rule is in `implement-essay` because I flagged it on that one PR. It now applies to every essay published after it. When I correct something that could come up again, I add it to the relevant skill, so the next session starts with the correction instead of repeating the&nbsp;mistake.
-
-The board may move from Trello to Notion. Notion would let me shape card templates and views around dependencies, and my notes and drafts are already there. The skill files describe cards, dependencies, branches and pull requests, and only the board lookup would need to&nbsp;change.
+The board may move from Trello to Notion, where my notes and drafts already are. The skill files describe cards, branches and pull requests, so only the part that finds the board would&nbsp;change.

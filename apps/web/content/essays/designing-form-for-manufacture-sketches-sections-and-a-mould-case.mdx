@@ -1,8 +1,8 @@
 ---
 title: "Designing FORM for Manufacture: Sketches, Sections, and a Mould Case"
 date: 2026-09-11
-excerpt: How Claude and I worked out the mould for a relief cup in FORM, using Rhino screenshots, marked-up renders and section diagrams, and how the relief is adjusted so plaster releases from it.
-readTime: 10 min read
+excerpt: How Claude and I worked out a printable mould for a relief cup, using Rhino screenshots, marked-up renders and section drawings, and how FORM adjusts the relief so the plaster comes off.
+readTime: 6 min read
 category: Engineering
 tags:
   - Manufacturing
@@ -12,107 +12,69 @@ tags:
 
 ## TL;DR
 
-- FORM exports printed tooling for a slip-cast cup: two half-cup masters on parting boards, a four-wall box to pour plaster around them, and a two-shell mould for the plug.
-- Claude wrote geometry quickly. Most of the time went into agreeing on how the mould case should be built.
-- Written descriptions led to several wrong parts. Rhino screenshots, marked-up renders and section diagrams drawn from the real mesh fixed them.
-- A flat undercut check passed all 49 test reliefs, and all 49 locked once wrapped on a cup. A draft-limit node and a directional easing stage fixed that, and the handle now sets where the mould splits.
+- FORM designs a cup and exports 3D-printable parts for making its plaster mould.
+- Claude wrote the geometry quickly. Most of the time went into agreeing on what the parts should look like.
+- Written descriptions led to wrong parts. Screenshots, marked-up renders and section drawings fixed them.
+- A relief that works on a flat panel can lock the mould once it is wrapped around a cup, so FORM now adjusts the relief and places the mould seams.
 
-FORM has two workbenches. The surface workbench edits a relief as a height map. The form workbench shapes a vessel from a side profile and wraps the relief around it. Both end at the same check: whether a plaster mould can be pulled off the finished shape without&nbsp;locking.
+FORM has two workbenches. In one you edit a relief as a height map. In the other you shape a cup from its side profile and wrap the relief around it. At the end, the design has to become a plaster mould that comes apart without damaging the&nbsp;cast.
 
-![The form workbench: a side profile of a soft bell mug on the left, the revolved vessel on the right](/form-profile-workbench.jpg "Fig. 01 · The form workbench. The side profile of a soft bell mug, with its foot and underside recess, is revolved into the 3D preview. Seams, draft and the mould are all derived from this profile.")
+![The form workbench: the side profile of a mug on the left and the 3D cup on the right](/form-profile-workbench.jpg "Fig. 01 · The form workbench. The side profile of a mug, with its foot and the recess underneath, is spun into the 3D preview. The seams and the mould are worked out from this profile.")
 
-A slip-cast cup is made in three steps. The master has the shape of the cup. Plaster poured around the master makes the working mould. Liquid clay poured into the working mould makes the cup. One common route casts a silicone case from the master first. On 1 September I decided to skip that step and pour plaster straight into printed&nbsp;parts.
+Slip-cast cups are made in plaster moulds. You make a master in the shape of the cup, pour plaster around it to make the mould, then pour liquid clay into the mould. Many workshops cast a silicone copy of the master first. I wanted to skip that step and pour plaster straight into 3D printed&nbsp;parts.
 
-## The first generator
+## The first attempt
 
-I asked Claude to research plaster moulds for cups and then to write a generator. The first version made a closed printed tray for each plaster piece, with 30 mm of plaster, a 1.2 mm shell, an 18 mm spare and a 2° wall draft. The geometry was valid, but a closed tray cannot be taken apart once the plaster has&nbsp;set.
+I asked Claude to research plaster moulds for cups and write a generator. The first version put each plaster piece in a closed printed tray. The shapes were valid, but set plaster cannot be taken out of a closed tray. Claude rebuilt it with walls that come apart, and I sent screenshots of the mould kit I had already modelled in&nbsp;Rhino.
 
-I asked for walls that come away from the plaster. Claude rebuilt the case as a knock-down box, a base with two L-shaped walls, and asked how the plug should seat. I answered with screenshots of the mould kit I had already modelled in&nbsp;Rhino.
+![Two Rhino screenshots: mould walls, half-cup masters and a split plug collar; and the front of the mould box](/form-rhino-mould-kit.jpg "Fig. 02 · Screenshots of my Rhino models, sent as reference. Left: box walls, half-cup masters on plates and a split plug collar. Right: the box from the front, with slanted walls to use less plaster.")
 
-![Two Rhino screenshots: a kit of mould walls, half-cup masters and a split plug collar; and a front view of the mould box with slanted walls](/form-rhino-mould-kit.jpg "Fig. 02 · Screenshots of my Rhino models, sent as reference. Left: box walls, half-cup masters on plates and a split plug collar. Right: the box from the front, with the walls slanted to use less plaster.")
+That round found real problems. The plug seat was too shallow, the wall joints would leak, and the parts only touched each other instead of being joined into solid pieces. We moved the geometry to a solid modelling library called&nbsp;`manifold-3d`.
 
-That round produced a list of fixes. The plug inserts were too shallow. Finger joints between the walls would leak. The wall ends needed L-shaped flanges so they could be clamped. The plug seat went from 12 to 25 mm deep. We also found that the parts only touched along shared faces instead of being joined, so the exported solids were not closed. We moved the generator to `manifold-3d`, a solid geometry library compiled to&nbsp;WebAssembly.
+## Explaining my Rhino method
 
-## Describing the method in Rhino
+A few days later I told Claude it had the approach wrong and walked it through how I build the mould in Rhino. Take the cup's side profile, add the foot and a 5 mm extension above the rim, spin half of it around the cup's axis, and stand that half on a flat 5 mm board. That half cup on its board is the master, and plaster poured around it becomes one half of the&nbsp;mould.
 
-On 5 September I told Claude it had the whole approach wrong and walked it through how I build the mould in Rhino, with four&nbsp;screenshots.
+Claude repeated the method back and asked three questions before changing any code. From then on, the printed parts were the master and the box around it, and the tray generator was&nbsp;deleted.
 
-Take the cup's profile. Add the foot insert and a 5 mm extension above the rim. Revolve half of it around the cup's axis. Stand the half on a 5 mm plate, the parting board. That half cup on its board is the master, and plaster poured around it becomes one half of the working&nbsp;mould.
+## Where words went wrong
 
-Claude restated the method and asked three questions before changing any code: whether the half plug sits on the plate, whether registration uses sockets or pins, and whether to build the master before the walls. I answered: on the plate, sockets, master first. The tray generator was deleted that evening. From then on the printed parts were the master and the box that holds the&nbsp;plaster.
+Small fixes went one screenshot at a time: a slope angle, lumpy shading, a top surface that should follow the underside of the cup. Longer written descriptions caused bigger mistakes. I once asked for a "triangular slot", meaning a notch in the edge of the board. Claude built a triangle sticking out of the pour opening. We caught it because the part was on&nbsp;screen.
 
-## One screenshot per correction
+The top plate of the box was the hardest part. Three rounds of written back-and-forth did not fix it, so I asked Claude to draw how it understood the plate. It drew a cross-section from the actual 3D model, with each piece labelled. I scribbled over the wrong area, Claude redrew it, and I marked up the second&nbsp;version.
 
-The plug fills the recess under the cup's foot and gets its own plaster piece. It took a day of small corrections, each sent with a screenshot:
+![Two cross-section drawings of the top plate: Claude's first drawing with my scribble, and its redraw with my marks](/form-section-diagram-markup.jpg "Fig. 03 · Left: Claude's cross-section of the top plate as built, with my scribble over the wrong area. Right: Claude's redrawn version, with my marks on it.")
 
-- edges at 35° with a short vertical section, then a 2 cm extrusion;
-- lumpy shading, caused by smoothed vertex normals on hard edges;
-- a shelf sloping down with a slight inward draft so it releases, set to 7°;
-- a top surface that had been flattened by mistake and had to follow the underside of the cup;
-- a groove that turned out to be a fillet at the toe, replaced with a sharp edge.
+The second drawing settled it. I told Claude that I work better with diagrams, and it saved that for the project. After that it asked design questions as drawings: whether the dovetail rails should be 2 mm or 3 mm deep, how the end walls should clamp, and whether to close the top of the box. For the last one it pointed out that a closed top would seal the pour opening, so we left it&nbsp;open.
 
-Then I sent one long message with twelve images describing the whole box: the spare sloping outward as a socket for a plate that drops on from above, a collar at the rim, slanted walls to save plaster, walls that slide into the base, a plug mould split into two parts at the V, and an assembly animation. Claude asked four questions and built nine parts, one of which was a triangle attached to the&nbsp;spare.
+Marking up renders worked the other way&nbsp;round.
 
-I had written "triangular slot" and meant a cutout in the edge of the board. Claude had read it as a key on the spare. We caught it because the parts were rendered on&nbsp;screen.
+![Two renders I marked up: arrows at uneven plaster thickness, and a crossed-out wedge with the thin wall outlined](/form-plaster-cover-markup.jpg "Fig. 04 · Two renders I marked up. Left: arrows where the plaster was thicker than elsewhere. Right: the wedge crossed out and the thin wall I wanted outlined.")
 
-The plug mould was rebuilt the same way. I asked for a horizontal cut through the middle of the V and 2 mm shells. The seal flange around the cut grew from 6 to 20 mm, and two register grooves of 1.5 × 1 mm went into one flange, with matching ridges slightly smaller on the&nbsp;other.
+The arrows became one rule: 20 mm of plaster all round the cup. The outline became a plain wall that stands upright for half its height and then leans in at&nbsp;45°.
 
-## Section diagrams
+## Getting the relief out of the mould
 
-On 9 September I sent a section showing the top of the box clashing with the cup. Claude measured 6,562 mm³ of overlap and traced it to features revolved around an axis 5 mm too low. After the fix the overlap was zero. The shape of the top plate was still wrong, and three rounds of written descriptions had not resolved&nbsp;it.
+The relief on the cup has its own problem. On a flat panel, a raised pattern always comes out of a mould pulled straight up. Around a cup, the two halves of the mould pull sideways. Near the seams where the halves meet, the cup wall runs almost parallel to the pull, and even a gentle bump there can hook the&nbsp;plaster.
 
-On 10 September I asked Claude to draw how it understood the top plate. It rendered a section from the actual mesh, with each part labelled: cup master, top plate, plaster and parting board. I scribbled over the wrong area. Claude redrew the section the way it should be, and I marked that version up&nbsp;too.
+<PullQuote quote="Our first check tested reliefs lying flat. It passed all 49 test reliefs, and all 49 locked once they were wrapped around a cup." />
 
-![Two section diagrams of the mould's top plate: Claude's as-built section with my scribble over it, and Claude's redraw with my marks](/form-section-diagram-markup.jpg "Fig. 03 · Left: Claude's section of the top plate as built, with my scribble over the wrong area. Right: Claude's redrawn section, with my marks on the cup master and the neck.")
+We fixed this in two places. The depth pipeline got a draft-limit step that softens only the slopes that would lock and keeps 95% of the fine detail. In the Studio, an easing step lowers peaks and fills hollows until every face can release. The mould seams are placed through the handle, because a handle cast with the cup only comes out if the mould splits through it. A casting assistant then suggests the fewest mould pieces that&nbsp;release.
 
-The second drawing settled it: the border stands 2 mm proud of the rim plane, the collar face sits on the rim plane, and the plate fits over the 5 mm neck. I told Claude that I work better with diagrams, and it saved that to its memory for the project. After that it asked its design questions as&nbsp;drawings:
+![A relief band before and after the draft limit, rendered from four angles](/form-draft-limit-before-after.jpg "Fig. 05 · A relief band before (top) and after (bottom) the draft limit. The area that would lock went from 1.75% to 0%, and the pattern still reads clearly.")
 
-- **Dovetail rails** for the side walls came as a diagram comparing 2 mm and 3 mm depths. I chose 3 mm at 20°, with a slider from 0 to 35°.
-- **The end walls** came as a sheet of drawn questions about trimming and clamping. The result is an end wall trimmed to the side walls' profile with an 8 mm strip, and 3 mm flanges on the side walls for a clamp.
-- **Closing the case over the top** was my request. Claude answered that it would seal the pour opening above the spare, and did not build it.
+![The unwrapped surface stage, with seams set by the handle and the casting assistant suggesting two body pieces and a base](/form-casting-assistant.jpg "Fig. 06 · The unwrapped surface stage. The seams are set by the handle, and the casting assistant suggests two body pieces and a base.")
 
-Marking up renders worked in the other&nbsp;direction.
+## What gets printed
 
-![Two marked-up renders of the mould box: arrows showing uneven plaster thickness, and a crossed-out wedge with the thin wall plate outlined](/form-plaster-cover-markup.jpg "Fig. 04 · Two renders I marked up. Left: arrows where the plaster was thicker than elsewhere, and an outline of the wall to keep. Right: the wedge crossed out and the thin wall plate outlined.")
+For the default mug, FORM lays out eight printed parts: two half masters on their boards, four box walls that slide and clamp together, and two shells for casting the plaster plug that fills the recess under the foot. The master is scaled up 13.6% to allow for the clay shrinking as it dries and is&nbsp;fired.
 
-The arrows became one rule: 20 mm of plaster everywhere, measured the same above the cup's highest point and out from its widest point. The outline and the cross became side walls of one thickness that stand upright for half their height and then lean in at&nbsp;45°.
+![The parts coming together in the assembly view: a half master on its board, the box walls and the plug mould](/form-master-assembly.jpg "Fig. 07 · The parts coming together: a half master on its board, the box walls and the plug mould.")
 
-## Making the relief release
-
-The box is one half of the problem. The relief on the cup also has to release from the&nbsp;plaster.
-
-A height map has one height per point on a plane, so a flat relief cannot undercut a straight pull along its own axis, and a flat test always passes. On a cup with a two-part mould, each half pulls along the centre line of its own half. In the middle of a half the wall has 90° of draft, and at the seam it has 0°, so even a small slope in the relief can lock the mould&nbsp;there.
-
-<PullQuote quote="Our flat undercut check passed all 49 test reliefs. All 49 locked once they were wrapped on a cup." />
-
-The first fix is a node in the depth pipeline. The draft limit flattens only the horizontal slope, which is the direction that locks on a wrapped cup, and rebuilds the surface with a least-squares solve. With it, none of the 49 reliefs locked, the worst draft went from −40° to +1.3°, and 95% of the fine detail&nbsp;remained.
-
-![A geometric band relief rendered from four angles, before and after the draft limit](/form-draft-limit-before-after.jpg "Fig. 05 · A geometric band relief before (top) and after (bottom) the draft limit. The locked area went from 1.75% to 0% and the worst draft from −48° to +1.0°.")
-
-The second fix is in the Studio. Easing runs as its own stage after the relief is drawn. It limits slope by direction rather than by magnitude, lowering peaks and filling hollows until every face has at least 1.5° of draft. It keeps 54 to 62% of the relief that the older magnitude limit&nbsp;removed.
-
-The seams are no longer a manual setting. A handle cast with the cup only releases if the mould splits through the handle's plane, so the handle sets the seams at 90° and 270°. The unwrapped chart is cut so the handle sits in the middle. A casting assistant then proposes the fewest mould parts that release. When a relief sits across a seam, where the median locked area is 6.2 times higher, the Studio suggests moving&nbsp;it.
-
-![The unwrapped surface stage: the mould split card showing seams set by the handle, and the casting assistant proposing two body parts and a base](/form-casting-assistant.jpg "Fig. 06 · Stage 03, the unwrapped surface. The mould split card shows the seams set by the handle, and the casting assistant proposes two body parts and a base.")
-
-## The printed parts
-
-The last stage, *Master*, opens on the print bed. For the default soft bell mug it produces eight printed parts:
-
-- **Two half masters.** Each is half the cup, scaled up 13.6% to allow for clay shrinkage, with its spare and plug, on a 5 mm parting board. Each measures 165 × 148 × 57 mm.
-- **Two side walls** that slide in from the rim end along 3 mm dovetail rails.
-- **A foot-end wall** that sits against the plug's foot.
-- **A rim-end wall** that fits over the 5 mm spare through a blind socket.
-- **Two plug mould shells**, 2 mm thick with a 20 mm seal flange. The plug itself is cast in plaster in this mould.
-
-![The master stage in assembly view, showing the half master, box walls and plug mould coming together](/form-master-assembly.jpg "Fig. 07 · The assembly view partway through: a half master on its parting board, the box walls and the plug mould.")
-
-![The master stage with details expanded: the parts list in millimetres and the as-built figures](/form-master-parts.jpg "Fig. 08 · The master card with details open, listing each part in millimetres and the as-built values for the board, plug, spare and plaster saved.")
-
-The Studio does not build everything yet. The handle needs its own two-part case, and the base piece needs its own master cast against the plug. Both show as warnings on the master card. Registration posts are switched off until we decide how they should print, and the details list them as&nbsp;none.
+Two pieces are not built yet. The handle needs its own two-part mould, and the base needs its own master. The Studio shows both as&nbsp;warnings.
 
 ## Where the time went
 
-Claude wrote the first mould generator on 1 September and replaced it with the master approach four days later. Most of the time went into agreeing on what each part should look like. Written descriptions produced the triangle on the spare and the wrong top plate. My Rhino screenshots, my marks on Claude's renders and section diagrams drawn from the mesh fixed both, and from 10 September the design questions were asked and answered on&nbsp;drawings.
+Claude wrote the first mould generator in a day and replaced it within the week. Most of the time went into agreeing on what each part should look like, and screenshots and drawings got us there faster than written&nbsp;descriptions.
 
 The relief on this cup comes from [a depth model I post-trained on rendered relief](/essays/post-training-a-depth-model-on-relief-i-rendered-myself/).
