@@ -59,7 +59,13 @@ function Scrubber({
  * talks to the single element in <AudioProvider>, which is what lets playback
  * survive a navigation away from this page.
  */
-export function EssayPlayer({ track }: { track: AudioTrack }) {
+/** A visible acknowledgement of the voice model, when its license asks for one. */
+export interface NarrationCredit {
+  label: string;
+  href: string;
+}
+
+export function EssayPlayer({ track, credit }: { track: AudioTrack; credit?: NarrationCredit }) {
   const {
     track: current,
     playing,
@@ -168,6 +174,20 @@ export function EssayPlayer({ track }: { track: AudioTrack }) {
           </button>
         </div>
       </div>
+      {credit && (
+        <p className="mt-3 font-mono text-meta text-muted">
+          Narrated with{" "}
+          <a
+            href={credit.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent underline underline-offset-2 transition-colors hover:text-accent-hover"
+          >
+            {credit.label}
+          </a>{" "}
+          on Hugging Face
+        </p>
+      )}
     </div>
   );
 }

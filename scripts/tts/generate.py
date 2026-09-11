@@ -211,6 +211,11 @@ def main() -> int:
 
         prev = manifest.get(slug)
         dest = AUDIO_OUT / f"{slug}.mp3"
+        # Essays narrated outside this script (Breeze TTS 2 on a Hugging Face Job)
+        # keep that recording until a re-narration is asked for with --force.
+        if prev and str(prev.get("voice", "")).startswith("breeze-") and not args.force:
+            print(f"  ~ {slug} (narrated with {prev['voice']}; --force to replace)")
+            continue
         if prev and prev.get("hash") == digest and dest.exists() and not args.force:
             print(f"  = {slug}")
             continue
