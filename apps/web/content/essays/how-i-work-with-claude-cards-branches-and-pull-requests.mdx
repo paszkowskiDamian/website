@@ -1,7 +1,7 @@
 ---
 title: "How I Work With Claude: Tasks in Notion, Work in Pull Requests"
 date: 2026-09-12
-excerpt: My projects keep their ideas, epics and tasks in Notion. A workflow runs Claude agents in fixed roles that read those tasks, do their part and move them on, and the work lands as pull requests I review.
+excerpt: Fourteen tasks sat in Notion, and a group of Claude agents worked through them in parallel. This is the workflow behind that, and the part I still do myself.
 readTime: 3 min read
 category: Engineering
 featured: true
@@ -13,42 +13,44 @@ tags:
 
 ## TL;DR
 
-- Each project has a Notion workspace with three databases: Ideas, Epics and Tasks. Notion holds the plan and the status, and the repo holds the code.
-- A workflow runs Claude agents in fixed roles: product review, architecture, design, development and review. Each role reads its items from Notion, does its part and moves them on.
-- On Depth Map Studio, one epic of 14 tasks shipped as a single pull request with 39 end-to-end tests named after the task IDs.
+- My projects keep their ideas, epics and tasks in Notion. The repo holds the code.
+- A workflow sends Claude agents through five roles: product review, architecture, design, development and review. Each agent reads its items from Notion, does its part and hands them on.
+- On Depth Map Studio, a 14-task epic came back as one pull request with 39 end-to-end tests, each named after its task.
 
-This website started on a Trello board: I wrote cards, and Claude picked them up and opened pull requests. For bigger projects I moved the tasks into Notion and wrote the process down as a workflow that runs Claude agents in fixed&nbsp;roles.
+The vessel flow redesign for Depth Map Studio started as 14 tasks in Notion and came back as one pull request: 73 commits, 91 files and 39 end-to-end tests, each named after the task it&nbsp;checks.
 
-## The Notion side
+This website started on a Trello board. I wrote cards, and Claude picked them up and opened pull requests. For bigger projects I moved the tasks into Notion and wrote the whole process down as a workflow that runs Claude agents in fixed roles. Here is how it&nbsp;works.
 
-Every project starts from the same template page, with three databases:
+## Everything starts in Notion
 
-- **Ideas**: raw ideas, which end up Converted or Rejected.
-- **Epics**: larger bodies of work, each with a goal and success criteria.
-- **Tasks**: units of work with acceptance criteria, a track (Frontend, Backend, Full-Stack or N/A), and Depends On and Blocks links to other tasks.
+Every project gets the same template page with three databases:
 
-Epics and tasks also carry four checkboxes: Research Ready, Spec Ready, Architecture Ready and Design Ready. A task moves from To Do to In Progress, In Review and Done, and can be Cancelled at any&nbsp;point.
+- **Ideas** for anything worth considering. Each idea ends up turned into work or rejected.
+- **Epics** for bigger pieces of work, each with a goal and success criteria.
+- **Tasks** for single units of work, with acceptance criteria, a track (Frontend, Backend, Full-Stack or N/A), and links to the tasks they depend on and block.
 
-## The roles
+Four checkboxes decide when an epic or a task is ready for its next step: Research Ready, Spec Ready, Architecture Ready and Design Ready. Tasks move from To Do to In Progress, In Review and&nbsp;Done.
 
-The workflow starts with a discovery agent that reads the board and sorts every item by what it needs next. Then it runs one agent per item, in parallel:
+## Five roles, all at once
 
-1. **Product reviewer** turns a new idea into an epic or tasks and writes the research and specification, or rejects the idea.
-2. **Architect** decides the technical approach once per epic, so all of its tasks build on the same decision.
-3. **Designer** produces mockups for Frontend and Full-Stack work. Backend tasks skip this step and can start as soon as the architecture is ready.
-4. **Developer** implements one task in its own git worktree, then moves it to In Review with notes on what changed and how it was checked.
-5. **Reviewer** checks the change against the specification and the acceptance criteria, and either marks the task Done or sends it back with notes.
+First, a discovery agent reads the whole board and sorts every item by what it needs next. Then the workflow starts one agent per item, in parallel:
 
-No role picks up a task while one of its dependencies is unfinished. When a dependency is cancelled, the blocked task waits until the product reviewer confirms it still makes sense. That rule lives in the workflow script, because it was too fragile to build as a Notion&nbsp;formula.
+1. **Product reviewer** takes a new idea and turns it into an epic or tasks, complete with research and a specification. Or it rejects the idea.
+2. **Architect** picks the technical approach once per epic, so every task in that epic builds on the same decision.
+3. **Designer** makes mockups for Frontend and Full-Stack work. Backend tasks go straight to development as soon as the architecture is ready.
+4. **Developer** builds one task in its own git worktree, then moves it to In Review with notes on what changed and how it was checked.
+5. **Reviewer** checks the result against the specification and the acceptance criteria, then marks the task Done or sends it back with notes.
 
-## Depth Map Studio
+Dependencies are strict. No role touches a task while something it depends on is still open. When a dependency gets cancelled, the blocked task waits until the product reviewer confirms it still makes sense. Notion formulas could not express that rule reliably, so it lives in the workflow&nbsp;script.
 
-I seeded the Depth Map Studio board from the repo's backlog: 57 tasks from its task list, plus open items and ideas. It now holds 88 tasks, 44 of them Done, and 20 that depend on other&nbsp;tasks.
+## What it looked like on Depth Map Studio
 
-The vessel flow redesign epic had 14 tasks, T75 to T88, covering the new workbench layout, seams set by the handle, a casting assistant and the master step. Claude read the epic and its task pages from Notion and split the work between parallel agents, one per task or pair of closely related tasks, with extra agents for the interface passes and the test&nbsp;suite.
+I seeded the board from the repo's backlog: 57 tasks from its task list, plus open items and ideas. It has grown to 88 tasks. Of those, 44 are Done and 20 depend on other&nbsp;tasks.
 
-It shipped as one pull request with 73 commits across 91 files. The end-to-end suite has 39 tests, each named after the task it checks, for example "T79 · default mug proposes 2 body parts + base". That makes it easy to see which task a failing test belongs&nbsp;to.
+The vessel flow redesign epic covered 14 tasks, T75 to T88: a new workbench layout, seams set by the handle, a casting assistant, and a master step that opens on the printed parts. Claude pulled the epic and all 14 task pages from Notion, then split the work across parallel agents, one per task or pair of closely related tasks. More agents took the interface passes and the test&nbsp;suite.
 
-## My part
+All of it landed in one pull request. Each of its 39 end-to-end tests carries the ID of the task it checks, for example "T79 · default mug proposes 2 body parts + base", so when a test fails I can see straight away which task it belongs&nbsp;to.
 
-I write the ideas, approve the designs when an epic asks for my approval, and review the pull request and its preview. When a review turns up something that should not happen again, I add it to the agent instructions or the repo's guidelines, so the next task starts with the&nbsp;correction.
+## Where I come in
+
+I write the ideas and approve the designs when an epic asks for my sign-off. I review every pull request and click through its preview. When a review turns up a mistake that could happen again, I add a line to the agent instructions or the repo's guidelines, so the next run starts with that&nbsp;fix.
