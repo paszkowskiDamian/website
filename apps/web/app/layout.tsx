@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Archivo, Newsreader, JetBrains_Mono } from "next/font/google";
 import { getSite } from "../lib/content";
+import { AudioProvider } from "./_audio/audio-provider";
+import { MiniPlayer } from "./_audio/mini-player";
+import { SoftNavLinks } from "./_audio/soft-nav";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -47,7 +50,13 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        {children}
+        {/* The provider lives here, above the route slot, so its single <audio>
+            element survives client-side navigation and narration keeps playing. */}
+        <AudioProvider>
+          <SoftNavLinks />
+          {children}
+          <MiniPlayer />
+        </AudioProvider>
       </body>
     </html>
   );

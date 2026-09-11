@@ -10,7 +10,8 @@ import { Footer } from "@repo/ui/molecules/footer";
 import { Header } from "@repo/ui/molecules/header";
 import { Newsletter } from "@repo/ui/molecules/newsletter";
 import { PaginationNav } from "@repo/ui/molecules/pagination-nav";
-import { getAllEssays, getEssay, getSite } from "../../../lib/content";
+import { getAllEssays, getEssay, getEssayAudio, getSite } from "../../../lib/content";
+import { EssayPlayer } from "../../_audio/essay-player";
 import { mdxComponents } from "../../../lib/mdx-components";
 
 interface Params {
@@ -50,6 +51,7 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
   const essays = getAllEssays();
   const essay = getEssay(slug);
   const site = getSite();
+  const audio = getEssayAudio(slug);
 
   // Site-wide author, with optional per-essay frontmatter overrides merged in.
   const author = { ...site.author, ...essay.author };
@@ -128,6 +130,21 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
               </figcaption>
             )}
           </figure>
+        )}
+
+        {/* NARRATION — only when scripts/tts has generated audio for this essay */}
+        {audio && (
+          <div className="mx-auto max-w-[720px]">
+            <EssayPlayer
+              track={{
+                id: essay.slug,
+                src: audio.src,
+                title: essay.title,
+                href: `/essays/${essay.slug}/`,
+                duration: audio.duration,
+              }}
+            />
+          </div>
         )}
 
         {/* BODY — the container also applies the design's drop cap to the

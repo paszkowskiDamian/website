@@ -25,3 +25,29 @@ body {
   flex: none;
   padding-top: 0.15em;
 }
+
+/* Narration scrubber. The track is painted by an inline background-size gradient
+   (progress), so only the thumb needs styling here — and it needs saying twice,
+   because WebKit and Firefox do not share a pseudo-element for it. */
+.audio-scrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 9999px;
+  background: var(--color-ink);
+  border: 2px solid var(--color-paper);
+  cursor: pointer;
+}
+.audio-scrub::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border: 2px solid var(--color-paper);
+  border-radius: 9999px;
+  background: var(--color-ink);
+  cursor: pointer;
+}
+.audio-scrub:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
