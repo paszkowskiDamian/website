@@ -1,62 +1,54 @@
 ---
-title: "How I Work With Claude: Cards, Branches, and Pull Requests"
-date: 2026-07-26
-excerpt: I write Trello cards and review pull requests, and Claude writes most of the code for this website. The whole workflow is written down in the repo, from picking a card to merging the change.
+title: "How I Work With Claude: Tasks in Notion, Work in Pull Requests"
+date: 2026-09-12
+excerpt: My projects keep their ideas, epics and tasks in Notion. A workflow runs Claude agents in fixed roles that read those tasks, do their part and move them on, and the work lands as pull requests I review.
 readTime: 3 min read
 category: Engineering
 featured: true
 tags:
   - AI
   - Process
-  - Agile
+  - Notion
 ---
 
 ## TL;DR
 
-- Tasks for this website live on a Trello board. I write the cards, and Claude picks one, builds it on its own branch and opens a pull request.
-- The steps are written down as a skill file in the repo, so every session follows the same process.
-- Each pull request says what changed, what was left out and how it was checked. I review the change on a preview copy of the site.
-- When I correct something that could happen again, the correction goes into the skill file.
+- Each project has a Notion workspace with three databases: Ideas, Epics and Tasks. Notion holds the plan and the status, and the repo holds the code.
+- A workflow runs Claude agents in fixed roles: product review, architecture, design, development and review. Each role reads its items from Notion, does its part and moves them on.
+- On Depth Map Studio, one epic of 14 tasks shipped as a single pull request with 39 end-to-end tests named after the task IDs.
 
-In one day in July, around a dozen pull requests for this website were opened, reviewed and merged: an essays index with filters, project pages, generated cover art, a photo lightbox, an RSS feed and a contact form. I wrote almost none of that code. I had written the Trello cards the night&nbsp;before.
+This website started on a Trello board: I wrote cards, and Claude picked them up and opened pull requests. For bigger projects I moved the tasks into Notion and wrote the process down as a workflow that runs Claude agents in fixed&nbsp;roles.
 
-## The board
+## The Notion side
 
-The board has five lists: DRAFT, TODO, INPROGRESS, INREVIEW and DONE. Only cards in TODO are ready to be picked up. Each card describes what to build and what to leave alone, and at the bottom it lists which cards it depends on and which it&nbsp;blocks.
+Every project starts from the same template page, with three databases:
 
-Writing those cards is most of my work on a task. I spent years in agile teams before this, and the board keeps what worked there: small tickets, a board that shows what is really happening, and dependencies written down before the work&nbsp;starts.
+- **Ideas**: raw ideas, which end up Converted or Rejected.
+- **Epics**: larger bodies of work, each with a goal and success criteria.
+- **Tasks**: units of work with acceptance criteria, a track (Frontend, Backend, Full-Stack or N/A), and Depends On and Blocks links to other tasks.
 
-## From card to pull request
+Epics and tasks also carry four checkboxes: Research Ready, Spec Ready, Architecture Ready and Design Ready. A task moves from To Do to In Progress, In Review and Done, and can be Cancelled at any&nbsp;point.
 
-When I ask Claude to take the next task, it follows the `work-on-board-task` skill:
+## The roles
 
-1. Look only at TODO, and skip any card whose blocker is not in DONE or that needs access Claude does not have, such as a hosting dashboard.
-2. Take the first card that is ready and move it to INPROGRESS before writing any code.
-3. Work on a fresh branch, build only what the card asks for, and run the build, type checks and linter before pushing.
-4. Open a pull request, move the card to INREVIEW and add a short report to the card.
+The workflow starts with a discovery agent that reads the board and sorts every item by what it needs next. Then it runs one agent per item, in parallel:
 
-Several sessions often run at once, each on its own card and branch. Because the cards say who owns what, their changes rarely&nbsp;collide.
+1. **Product reviewer** turns a new idea into an epic or tasks and writes the research and specification, or rejects the idea.
+2. **Architect** decides the technical approach once per epic, so all of its tasks build on the same decision.
+3. **Designer** produces mockups for Frontend and Full-Stack work. Backend tasks skip this step and can start as soon as the architecture is ready.
+4. **Developer** implements one task in its own git worktree, then moves it to In Review with notes on what changed and how it was checked.
+5. **Reviewer** checks the change against the specification and the acceptance criteria, and either marks the task Done or sends it back with notes.
 
-Every pull request has three sections: what changed, what was deliberately left out and why, and how it was checked. A typical "left out" note says the header was not touched because card #15 owns the&nbsp;navigation.
+No role picks up a task while one of its dependencies is unfinished. When a dependency is cancelled, the blocked task waits until the product reviewer confirms it still makes sense. That rule lives in the workflow script, because it was too fragile to build as a Notion&nbsp;formula.
 
-## Until it merges
+## Depth Map Studio
 
-Claude keeps watching the pull request after opening it. A review comment gets a fix or a reply. A failing check gets fixed. A merge conflict gets resolved against the latest `main`. When the pull request merges, the card moves to DONE. If it is closed without merging, the card goes back to TODO with a&nbsp;note.
+I seeded the Depth Map Studio board from the repo's backlog: 57 tasks from its task list, plus open items and ideas. It now holds 88 tasks, 44 of them Done, and 20 that depend on other&nbsp;tasks.
 
-## Writing better cards
+The vessel flow redesign epic had 14 tasks, T75 to T88, covering the new workbench layout, seams set by the handle, a casting assistant and the master step. Claude read the epic and its task pages from Notion and split the work between parallel agents, one per task or pair of closely related tasks, with extra agents for the interface passes and the test&nbsp;suite.
 
-I learned to write these cards by writing a bad one first. My first card for the generated project covers said, more or less, "make the project miniatures feel more like the brand". The result matched the card and was not what I wanted, because the card never said what I&nbsp;wanted.
+It shipped as one pull request with 73 commits across 91 files. The end-to-end suite has 39 tests, each named after the task it checks, for example "T79 · default mug proposes 2 body parts + base". That makes it easy to see which task a failing test belongs&nbsp;to.
 
-The second version took an hour. It described the shapes (half circles, quarter circles and petals on a grid, so they join across tiles), a limit on how much red a cover can use, and that each cover is generated from the project's title so it stays the same between builds. That one&nbsp;merged.
+## My part
 
-## Reviewing the preview
-
-Every branch deploys to its own preview copy of the site, and the link appears on the pull request. I review the change there, the way readers will see it, and read the code as&nbsp;well.
-
-On one new page, the first paragraph ended with a single word on its own line. I left a comment with a screenshot. A few minutes later the fix was in: the last two words are joined with a non-breaking space, so the lone word cannot come back at any screen&nbsp;width.
-
-## Corrections go into the skills
-
-The repo has two skill files. `work-on-board-task` is the process above. `implement-essay` covers essays, from a Notion draft to a published page. The lone-word rule went into `implement-essay` after that comment, and every essay published since follows&nbsp;it.
-
-The board may move from Trello to Notion, where my notes and drafts already are. The skill files describe cards, branches and pull requests, so only the part that finds the board would&nbsp;change.
+I write the ideas, approve the designs when an epic asks for my approval, and review the pull request and its preview. When a review turns up something that should not happen again, I add it to the agent instructions or the repo's guidelines, so the next task starts with the&nbsp;correction.
