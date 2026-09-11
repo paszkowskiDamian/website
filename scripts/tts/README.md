@@ -99,14 +99,26 @@ pnpm wrangler r2 bucket create codeberg-audio
 Then, after any run of `run.sh`:
 
 ```sh
-SITE_URL=https://<your-site> scripts/tts/publish.sh
+scripts/tts/publish.sh
 ```
 
 `publish.sh` uploads only what changed. R2 sets an object's ETag to the MD5 of its
 contents, and the Worker passes that through, so a HEAD against the live site says
 exactly what the bucket holds — no download, no S3 keys, and no local state file that
-could drift from the truth. Without `SITE_URL` it cannot know, so it uploads everything
-rather than skipping silently. `--dry-run` shows the plan; `--all` forces a full upload.
+could drift from the truth. `--dry-run` shows the plan; `--all` forces a full upload.
+
+It checks the same address the sitemap and RSS feed use: `NEXT_PUBLIC_SITE_URL` if set,
+otherwise the default in `apps/web/lib/site-url.ts`. Override it with `SITE_URL=…` — for
+example to check a PR preview before merging. If that address isn't serving the Worker
+yet, every file reads as missing and everything is uploaded: safe, just not incremental.
+
+### Moving to a custom domain
+
+Change the default in `apps/web/lib/site-url.ts`. That one line moves the sitemap, the
+RSS feed, robots.txt and `publish.sh` together. Audio itself needs nothing: it is served
+from the site's own origin at `/audio/*`, so it works on whatever domain serves the site.
+Setting `NEXT_PUBLIC_SITE_URL` only in the Cloudflare dashboard would not reach
+`publish.sh`, which runs on your machine — prefer the file.
 
 The normal loop is therefore: **edit an essay → `run.sh` → `publish.sh` → commit.** The
 first two are cheap for essays you did not touch, and the commit carries no audio.

@@ -20,10 +20,16 @@
 set -euo pipefail
 
 bucket="${R2_AUDIO_BUCKET:-codeberg-audio}"
-site="${SITE_URL:-}"
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 dir="$root/apps/web/public/audio"
 wrangler="$root/node_modules/.bin/wrangler"
+
+# Compare against the same address the sitemap and RSS feed use, so moving to a
+# custom domain is one edit in apps/web/lib/site-url.ts. SITE_URL overrides it,
+# which is handy for checking a PR preview before merging.
+default_site="$(sed -nE 's/.*"(https?:\/\/[^"]+)".*/\1/p' "$root/apps/web/lib/site-url.ts" | head -1)"
+site="${SITE_URL:-${NEXT_PUBLIC_SITE_URL:-$default_site}}"
+site="${site%/}"
 
 mode="incremental"
 case "${1:-}" in
@@ -51,13 +57,16 @@ remote_etag() {
 }
 
 if [ -z "$site" ] && [ "$mode" = "incremental" ]; then
-  echo "note: SITE_URL not set, so the bucket's current contents are unknown."
-  echo "      Uploading everything. Set SITE_URL=https://<your-site> to upload only changes."
+  echo "note: no site address found (SITE_URL, NEXT_PUBLIC_SITE_URL, apps/web/lib/site-url.ts),"
+  echo "      so the bucket's contents are unknown. Uploading everything."
   mode="all"
 fi
 
 uploaded=0 skipped=0
 echo "→ ${#files[@]} narrated essays, bucket $bucket"
+if [ -n "$site" ] && [ "$mode" != "all" ]; then
+  echo "  comparing against $site"
+fi
 for f in "${files[@]}"; do
   key="$(basename "$f")"
   local_md5="$(md5_of "$f")"
