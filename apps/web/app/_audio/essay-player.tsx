@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { RATES, useAudio, type AudioTrack } from "./audio-provider";
 
 /** mm:ss, for durations that are always well under an hour. */
@@ -73,7 +73,25 @@ export function EssayPlayer({ track }: { track: AudioTrack }) {
     setRate,
     unavailable,
     markUnavailable,
+    setInlineVisible,
   } = useAudio();
+  const box = useRef<HTMLDivElement>(null);
+  const isUnavailable = unavailable.has(track.id);
+
+  // Report whether this player is on screen, so the mini player can slide in
+  // once the reader scrolls past it and slide out when they scroll back.
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setInlineVisible(entry?.isIntersecting ?? false);
+    });
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      setInlineVisible(null);
+    };
+  }, [isUnavailable, setInlineVisible]);
 
   // The manifest proves audio was generated, not that it was published. Ask the
   // server before trusting it, so an essay whose mp3 never reached storage ends up
@@ -92,14 +110,14 @@ export function EssayPlayer({ track }: { track: AudioTrack }) {
     return () => ctrl.abort();
   }, [track.src, track.id, markUnavailable]);
 
-  if (unavailable.has(track.id)) return null;
+  if (isUnavailable) return null;
 
   const active = current?.id === track.id;
   const at = active ? time : 0;
   const total = active && duration ? duration : track.duration;
 
   return (
-    <div className="my-8 border-y border-line py-4">
+    <div ref={box} className="my-8 border-y border-line py-4">
       <div className="flex items-center gap-4">
         <button
           type="button"
