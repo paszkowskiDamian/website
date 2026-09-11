@@ -53,7 +53,16 @@ To teach the model what relief looks like, I needed pictures where the true surf
 
 Each training sample is a 3D relief panel rendered as a picture and saved with its exact height map and surface directions, both computed from the mesh. The shapes came from generated ornament, museum scans, free displacement maps from Poly Haven and ambientCG, Smithsonian open-access models, and reliefs the Studio's own pipeline had already made. Each panel got a random material, from bronze to glazed ceramic, and random&nbsp;lighting.
 
-![Two training samples, each shown as a rendered picture, its surface directions and its height](/relief-training-samples.jpg "Fig. 04 · Two training samples. Left to right: the rendered picture, the surface directions and the height the model learns to predict.")
+![One training sample: the rendered picture, its height label, and the same height shown as a 3D surface](/relief-training-example.jpg "Fig. 04 · One training sample. Left: the rendered picture the model sees. Top right: the height label it learns to predict, where black is the lowest point. Bottom right: the same height shown as a 3D surface.")
+
+Every sample comes with a recipe file that records how it was made. For the one&nbsp;above:
+
+- **Shape:** a composite built partly from a height map the Studio's own pipeline made for a Bavarian architecture design.
+- **Size:** a 132 mm panel with 6.8 mm between its lowest and highest point, rendered at 1024 × 1024 pixels.
+- **Material:** porcelain.
+- **Light:** a raking light 12° above the surface, plus a courtyard environment.
+- **Camera:** looking straight down, with no perspective.
+- **Render time:** 5.2 seconds.
 
 The first 2,000 renders came out dull. A bug had pointed the lights away from the panels. The height maps were still correct, so nothing failed, and I only noticed from the pictures. After the fix I rendered 10,000 panels and removed the 1,478 with the least contrast. That left 8,522 renders, plus 3,531 pairs built from museum scans. The data is published as [depth-map-studio-training-data](https://huggingface.co/datasets/damianpasz/depth-map-studio-training-data) on Hugging&nbsp;Face.
 
@@ -75,11 +84,11 @@ Across 598 test renders:
 - overall shape correlation went from **0.59 to 0.79**;
 - the average error in surface angle dropped from **11.2° to 7.3°**.
 
-**In the Studio.** This is the old pipeline and the trained one on the same knight picture, rendered as 3D solids so you can see the&nbsp;walls.
+**In the Studio.** I gave the old pipeline and the trained one the same knight picture, and rendered each height map as a 3D solid so the edges are easy to&nbsp;see.
 
-![The knight relief as a 3D solid from three angles: the old pipeline above, the trained model below](/relief-stock-vs-trained-knight.jpg "Fig. 06 · The same knight picture as a 3D solid from three angles. Top: the old pipeline. Bottom: the trained model.")
+![The knight picture on the left; on the right its height map as a 3D solid from two angles, from the old pipeline above and the trained model below](/relief-stock-vs-trained-knight.jpg "Fig. 06 · Left: the knight picture from the image model. Right: the height map from each pipeline as a 3D solid, seen from two angles. Top: the old pipeline. Bottom: the trained model.")
 
-With the old pipeline the knight stands on steep cliffs, as if cut out and glued on. With the trained model the figure is rounded, the background stays flat, and the pipeline no longer needs the three correction steps. The old result looks a little sharper at first glance, partly because of bright halos along the&nbsp;edges.
+The old pipeline raised the knight and the arch on vertical walls, so they look cut out and glued onto the plaque. The trained model gives the armour, the shield and the arch rounded edges that slope down into the background, and it gets there without the three correction steps. The old version looks slightly crisper at first, partly because of bright halos along its&nbsp;edges.
 
 **With only the model changed.** Running the exact same pipeline with and without the adapter gives a smaller&nbsp;difference.
 
