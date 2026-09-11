@@ -1,8 +1,8 @@
 ---
-title: "Designing FORM for Manufacture: Sketches, Sections, and a Mould Case"
+title: "How I Explain a 3D Problem to Claude"
 date: 2026-09-11
-excerpt: How Claude and I worked out a printable mould for a relief cup, using Rhino screenshots, marked-up renders and section drawings, and how FORM adjusts the relief so the plaster comes off.
-readTime: 6 min read
+excerpt: Claude wrote the geometry for FORM's plaster mould quickly. Getting the right geometry took pictures, from my Rhino screenshots and marks on its renders to cross-sections we both drew on.
+readTime: 3 min read
 category: Engineering
 tags:
   - Manufacturing
@@ -12,69 +12,42 @@ tags:
 
 ## TL;DR
 
-- FORM designs a cup and exports 3D-printable parts for making its plaster mould.
-- Claude wrote the geometry quickly. Most of the time went into agreeing on what the parts should look like.
-- Written descriptions led to wrong parts. Screenshots, marked-up renders and section drawings fixed them.
-- A relief that works on a flat panel can lock the mould once it is wrapped around a cup, so FORM now adjusts the relief and places the mould seams.
+- In FORM, a relief cup ends up as 3D printed parts for making its plaster mould. Claude wrote the code that builds them.
+- My written descriptions led to parts that were wrong in ways I only saw on screen.
+- Three things worked: screenshots of how I build the mould in Rhino, marks drawn on Claude's renders, and cross-sections that Claude drew and I corrected.
 
-FORM has two workbenches. In one you edit a relief as a height map. In the other you shape a cup from its side profile and wrap the relief around it. At the end, the design has to become a plaster mould that comes apart without damaging the&nbsp;cast.
+FORM designs cups with a relief on the outside. Its last step turns the design into 3D printed parts: a master in the shape of the cup and a box around it, which I fill with plaster to make the mould. I asked Claude to write the code that builds those&nbsp;parts.
 
-![The form workbench: the side profile of a mug on the left and the 3D cup on the right](/form-profile-workbench.jpg "Fig. 01 · The form workbench. The side profile of a mug, with its foot and the recess underneath, is spun into the 3D preview. The seams and the mould are worked out from this profile.")
+Claude wrote that code quickly. Most of the time went into agreeing on what the parts should look&nbsp;like.
 
-Slip-cast cups are made in plaster moulds. You make a master in the shape of the cup, pour plaster around it to make the mould, then pour liquid clay into the mould. Many workshops cast a silicone copy of the master first. I wanted to skip that step and pour plaster straight into 3D printed&nbsp;parts.
+## Where words failed
 
-## The first attempt
+My first descriptions produced parts that were valid geometry and still wrong. The first version put the plaster in a closed box that it could never come out of. Later I asked for a "triangular slot", meaning a notch in the edge of a board, and got a triangle sticking out of the pour opening. The messages were clear to me, but they allowed another&nbsp;reading.
 
-I asked Claude to research plaster moulds for cups and write a generator. The first version put each plaster piece in a closed printed tray. The shapes were valid, but set plaster cannot be taken out of a closed tray. Claude rebuilt it with walls that come apart, and I sent screenshots of the mould kit I had already modelled in&nbsp;Rhino.
+## 1. Show how I do it
 
-![Two Rhino screenshots: mould walls, half-cup masters and a split plug collar; and the front of the mould box](/form-rhino-mould-kit.jpg "Fig. 02 · Screenshots of my Rhino models, sent as reference. Left: box walls, half-cup masters on plates and a split plug collar. Right: the box from the front, with slanted walls to use less plaster.")
+When I stopped describing the result and sent screenshots of how I model the mould in Rhino, the approach changed in one step. Claude repeated my method back, asked three questions, and replaced its generator with one that follows my&nbsp;steps.
 
-That round found real problems. The plug seat was too shallow, the wall joints would leak, and the parts only touched each other instead of being joined into solid pieces. We moved the geometry to a solid modelling library called&nbsp;`manifold-3d`.
+![Two Rhino screenshots: mould walls, half-cup masters and a split plug collar; and the front of the mould box](/form-rhino-mould-kit.jpg "Fig. 01 · Screenshots of my own Rhino models that I sent to Claude. Left: the box walls, half-cup masters and a split plug collar. Right: the box from the front.")
 
-## Explaining my Rhino method
+## 2. Draw on the render
 
-A few days later I told Claude it had the approach wrong and walked it through how I build the mould in Rhino. Take the cup's side profile, add the foot and a 5 mm extension above the rim, spin half of it around the cup's axis, and stand that half on a flat 5 mm board. That half cup on its board is the master, and plaster poured around it becomes one half of the&nbsp;mould.
+For smaller fixes I took a screenshot of Claude's render and drew on it. Arrows showed where the plaster was too thick. An outline showed which part of a wall to keep, and a cross showed what to remove. Each mark became a simple rule in the code: 20 mm of plaster all round, and walls of one&nbsp;thickness.
 
-Claude repeated the method back and asked three questions before changing any code. From then on, the printed parts were the master and the box around it, and the tray generator was&nbsp;deleted.
+![Two renders I marked up: arrows at uneven plaster thickness, and a crossed-out wedge with the wall to keep outlined](/form-plaster-cover-markup.jpg "Fig. 02 · Two of Claude's renders with my marks. Left: arrows where the plaster was uneven. Right: the wedge crossed out and the wall I wanted outlined.")
 
-## Where words went wrong
+## 3. Ask Claude to draw what it understood
 
-Small fixes went one screenshot at a time: a slope angle, lumpy shading, a top surface that should follow the underside of the cup. Longer written descriptions caused bigger mistakes. I once asked for a "triangular slot", meaning a notch in the edge of the board. Claude built a triangle sticking out of the pour opening. We caught it because the part was on&nbsp;screen.
+The top plate of the box took three rounds of messages and was still wrong, so I asked Claude to draw how it understood the part. It drew a labelled cross-section from the actual 3D model. I scribbled over the wrong area, Claude redrew the section, and I marked up the new version. After that one the plate was&nbsp;right.
 
-The top plate of the box was the hardest part. Three rounds of written back-and-forth did not fix it, so I asked Claude to draw how it understood the plate. It drew a cross-section from the actual 3D model, with each piece labelled. I scribbled over the wrong area, Claude redrew it, and I marked up the second&nbsp;version.
+![Two cross-section drawings of the top plate: Claude's first drawing with my scribble, and its redraw with my marks](/form-section-diagram-markup.jpg "Fig. 03 · Left: Claude's cross-section of the top plate, with my scribble over the wrong area. Right: its redrawn version with my marks.")
 
-![Two cross-section drawings of the top plate: Claude's first drawing with my scribble, and its redraw with my marks](/form-section-diagram-markup.jpg "Fig. 03 · Left: Claude's cross-section of the top plate as built, with my scribble over the wrong area. Right: Claude's redrawn version, with my marks on it.")
+I then told Claude that I work better with diagrams, and it saved that for the project. From then on it asked its design questions as drawings, for example two depths for a sliding rail side by side, and I picked&nbsp;one.
 
-The second drawing settled it. I told Claude that I work better with diagrams, and it saved that for the project. After that it asked design questions as drawings: whether the dovetail rails should be 2 mm or 3 mm deep, how the end walls should clamp, and whether to close the top of the box. For the last one it pointed out that a closed top would seal the pour opening, so we left it&nbsp;open.
+## What came out of it
 
-Marking up renders worked the other way&nbsp;round.
+FORM now lays out eight printed parts for a mug: two half masters, four box walls that slide and clamp together, and two shells for casting a plaster plug that fills the recess under the&nbsp;foot.
 
-![Two renders I marked up: arrows at uneven plaster thickness, and a crossed-out wedge with the thin wall outlined](/form-plaster-cover-markup.jpg "Fig. 04 · Two renders I marked up. Left: arrows where the plaster was thicker than elsewhere. Right: the wedge crossed out and the thin wall I wanted outlined.")
+![The printed parts coming together in FORM's assembly view: a half master on its board, the box walls and the plug mould](/form-master-assembly.jpg "Fig. 04 · The printed parts coming together in FORM: a half master on its board, the box walls and the plug mould.")
 
-The arrows became one rule: 20 mm of plaster all round the cup. The outline became a plain wall that stands upright for half its height and then leans in at&nbsp;45°.
-
-## Getting the relief out of the mould
-
-The relief on the cup has its own problem. On a flat panel, a raised pattern always comes out of a mould pulled straight up. Around a cup, the two halves of the mould pull sideways. Near the seams where the halves meet, the cup wall runs almost parallel to the pull, and even a gentle bump there can hook the&nbsp;plaster.
-
-<PullQuote quote="Our first check tested reliefs lying flat. It passed all 49 test reliefs, and all 49 locked once they were wrapped around a cup." />
-
-We fixed this in two places. The depth pipeline got a draft-limit step that softens only the slopes that would lock and keeps 95% of the fine detail. In the Studio, an easing step lowers peaks and fills hollows until every face can release. The mould seams are placed through the handle, because a handle cast with the cup only comes out if the mould splits through it. A casting assistant then suggests the fewest mould pieces that&nbsp;release.
-
-![A relief band before and after the draft limit, rendered from four angles](/form-draft-limit-before-after.jpg "Fig. 05 · A relief band before (top) and after (bottom) the draft limit. The area that would lock went from 1.75% to 0%, and the pattern still reads clearly.")
-
-![The unwrapped surface stage, with seams set by the handle and the casting assistant suggesting two body pieces and a base](/form-casting-assistant.jpg "Fig. 06 · The unwrapped surface stage. The seams are set by the handle, and the casting assistant suggests two body pieces and a base.")
-
-## What gets printed
-
-For the default mug, FORM lays out eight printed parts: two half masters on their boards, four box walls that slide and clamp together, and two shells for casting the plaster plug that fills the recess under the foot. The master is scaled up 13.6% to allow for the clay shrinking as it dries and is&nbsp;fired.
-
-![The parts coming together in the assembly view: a half master on its board, the box walls and the plug mould](/form-master-assembly.jpg "Fig. 07 · The parts coming together: a half master on its board, the box walls and the plug mould.")
-
-Two pieces are not built yet. The handle needs its own two-part mould, and the base needs its own master. The Studio shows both as&nbsp;warnings.
-
-## Where the time went
-
-Claude wrote the first mould generator in a day and replaced it within the week. Most of the time went into agreeing on what each part should look like, and screenshots and drawings got us there faster than written&nbsp;descriptions.
-
-The relief on this cup comes from [a depth model I post-trained on rendered relief](/essays/post-training-a-depth-model-on-relief-i-rendered-myself/).
+When a 3D part comes out wrong, I now start with a picture: a screenshot of my own model, a mark on the render, or a request for Claude to draw its version first. The relief on this cup comes from [a depth model I post-trained on rendered relief](/essays/post-training-a-depth-model-on-relief-i-rendered-myself/).
