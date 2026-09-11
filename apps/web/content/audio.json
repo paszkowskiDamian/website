@@ -1,19 +1,19 @@
 {
   "designing-form-for-manufacture-sketches-sections-and-a-mould-case": {
     "src": "/audio/designing-form-for-manufacture-sketches-sections-and-a-mould-case.mp3",
-    "duration": 192.2,
-    "bytes": 1537920,
-    "voice": "am_michael",
+    "duration": 160.8,
+    "bytes": 1286784,
+    "voice": "breeze-tts-2/podcast-host-faster",
     "speed": 1.0,
-    "hash": "9a97297ef2f5bb8a"
+    "hash": "dff57dabb5d1f780"
   },
   "how-i-work-with-claude-cards-branches-and-pull-requests": {
     "src": "/audio/how-i-work-with-claude-cards-branches-and-pull-requests.mp3",
-    "duration": 278.3,
-    "bytes": 2226624,
-    "voice": "am_michael",
+    "duration": 252.2,
+    "bytes": 2018304,
+    "voice": "breeze-tts-2/podcast-host-faster",
     "speed": 1.0,
-    "hash": "f434da393b330058"
+    "hash": "4724711387b2f4cd"
   },
   "is-clean-code-still-relevant-in-the-vibe-coding-era": {
     "src": "/audio/is-clean-code-still-relevant-in-the-vibe-coding-era.mp3",
