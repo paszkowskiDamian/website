@@ -1,15 +1,31 @@
 {
-	// Cloudflare Workers Builds config — static-assets-only Worker.
-	// The site is a Next.js static export; Cloudflare just serves apps/web/out.
+	// Cloudflare Workers Builds config.
+	// The site is a Next.js static export; Cloudflare serves apps/web/out.
 	"name": "website",
 	"compatibility_date": "2026-07-23",
 	// Serve on <name>.<subdomain>.workers.dev, and give every uploaded
 	// version a <version>-<name>.<subdomain>.workers.dev preview URL —
-	// this is what makes PR preview links show up in the bot comment.
+	// this is what makes PR preview links show up in the pull request.
 	"workers_dev": true,
 	"preview_urls": true,
+	"main": "./worker/index.ts",
 	"assets": {
 		"directory": "./apps/web/out",
-		"not_found_handling": "404-page"
-	}
+		"not_found_handling": "404-page",
+		"binding": "ASSETS",
+		// Only the narration goes through the Worker. Every page request keeps
+		// the plain asset-first path, so normal browsing invokes no Worker code.
+		"run_worker_first": [
+			"/audio/*"
+		]
+	},
+	// Essay narration. Generated locally (scripts/tts/README.md), uploaded with
+	// scripts/tts/publish.sh, and deliberately NOT in git — 24 MB of mp3 would
+	// live in history forever, and Cloudflare has no model to generate it with.
+	"r2_buckets": [
+		{
+			"binding": "codeberg_audio",
+			"bucket_name": "codeberg-audio"
+		}
+	]
 }

@@ -436,3 +436,29 @@ export function getNotFoundPage(): NotFoundPageConfig {
     fs.readFileSync(path.join(CONTENT_DIR, "pages", "not-found.json"), "utf8"),
   ) as NotFoundPageConfig;
 }
+
+/* ------------------------------------------------------------------ narration */
+
+export interface EssayAudio {
+  /** Site-root path to the mp3, e.g. "/audio/<slug>.mp3" */
+  src: string;
+  /** Seconds, measured at generation time. */
+  duration: number;
+  bytes: number;
+  voice: string;
+  speed: number;
+  /** Hash of the speakable text; `scripts/tts/run.sh` regenerates when it moves. */
+  hash: string;
+}
+
+/**
+ * Narration manifest written by `scripts/tts/generate.py`. Absent or partial is
+ * normal — an essay without an entry simply renders no player, so the site
+ * builds fine before any audio has been generated.
+ */
+export function getEssayAudio(slug: string): EssayAudio | null {
+  const file = path.join(CONTENT_DIR, "audio.json");
+  if (!fs.existsSync(file)) return null;
+  const all = JSON.parse(fs.readFileSync(file, "utf8")) as Record<string, EssayAudio>;
+  return all[slug] ?? null;
+}

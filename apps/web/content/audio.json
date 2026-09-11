@@ -1,0 +1,18 @@
+{
+  "how-i-work-with-claude-cards-branches-and-pull-requests": {
+    "src": "/audio/how-i-work-with-claude-cards-branches-and-pull-requests.mp3",
+    "duration": 643.9,
+    "bytes": 5151936,
+    "voice": "am_michael",
+    "speed": 1.0,
+    "hash": "3ba84a7e74a0f801"
+  },
+  "is-clean-code-still-relevant-in-the-vibe-coding-era": {
+    "src": "/audio/is-clean-code-still-relevant-in-the-vibe-coding-era.mp3",
+    "duration": 390.9,
+    "bytes": 3127488,
+    "voice": "am_michael",
+    "speed": 1.0,
+    "hash": "5236e26f48cce4c7"
+  }
+}
