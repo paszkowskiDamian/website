@@ -1,12 +1,4 @@
 {
-  "designing-for-plaster-not-for-pixels": {
-    "src": "/audio/designing-for-plaster-not-for-pixels.mp3",
-    "duration": 374.6,
-    "bytes": 2997504,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "40dea33336a1e550"
-  },
   "how-i-work-with-claude-cards-branches-and-pull-requests": {
     "src": "/audio/how-i-work-with-claude-cards-branches-and-pull-requests.mp3",
     "duration": 643.9,
@@ -22,45 +14,5 @@
     "voice": "am_michael",
     "speed": 1.0,
     "hash": "5236e26f48cce4c7"
-  },
-  "the-graph-is-the-experiment": {
-    "src": "/audio/the-graph-is-the-experiment.mp3",
-    "duration": 300.0,
-    "bytes": 2400384,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "3f3d4560b49d05c7"
-  },
-  "the-model-learned-to-stop-guessing": {
-    "src": "/audio/the-model-learned-to-stop-guessing.mp3",
-    "duration": 355.0,
-    "bytes": 2840640,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "fdb3172afffcf7fa"
-  },
-  "the-objective-you-did-not-mean-to-write": {
-    "src": "/audio/the-objective-you-did-not-mean-to-write.mp3",
-    "duration": 401.5,
-    "bytes": 3212160,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "6f747bf23dfe3523"
-  },
-  "the-test-that-could-not-fail": {
-    "src": "/audio/the-test-that-could-not-fail.mp3",
-    "duration": 435.6,
-    "bytes": 3485376,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "81666f31bd58baab"
-  },
-  "what-actually-closed-the-gap": {
-    "src": "/audio/what-actually-closed-the-gap.mp3",
-    "duration": 462.9,
-    "bytes": 3703680,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "ed0c83c6a0bab032"
   }
 }

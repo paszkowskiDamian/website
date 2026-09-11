@@ -7,7 +7,7 @@ this after a typo fix costs nothing for the essays you did not touch.
 
     scripts/tts/run.sh                 # generate whatever is stale
     scripts/tts/run.sh --force         # redo everything
-    scripts/tts/run.sh --only the-test-that-could-not-fail
+    scripts/tts/run.sh --only <slug>
     scripts/tts/run.sh --voices bm_george,af_heart --sample   # short voice audition
 
 Output: apps/web/public/audio/<slug>.mp3, plus apps/web/content/audio.json (the
@@ -40,10 +40,9 @@ DEFAULT_SPEED = 1.0
 MP3_BITRATE = 64  # mono speech; ~0.5 MB per minute
 
 SAMPLE_TEXT = (
-    "My validator had never once failed anything, and for about three weeks I read that "
-    "as good news. A height map is a function: one height for every point on a plane. "
-    "Now ask whether such a surface can undercut a straight pull. It cannot — not "
-    "usually doesn't, but cannot, ever, for any input."
+    "This passage is for comparing voices before narrating the site. Listen for pacing "
+    "across a long sentence, how a question lands, and whether the voice would still be "
+    "pleasant to hear for ten minutes. Does it?"
 )
 
 

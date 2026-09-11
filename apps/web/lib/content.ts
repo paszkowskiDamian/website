@@ -440,7 +440,7 @@ export function getNotFoundPage(): NotFoundPageConfig {
 /* ------------------------------------------------------------------ narration */
 
 export interface EssayAudio {
-  /** Site-root path to the mp3, e.g. "/audio/the-test-that-could-not-fail.mp3" */
+  /** Site-root path to the mp3, e.g. "/audio/<slug>.mp3" */
   src: string;
   /** Seconds, measured at generation time. */
   duration: number;
