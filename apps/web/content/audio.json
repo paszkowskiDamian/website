@@ -1,20 +1,4 @@
 {
-  "building-design-systems-that-scale": {
-    "src": "/audio/building-design-systems-that-scale.mp3",
-    "duration": 95.2,
-    "bytes": 762240,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "bbf49375663b2dbf"
-  },
-  "code-as-folk-ornament": {
-    "src": "/audio/code-as-folk-ornament.mp3",
-    "duration": 116.6,
-    "bytes": 933120,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "385f6eb6507ae310"
-  },
   "designing-for-plaster-not-for-pixels": {
     "src": "/audio/designing-for-plaster-not-for-pixels.mp3",
     "duration": 374.6,
@@ -23,13 +7,13 @@
     "speed": 1.0,
     "hash": "40dea33336a1e550"
   },
-  "designing-with-intent-not-templates": {
-    "src": "/audio/designing-with-intent-not-templates.mp3",
-    "duration": 110.2,
-    "bytes": 882432,
+  "how-i-work-with-claude-cards-branches-and-pull-requests": {
+    "src": "/audio/how-i-work-with-claude-cards-branches-and-pull-requests.mp3",
+    "duration": 643.9,
+    "bytes": 5151936,
     "voice": "am_michael",
     "speed": 1.0,
-    "hash": "da185aa4eb70aa54"
+    "hash": "3ba84a7e74a0f801"
   },
   "is-clean-code-still-relevant-in-the-vibe-coding-era": {
     "src": "/audio/is-clean-code-still-relevant-in-the-vibe-coding-era.mp3",
@@ -38,14 +22,6 @@
     "voice": "am_michael",
     "speed": 1.0,
     "hash": "5236e26f48cce4c7"
-  },
-  "redux-observable-a-practical-guide": {
-    "src": "/audio/redux-observable-a-practical-guide.mp3",
-    "duration": 78.8,
-    "bytes": 630912,
-    "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "9ff198e7cc511a9c"
   },
   "the-graph-is-the-experiment": {
     "src": "/audio/the-graph-is-the-experiment.mp3",
