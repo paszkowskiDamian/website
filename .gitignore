@@ -40,3 +40,19 @@ storybook-static/
 
 # Raw photography exports (unprocessed originals, not for the repo)
 /photography/
+# Local text-to-speech toolchain (see scripts/tts/README.md).
+# The venv and the ~350 MB Kokoro weights are re-fetched by setup, never committed.
+scripts/tts/.venv/
+scripts/tts/models/
+scripts/tts/samples/
+
+# Essay narration: generated locally, published to R2 by scripts/tts/publish.sh.
+# Kept out of git so ~24 MB of mp3 never enters history.
+apps/web/public/audio/
+
+# Wrangler local state (R2 emulator, dev cache)
+.wrangler/
+
+# Python bytecode
+__pycache__/
+*.pyc
