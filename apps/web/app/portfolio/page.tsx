@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { GlyphGrid } from "@repo/ui/atoms/glyph-grid";
 import { Container } from "@repo/ui/layouts/container";
+import { FigureGrid } from "@repo/ui/molecules/figure-grid";
 import { Footer } from "@repo/ui/molecules/footer";
 import { Header } from "@repo/ui/molecules/header";
 import { PhotoGallery } from "@repo/ui/molecules/photo-gallery";
@@ -53,7 +54,7 @@ function ImageSlot({
         <img
           src={image.src}
           alt={image.alt ?? ""}
-          className="absolute inset-0 h-full w-full object-cover grayscale"
+          className={`absolute inset-0 h-full w-full object-cover ${image.color ? "" : "grayscale"}`}
         />
       ) : (
         <span
@@ -109,10 +110,10 @@ function LabeledParagraph({ label, children }: { label?: string; children: React
 
 function AsideRail({
   items,
-  link,
+  links = [],
 }: {
   items: { label: string; text: string }[];
-  link?: { label: string; href: string };
+  links?: { label: string; href: string; variant?: "accent" | "paper" }[];
 }) {
   return (
     <aside className="flex min-w-[240px] flex-1 basis-[280px] flex-col gap-4 border-l-2 border-ink pl-[clamp(18px,2vw,28px)] sm:flex-none sm:basis-[300px]">
@@ -124,14 +125,15 @@ function AsideRail({
           <p className="font-serif text-base leading-relaxed text-copy">{item.text}</p>
         </div>
       ))}
-      {link && (
+      {links.map((link) => (
         <a
+          key={link.label}
           href={link.href}
-          className="mt-1.5 font-mono text-label uppercase text-accent hover:text-accent-hover"
+          className="font-mono text-label uppercase text-accent hover:text-accent-hover"
         >
           {link.label} <span aria-hidden="true">↗</span>
         </a>
-      )}
+      ))}
     </aside>
   );
 }
@@ -168,8 +170,11 @@ function FeatureChapter({ chapter, number }: { chapter: PortfolioChapter; number
             </LabeledParagraph>
           ))}
         </div>
-        {chapter.aside && <AsideRail items={chapter.aside} link={chapter.links[0]} />}
+        {chapter.aside && <AsideRail items={chapter.aside} links={chapter.links} />}
       </div>
+      {chapter.gallery && (
+        <FigureGrid figures={chapter.gallery} className="mt-[clamp(20px,3vw,36px)]" />
+      )}
     </section>
   );
 }
@@ -237,6 +242,9 @@ function DarkChapter({ chapter, number }: { chapter: PortfolioChapter; number: s
             />
           )}
         </div>
+        {chapter.gallery && (
+          <FigureGrid figures={chapter.gallery} dark className="mt-[clamp(24px,3vw,40px)]" />
+        )}
       </div>
     </section>
   );
@@ -257,7 +265,7 @@ function PairChapter({ chapter, number }: { chapter: PortfolioChapter; number: s
             {chapter.paragraphs[0].text}
           </p>
         )}
-        {chapter.aside && <AsideRail items={chapter.aside} link={chapter.links[0]} />}
+        {chapter.aside && <AsideRail items={chapter.aside} links={chapter.links} />}
       </div>
     </section>
   );

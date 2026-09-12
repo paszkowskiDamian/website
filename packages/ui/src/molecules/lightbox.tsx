@@ -12,6 +12,11 @@ export interface LightboxPhoto {
   alt?: string;
   caption: string;
   meta: string;
+  /**
+   * Render in full color instead of the gallery's default grayscale. For
+   * figures whose color carries meaning — UI screenshots, renders, diagrams.
+   */
+  color?: boolean;
 }
 
 export interface LightboxProps {
@@ -139,7 +144,7 @@ export function Lightbox({ photos, initialIndex = 0, onClose }: LightboxProps) {
             <img
               src={photo.src}
               alt={photo.alt ?? ""}
-              className="min-h-0 max-w-full object-contain grayscale"
+              className={`min-h-0 max-w-full object-contain ${photo.color ? "" : "grayscale"}`}
             />
           ) : (
             <span
