@@ -7,6 +7,11 @@
   "featured": {
     "fallbackImage": "/mountain-hero.jpg"
   },
+  "contact": {
+    "titleLines": ["Let's build", "something"],
+    "text": "Have a project in mind, a role to fill, or just something worth arguing about? I read every message and reply to all of them.",
+    "button": { "label": "Get in touch", "href": "/contact/" }
+  },
   "sections": {
     "essays": { "title": "Recent Essays", "viewAllHref": "/essays/" },
     "projects": { "title": "Selected Projects", "viewAllHref": "/projects/" }

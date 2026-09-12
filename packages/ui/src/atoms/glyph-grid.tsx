@@ -45,6 +45,16 @@ function makeGrid(cols: number, rows: number, seed: number): Cell[][] {
 const CELL_WIDTH_CH = 1.4;
 const LINE_HEIGHT = 1.5;
 
+/** Glyph size. Cell metrics are relative (`ch`/`em`), so the whole grid — cell
+ * box included — scales with the font size picked here. */
+const SIZES = {
+  sm: "text-sm",
+  md: "text-lg",
+  lg: "text-2xl",
+} as const;
+
+export type GlyphGridSize = keyof typeof SIZES;
+
 export interface GlyphGridProps {
   cols: number;
   rows: number;
@@ -52,6 +62,8 @@ export interface GlyphGridProps {
   seed?: number;
   /** Milliseconds between refresh ticks. Set to 0 for a static, non-animated grid. */
   interval?: number;
+  /** Glyph scale. Larger sizes grow the cells too, so the grid keeps its shape. */
+  size?: GlyphGridSize;
   /** Text color utility for the resting (non-hot) glyphs. Defaults to the brand accent. */
   baseClassName?: string;
   /** Text color utility for momentarily-highlighted glyphs. Defaults to ink. */
@@ -68,6 +80,7 @@ export function GlyphGrid({
   rows,
   seed = 7,
   interval = 280,
+  size = "sm",
   baseClassName = "text-accent/90",
   hotClassName = "text-ink",
   className,
@@ -105,7 +118,7 @@ export function GlyphGrid({
   return (
     <div
       aria-hidden="true"
-      className={`select-none font-mono text-sm font-bold tracking-[0.1em] ${className ?? ""}`}
+      className={`select-none font-mono font-bold tracking-[0.1em] ${SIZES[size]} ${className ?? ""}`}
       style={{
         width: `${cols * CELL_WIDTH_CH}ch`,
         height: `${rows * LINE_HEIGHT}em`,
