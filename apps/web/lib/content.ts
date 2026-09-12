@@ -238,6 +238,11 @@ export interface PortfolioImage {
    * meaning — product screenshots, renders, diagrams.
    */
   color?: boolean;
+  /**
+   * Window title. Set it to present the image as a mockup — a screenshot
+   * inside window chrome rather than a loose image.
+   */
+  frame?: string;
 }
 
 /** One numbered figure in a chapter's figure strip. */

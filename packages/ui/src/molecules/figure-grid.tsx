@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { MockupFrame } from "../atoms/mockup-frame";
 import { Lightbox, type LightboxPhoto } from "./lightbox";
 
-export type Figure = LightboxPhoto;
+export interface Figure extends LightboxPhoto {
+  /** Window title; set it to show the figure inside a {@link MockupFrame}. */
+  frame?: string;
+}
 
 export interface FigureGridProps {
   figures: Figure[];
@@ -27,8 +31,8 @@ export function FigureGrid({ figures, dark = false, className }: FigureGridProps
       <div
         className={`grid grid-cols-[repeat(auto-fit,minmax(min(280px,100%),1fr))] gap-[clamp(12px,1.6vw,20px)] ${className ?? ""}`}
       >
-        {figures.map((figure, i) => (
-          <figure key={figure.caption}>
+        {figures.map((figure, i) => {
+          const slot = (
             <button
               type="button"
               aria-haspopup="dialog"
@@ -51,14 +55,25 @@ export function FigureGrid({ figures, dark = false, className }: FigureGridProps
                 </span>
               )}
             </button>
-            <figcaption
-              className={`mt-2 flex justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.08em] ${dark ? "text-[#8A8A85]" : "text-muted"}`}
-            >
-              <span>{figure.caption}</span>
-              <span className={dark ? "text-line/70" : "text-accent"}>{figure.meta}</span>
-            </figcaption>
-          </figure>
-        ))}
+          );
+          return (
+            <figure key={figure.caption}>
+              {figure.frame ? (
+                <MockupFrame label={figure.frame} dark={dark}>
+                  {slot}
+                </MockupFrame>
+              ) : (
+                slot
+              )}
+              <figcaption
+                className={`mt-2 flex justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.08em] ${dark ? "text-[#8A8A85]" : "text-muted"}`}
+              >
+                <span>{figure.caption}</span>
+                <span className={dark ? "text-line/70" : "text-accent"}>{figure.meta}</span>
+              </figcaption>
+            </figure>
+          );
+        })}
       </div>
       {openIndex !== null && (
         <Lightbox

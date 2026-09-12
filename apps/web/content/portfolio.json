@@ -1,12 +1,81 @@
 {
   "meta": {
     "title": "Portfolio — codeberg",
-    "description": "Two projects where software ends in a physical object: FORM, a pipeline from a drawn cup profile to a printable mother mould, and the parametric structures my workshops built at full scale."
+    "description": "Two projects where software ends in a physical object: the parametric structures my workshops built at full scale, and FORM, a pipeline from a drawn cup profile to a printable mother mould."
   },
   "kicker": "Portfolio — two projects",
   "title": "work that\nstands up",
-  "intro": "The projects I am proudest of all ended with something coming off a machine. FORM is the one I am building now: you draw a cup profile and it carries that shape through to tooling a printer can make. The parametric structures came first — workshops where the model had to survive being cut, numbered and assembled by hand.",
+  "intro": "The projects I am proudest of all ended with something coming off a machine. The parametric structures came first — workshops where the model had to survive being cut, numbered and assembled by hand. FORM is the one I am building now: you draw a cup profile and it carries that shape through to tooling a printer can make.",
   "chapters": [
+    {
+      "id": "parametric",
+      "layout": "dark",
+      "title": "Parametric structures",
+      "meta": "Workshops — 2015–2018 — Tutor & fabrication lead",
+      "paragraphs": [
+        {
+          "text": "Before the code I taught parametric design for three years — architects and students with no programming background, learning to build their own tools in Rhino and Grasshopper. Three of those workshops ended with something standing at full scale: two summers at the Gdynia Summer School and one in Piła.",
+          "label": "Where it started"
+        },
+        {
+          "text": "My part was the workflow and everything between the model and the finished structure. I taught it, co-authored the Grasshopper and Python definitions, and prepared the cut files: nesting, sheet thickness, cutter kerf, joint tolerance, and the numbered assembly order. Then we put the structures up together. They were designed and built with my students.",
+          "label": "What I did"
+        },
+        {
+          "text": "The rib shell holds by friction alone — every slot sized to real sheet thickness plus kerf, so each numbered rib has to be tapped home and stays there. The panel system is less forgiving: the error at each bolted edge joint accumulates, and the last panel only fits if the tolerances were right. The Piła canopy came out of a simulation that let gravity pull a surface spanned between the trees, then penalised it until every piece could be cut flat.",
+          "label": "What it took"
+        }
+      ],
+      "links": [],
+      "gallery": [
+        {
+          "ratio": "16/9",
+          "src": "/rib-shell-assembly.jpg",
+          "alt": "Two students seating a plywood rib with a wooden mallet while the shell is assembled on a lawn",
+          "caption": "Tapped home, held by friction",
+          "meta": "On site 2017",
+          "color": true
+        },
+        {
+          "ratio": "16/9",
+          "src": "/rib-shell-arch.jpg",
+          "alt": "The rib shell photographed from below against an overcast sky, ribs fanning along the arch",
+          "caption": "The shell from underneath",
+          "meta": "Gdynia 2017",
+          "color": true
+        },
+        {
+          "ratio": "16/9",
+          "src": "/panel-system-detail.jpg",
+          "alt": "Close-up of numbered plywood panels bolted through turned wooden connectors",
+          "caption": "Numbered panels, turned connectors",
+          "meta": "Gdynia 2018",
+          "color": true
+        },
+        {
+          "ratio": "2/3",
+          "src": "/panel-system-gdynia.jpg",
+          "alt": "The finished panel structure on sand below a wooded slope, flat triangular plywood panels bolted into a faceted shell",
+          "caption": "Flat panels into a faceted shell",
+          "meta": "Gdynia 2018",
+          "color": true
+        },
+        {
+          "ratio": "2/3",
+          "src": "/canopy-pila.jpg",
+          "alt": "A pale faceted canopy suspended between pine trunks in a forest, spanning the gap overhead",
+          "caption": "Hung between trees, cut flat",
+          "meta": "Piła",
+          "color": true
+        }
+      ],
+      "heroImage": {
+        "ratio": "1500/844",
+        "src": "/rib-shell-gdynia.jpg",
+        "alt": "A CNC-cut plywood rib shell standing on sand in front of dense trees, its two rib families twisting into a curved canopy",
+        "color": true
+      }
+    },
     {
       "id": "form",
       "layout": "feature",
@@ -16,7 +85,8 @@
         "ratio": "1500/952",
         "src": "/form-mould-split.jpg",
         "alt": "FORM's studio: the unwrapped wall of a tumbler beside a 3D preview of the cup with its relief, and a casting assistant reporting how the mould splits",
-        "color": true
+        "color": true,
+        "frame": "FORM · Unwrapped surface"
       },
       "paragraphs": [
         {
@@ -55,7 +125,8 @@
           "alt": "A side profile drawn on a grid, with the revolved tumbler previewed beside it and height, diameter, capacity and wall thickness read out below",
           "caption": "Section in, watertight solid out",
           "meta": "01 Profile",
-          "color": true
+          "color": true,
+          "frame": "FORM · Form & foot"
         },
         {
           "ratio": "16/10",
@@ -63,7 +134,8 @@
           "alt": "A prompt field describing bricklayers and a robot arm, with the generated bronze relief panel below it and a run history alongside",
           "caption": "Ornament from a prompt, on device",
           "meta": "02 Relief",
-          "color": true
+          "color": true,
+          "frame": "FORM · Generate a relief"
         },
         {
           "ratio": "16/10",
@@ -71,10 +143,11 @@
           "alt": "A review step showing the generated picture as a grayscale depth map next to a rotatable 3D relief, ready to accept as a layer",
           "caption": "A 16-bit height map, judged twice",
           "meta": "03 Depth",
-          "color": true
+          "color": true,
+          "frame": "FORM · Depth review"
         },
         {
-          "ratio": "16/10",
+          "ratio": "4/3",
           "src": "/form-mother-mould-parts.jpg",
           "alt": "A render of the printable tooling laid out flat: half masters on their boards, box walls, and the ring shells for casting the plug",
           "caption": "Six body pieces plus a base",
@@ -82,7 +155,7 @@
           "color": true
         },
         {
-          "ratio": "16/10",
+          "ratio": "4/3",
           "src": "/form-mould-cavity.jpg",
           "alt": "A white render of two mould halves opened, the bricklayer relief carved into the inside of the cavity",
           "caption": "Carved, not modelled",
@@ -90,71 +163,11 @@
           "color": true
         }
       ]
-    },
-    {
-      "id": "parametric",
-      "layout": "dark",
-      "title": "Parametric structures",
-      "meta": "Workshops — 2015–2018 — Tutor & fabrication lead",
-      "paragraphs": [
-        {
-          "text": "Before the code I taught parametric design for three years — architects and students with no programming background, learning to build their own tools in Rhino and Grasshopper. Three of those workshops ended with something standing at full scale: two summers at the Gdynia Summer School and one in Piła."
-        },
-        {
-          "text": "My part was the workflow and everything between the model and the finished structure. I taught it, co-authored the Grasshopper and Python definitions, and prepared the cut files: nesting, sheet thickness, cutter kerf, joint tolerance, and the numbered assembly order. Then we put the structures up together. They were designed and built with my students."
-        },
-        {
-          "text": "The rib shell holds by friction alone — every slot sized to real sheet thickness plus kerf, so each numbered rib has to be tapped home and stays there. The panel system is less forgiving: the error at each bolted edge joint accumulates, and the last panel only fits if the tolerances were right. The Piła canopy came out of a simulation that let gravity pull a surface spanned between the trees, then penalised it until every piece could be cut flat."
-        }
-      ],
-      "sideImage": {
-        "ratio": "1000/1777",
-        "src": "/panel-system-detail.jpg",
-        "alt": "Close-up of numbered plywood panels bolted through turned wooden connectors, assembled in a workshop hall"
-      },
-      "links": [],
-      "gallery": [
-        {
-          "ratio": "16/9",
-          "src": "/rib-shell-gdynia.jpg",
-          "alt": "A CNC-cut plywood rib shell standing on sand in front of dense trees, its two rib families twisting into a curved canopy",
-          "caption": "Two rib families, no fasteners",
-          "meta": "Gdynia 2017"
-        },
-        {
-          "ratio": "16/9",
-          "src": "/rib-shell-arch.jpg",
-          "alt": "The rib shell photographed from below against an overcast sky, ribs fanning along the arch",
-          "caption": "The shell from underneath",
-          "meta": "Gdynia 2017"
-        },
-        {
-          "ratio": "16/9",
-          "src": "/rib-shell-assembly.jpg",
-          "alt": "Two students seating a plywood rib with a wooden mallet while the shell is assembled on a lawn",
-          "caption": "Tapped home, held by friction",
-          "meta": "On site 2017"
-        },
-        {
-          "ratio": "2/3",
-          "src": "/panel-system-gdynia.jpg",
-          "alt": "The finished panel structure on sand below a wooded slope, flat triangular plywood panels bolted into a faceted shell",
-          "caption": "Panels on turned connectors",
-          "meta": "Gdynia 2018"
-        },
-        {
-          "ratio": "2/3",
-          "src": "/canopy-pila.jpg",
-          "alt": "A pale faceted canopy suspended between pine trunks in a forest, spanning the gap overhead",
-          "caption": "Hung between trees, cut flat",
-          "meta": "Piła"
-        }
-      ]
     }
   ],
   "interlude": [
-    "The work above ends in an object.",
-    "The work below is where I stop measuring."
+    "The work above had to be measured.",
+    "The photographs below did not."
   ],
   "photography": {
     "id": "photography",
