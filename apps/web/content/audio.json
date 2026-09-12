@@ -1,18 +1,34 @@
 {
+  "designing-form-for-manufacture-sketches-sections-and-a-mould-case": {
+    "src": "/audio/designing-form-for-manufacture-sketches-sections-and-a-mould-case.mp3",
+    "duration": 163.9,
+    "bytes": 1312128,
+    "voice": "am_michael",
+    "speed": 1.25,
+    "hash": "57c720f966bf5aa9"
+  },
   "how-i-work-with-claude-cards-branches-and-pull-requests": {
     "src": "/audio/how-i-work-with-claude-cards-branches-and-pull-requests.mp3",
-    "duration": 643.9,
-    "bytes": 5151936,
+    "duration": 235.8,
+    "bytes": 1886784,
     "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "3ba84a7e74a0f801"
+    "speed": 1.25,
+    "hash": "95c8567f5a1b6681"
   },
   "is-clean-code-still-relevant-in-the-vibe-coding-era": {
     "src": "/audio/is-clean-code-still-relevant-in-the-vibe-coding-era.mp3",
-    "duration": 390.9,
-    "bytes": 3127488,
+    "duration": 188.4,
+    "bytes": 1507968,
     "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "5236e26f48cce4c7"
+    "speed": 1.25,
+    "hash": "c5d0bad242b6df6c"
+  },
+  "post-training-a-depth-model-on-relief-i-rendered-myself": {
+    "src": "/audio/post-training-a-depth-model-on-relief-i-rendered-myself.mp3",
+    "duration": 423.1,
+    "bytes": 3385344,
+    "voice": "am_michael",
+    "speed": 1.25,
+    "hash": "2014878f2b6f4fcb"
   }
 }

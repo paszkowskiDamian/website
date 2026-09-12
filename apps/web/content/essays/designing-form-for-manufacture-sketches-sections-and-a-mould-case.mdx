@@ -1,0 +1,53 @@
+---
+title: "How I Explain a 3D Problem to Claude"
+date: 2026-09-11
+excerpt: Claude wrote the geometry for FORM's plaster mould quickly. Getting the right geometry took pictures, from my Rhino screenshots and marks on its renders to cross-sections we both drew on.
+readTime: 3 min read
+category: Engineering
+tags:
+  - Manufacturing
+  - AI
+  - Process
+---
+
+## TL;DR
+
+- In FORM, a relief cup ends up as 3D printed parts for making its plaster mould. Claude wrote the code that builds them.
+- My written descriptions led to parts that were wrong in ways I only saw on screen.
+- Three things worked: screenshots of how I build the mould in Rhino, marks drawn on Claude's renders, and cross-sections that Claude drew and I corrected.
+
+FORM designs cups with a relief on the outside. Its last step turns the design into 3D printed parts: a master in the shape of the cup and a box around it, which I fill with plaster to make the mould. I asked Claude to write the code that builds those&nbsp;parts.
+
+Claude wrote that code quickly. Most of the time went into agreeing on what the parts should look&nbsp;like.
+
+## Where words failed
+
+My first descriptions produced parts that were valid geometry and still wrong. The first version put the plaster in a closed box that it could never come out of. Later I asked for a "triangular slot", meaning a notch in the edge of a board, and got a triangle sticking out of the pour opening. The messages were clear to me, but they allowed another&nbsp;reading.
+
+## 1. Show how I do it
+
+When I stopped describing the result and sent screenshots of how I model the mould in Rhino, the approach changed in one step. Claude repeated my method back, asked three questions, and replaced its generator with one that follows my&nbsp;steps.
+
+![Two Rhino screenshots: mould walls, half-cup masters and a split plug collar; and the front of the mould box](/form-rhino-mould-kit.jpg "Fig. 01 · Screenshots of my own Rhino models that I sent to Claude. Left: the box walls, half-cup masters and a split plug collar. Right: the box from the front.")
+
+## 2. Draw on the render
+
+For smaller fixes I took a screenshot of Claude's render and drew on it. Arrows showed where the plaster was too thick. An outline showed which part of a wall to keep, and a cross showed what to remove. Each mark became a simple rule in the code: 20 mm of plaster all round, and walls of one&nbsp;thickness.
+
+![Two renders I marked up: arrows at uneven plaster thickness, and a crossed-out wedge with the wall to keep outlined](/form-plaster-cover-markup.jpg "Fig. 02 · Two of Claude's renders with my marks. Left: arrows where the plaster was uneven. Right: the wedge crossed out and the wall I wanted outlined.")
+
+## 3. Ask Claude to draw what it understood
+
+The top plate of the box took three rounds of messages and was still wrong, so I asked Claude to draw how it understood the part. It drew a labelled cross-section from the actual 3D model. I scribbled over the wrong area, Claude redrew the section, and I marked up the new version. After that one the plate was&nbsp;right.
+
+![Two cross-section drawings of the top plate: Claude's first drawing with my scribble, and its redraw with my marks](/form-section-diagram-markup.jpg "Fig. 03 · Left: Claude's cross-section of the top plate, with my scribble over the wrong area. Right: its redrawn version with my marks.")
+
+I then told Claude that I work better with diagrams, and it saved that for the project. From then on it asked its design questions as drawings, for example two depths for a sliding rail side by side, and I picked&nbsp;one.
+
+## What came out of it
+
+FORM now lays out eight printed parts for a mug: two half masters, four box walls that slide and clamp together, and two shells for casting a plaster plug that fills the recess under the&nbsp;foot.
+
+![The printed parts coming together in FORM's assembly view: a half master on its board, the box walls and the plug mould](/form-master-assembly.jpg "Fig. 04 · The printed parts coming together in FORM: a half master on its board, the box walls and the plug mould.")
+
+When a 3D part comes out wrong, I now start with a picture: a screenshot of my own model, a mark on the render, or a request for Claude to draw its version first. The relief on this cup comes from [a depth model I post-trained on rendered relief](/essays/post-training-a-depth-model-on-relief-i-rendered-myself/).

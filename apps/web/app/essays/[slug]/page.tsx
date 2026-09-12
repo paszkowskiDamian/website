@@ -143,6 +143,7 @@ export default async function EssayPage({ params }: { params: Promise<Params> })
                 href: `/essays/${essay.slug}/`,
                 duration: audio.duration,
               }}
+              credit={audio.credit}
             />
           </div>
         )}

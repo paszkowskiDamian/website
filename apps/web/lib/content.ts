@@ -449,16 +449,39 @@ export interface EssayAudio {
   speed: number;
   /** Hash of the speakable text; `scripts/tts/run.sh` regenerates when it moves. */
   hash: string;
+  /**
+   * Shown on the player when the narration comes from a model whose license asks
+   * for acknowledgement. Derived from `voice`, never stored in the manifest.
+   */
+  credit?: { label: string; href: string };
 }
+
+/** Voices that need a visible credit, keyed by the manifest's `voice` prefix. */
+const NARRATION_CREDITS: { prefix: string; label: string; href: string }[] = [
+  { prefix: "breeze-tts-2", label: "Breeze TTS 2", href: "https://huggingface.co/BreezeBlue/Breeze-TTS-2" },
+];
 
 /**
  * Narration manifest written by `scripts/tts/generate.py`. Absent or partial is
  * normal — an essay without an entry simply renders no player, so the site
  * builds fine before any audio has been generated.
+ *
+ * Re-narrating an essay replaces the mp3 at the same R2 key, and the Worker
+ * serves it with a day of browser caching. The returned `src` carries the
+ * narration hash as a query string, so a new recording gets a new URL and a
+ * browser that cached the old one fetches it fresh. The Worker looks objects up
+ * by path only, so the query does not affect which file is served.
  */
 export function getEssayAudio(slug: string): EssayAudio | null {
   const file = path.join(CONTENT_DIR, "audio.json");
   if (!fs.existsSync(file)) return null;
   const all = JSON.parse(fs.readFileSync(file, "utf8")) as Record<string, EssayAudio>;
-  return all[slug] ?? null;
+  const entry = all[slug];
+  if (!entry) return null;
+  const credit = NARRATION_CREDITS.find((c) => entry.voice?.startsWith(c.prefix));
+  return {
+    ...entry,
+    src: `${entry.src}?v=${encodeURIComponent(entry.hash)}`,
+    ...(credit ? { credit: { label: credit.label, href: credit.href } } : {}),
+  };
 }

@@ -36,7 +36,7 @@ MODEL = Path(__file__).resolve().parent / "models/kokoro-v1.0.onnx"
 VOICES = Path(__file__).resolve().parent / "models/voices-v1.0.bin"
 
 DEFAULT_VOICE = "am_michael"
-DEFAULT_SPEED = 1.0
+DEFAULT_SPEED = 1.25  # narrated faster by default; the player still starts at 1x
 MP3_BITRATE = 64  # mono speech; ~0.5 MB per minute
 
 SAMPLE_TEXT = (
@@ -211,6 +211,11 @@ def main() -> int:
 
         prev = manifest.get(slug)
         dest = AUDIO_OUT / f"{slug}.mp3"
+        # Essays narrated outside this script (Breeze TTS 2 on a Hugging Face Job)
+        # keep that recording until a re-narration is asked for with --force.
+        if prev and str(prev.get("voice", "")).startswith("breeze-") and not args.force:
+            print(f"  ~ {slug} (narrated with {prev['voice']}; --force to replace)")
+            continue
         if prev and prev.get("hash") == digest and dest.exists() and not args.force:
             print(f"  = {slug}")
             continue

@@ -48,6 +48,13 @@ interface AudioState {
   /** Essays whose narration could not be loaded. Both players hide for these. */
   unavailable: ReadonlySet<string>;
   markUnavailable: (id: string) => void;
+  /**
+   * Whether the header player on the current page is on screen. Null when the
+   * page has no header player, or it has not reported yet. The mini player
+   * docks on the loaded essay's own page once this turns false.
+   */
+  inlineVisible: boolean | null;
+  setInlineVisible: (visible: boolean | null) => void;
 }
 
 const Ctx = createContext<AudioState | null>(null);
@@ -71,6 +78,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [rate, setRateState] = useState(1);
   const [loading, setLoading] = useState(false);
   const [unavailable, setUnavailable] = useState<ReadonlySet<string>>(() => new Set());
+  const [inlineVisible, setInlineVisible] = useState<boolean | null>(null);
   const markUnavailable = useCallback((id: string) => {
     setUnavailable((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
   }, []);
@@ -228,6 +236,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       close,
       unavailable,
       markUnavailable,
+      inlineVisible,
+      setInlineVisible,
     }),
     [
       track,
@@ -245,6 +255,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       close,
       unavailable,
       markUnavailable,
+      inlineVisible,
     ],
   );
 

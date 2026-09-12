@@ -1,0 +1,105 @@
+---
+title: "Post-Training a Depth Model on Relief I Rendered Myself"
+date: 2026-09-10
+excerpt: A depth model trained on photos of rooms reads a bronze plaque as a flat slab. I rendered my own training pictures of relief, post-trained the model on them, and compared the results with the untrained model.
+readTime: 6 min read
+category: Engineering
+tags:
+  - AI
+  - Training
+  - Pipelines
+---
+
+## TL;DR
+
+- FORM turns a picture of a relief into a height map, which becomes the surface of a cup.
+- The off-the-shelf depth model flattened the shallow detail, so the pipeline needed extra steps to patch its output.
+- I rendered about 10,000 relief pictures in Blender, where the true surface is known, and trained a 46 MB add-on for Depth Anything V2.
+- On pictures it had not seen, the trained model matched the real detail much more closely: correlation went from 0.32 to 0.74.
+
+FORM starts a relief from a picture. You type a description, such as a lion on a shield, and an image model draws it as a bronze plaque. The Studio then turns that picture into a height map: a grey image where black is the lowest point and white is the highest. That map is what gets wrapped around a&nbsp;cup.
+
+The step that makes the height map is a depth model called Depth Anything V2. It was trained mostly on photos of rooms, streets and people. On a plaque it gets the overall flat shape right and misses most of the shallow modelling on the surface, which is the part that ends up on the&nbsp;cup.
+
+## How the pipeline turns a picture into a height map
+
+Every depth job in the Studio is a graph of small steps. I edit these graphs in a visual editor where each step shows a preview of what it&nbsp;produced.
+
+![The relief pipeline open in the pipeline editor, with a preview on every step](/relief-pipeline-editor.jpg "Fig. 01 · The relief pipeline in the editor. The top row builds a mask of the ornament and the bottom row upscales the picture and estimates height. Each box shows its own result.")
+
+The main steps are:
+
+1. **Mask.** A segmentation model called BiRefNet separates the ornament from the flat background.
+2. **Upscale.** Swin2SR doubles the picture from 512 to 1024 pixels.
+3. **Estimate height.** The depth model reads the upscaled picture.
+4. **Level.** A gently curved surface is fitted to the background and subtracted, because depth models tend to add a slight tilt to flat panels.
+5. **Finish.** The mask is applied and the result is saved as a 16-bit image, which has enough grey levels for fine detail.
+
+![The heraldic lion at six stages of the pipeline: input, upscale, mask, raw height, levelled height, final map](/relief-pipeline-stages.jpg "Fig. 02 · One picture going through the pipeline: the input, the 2× upscale, the mask, the model's raw height, the levelled height and the final 16-bit map.")
+
+Before training, the pipeline had three more correction steps after the depth model. One added back fine texture the model had smoothed away. One grew the ornament out of the background, because masking left it standing on steep cliffs. One moved more of the height into the fine modelling. Each of them patched something the model got&nbsp;wrong.
+
+## Why the picture is upscaled first
+
+The image model draws at 512 pixels. The depth model reads at 1036 pixels, so a 512 pixel picture gets stretched first and the model sees a blurry image. Swin2SR is a small super-resolution model that rebuilds edges at double the size instead of stretching the&nbsp;pixels.
+
+![A close-up of the lion's head from the 512 px picture next to the Swin2SR upscale](/relief-upscale-closeup.jpg "Fig. 03 · The lion's head from the 512 px picture (left) and after the Swin2SR upscale (right), both enlarged. The upscale has firmer edges on the mane and teeth.")
+
+The online version of the Studio skips this step. On a free CPU server it took 11 of the 13 minutes a job needed, and the online image model already draws at 1024&nbsp;pixels.
+
+## Making training pictures with a known answer
+
+To teach the model what relief looks like, I needed pictures where the true surface is known. Real photos do not come with that, so I rendered them in&nbsp;Blender.
+
+Each training sample is a 3D relief panel rendered as a picture and saved with its exact height map and surface directions, both computed from the mesh. The shapes came from generated ornament, museum scans, free displacement maps from Poly Haven and ambientCG, Smithsonian open-access models, and reliefs the Studio's own pipeline had already made. Each panel got a random material, from bronze to glazed ceramic, and random&nbsp;lighting.
+
+![One training sample: the rendered picture, its height label, and the same height shown as a 3D surface](/relief-training-example.jpg "Fig. 04 · One training sample. Left: the rendered picture the model sees. Top right: the height label it learns to predict, where black is the lowest point. Bottom right: the same height shown as a 3D surface.")
+
+Every sample comes with a recipe file that records how it was made. For the one&nbsp;above:
+
+- **Shape:** a composite built partly from a height map the Studio's own pipeline made for a Bavarian architecture design.
+- **Size:** a 132 mm panel with 6.8 mm between its lowest and highest point, rendered at 1024 × 1024 pixels.
+- **Material:** porcelain.
+- **Light:** a raking light 12° above the surface, plus a courtyard environment.
+- **Camera:** looking straight down, with no perspective.
+- **Render time:** 5.2 seconds.
+
+The first 2,000 renders came out dull. A bug had pointed the lights away from the panels. The height maps were still correct, so nothing failed, and I only noticed from the pictures. After the fix I rendered 10,000 panels and removed the 1,478 with the least contrast. That left 8,522 renders, plus 3,531 pairs built from museum scans. The data is published as [depth-map-studio-training-data](https://huggingface.co/datasets/damianpasz/depth-map-studio-training-data) on Hugging&nbsp;Face.
+
+## Training
+
+I ran a small test on my laptop first, then trained the full version as a Hugging Face Job on an A100 GPU. It took just under four&nbsp;hours.
+
+The original model stays unchanged. Training adds a LoRA adapter, a small set of extra weights that adjust the model's existing layers, plus a new output for surface directions. The whole add-on is 46 MB, and the Studio loads it on top of the standard&nbsp;model.
+
+## Untrained versus trained
+
+**On pictures with a known answer.** For test renders the model never saw, I can shade its height map and put it next to the true&nbsp;surface.
+
+![Three test renders shown as the picture, the true surface, the untrained model and the trained model](/relief-ground-truth-comparison.jpg "Fig. 05 · Test renders: the picture, the true surface, the untrained model and the trained model (from the small test run). On the round plaque the trained model finds the flower stems and the inner ring. On the woven panel the untrained model sees a flat square.")
+
+Across 598 test renders:
+
+- fine detail correlation went from **0.32 to 0.74**;
+- overall shape correlation went from **0.59 to 0.79**;
+- the average error in surface angle dropped from **11.2° to 7.3°**.
+
+**In the Studio.** I gave the old pipeline and the trained one the same knight picture, and rendered each height map as a 3D solid so the edges are easy to&nbsp;see.
+
+![The knight picture on the left; on the right its height map as a 3D solid from two angles, from the old pipeline above and the trained model below](/relief-stock-vs-trained-knight.jpg "Fig. 06 · Left: the knight picture from the image model. Right: the height map from each pipeline as a 3D solid, seen from two angles. Top: the old pipeline. Bottom: the trained model.")
+
+The old pipeline raised the knight and the arch on vertical walls, so they look cut out and glued onto the plaque. The trained model gives the armour, the shield and the arch rounded edges that slope down into the background, and it gets there without the three correction steps. The old version looks slightly crisper at first, partly because of bright halos along its&nbsp;edges.
+
+**With only the model changed.** Running the exact same pipeline with and without the adapter gives a smaller&nbsp;difference.
+
+![The lion relief as a 3D solid: without the adapter above, with the adapter below](/relief-base-vs-lora-lion.jpg "Fig. 07 · The lion through the same pipeline. Top: without the adapter. Bottom: with it. The acorns are rounder and the shield's rim is unbroken.")
+
+Part of the gap to the old pipeline came from its smaller model and its correction steps. On a single picture the adapter's effect is modest, and the test numbers show it more&nbsp;clearly.
+
+## One number went down
+
+One score measures how much fine detail the model produces, without checking where it is. On the museum scans it fell from 0.75 to 0.41. Those scans have sharp photo textures over fairly coarse shapes. The untrained model turned that texture into bumps that are not in the real shape, and they counted as detail. The trained model adds fewer of those bumps, and its detail lines up slightly better with the real&nbsp;shape.
+
+## What changed in FORM
+
+The trained model is now the first option in the Studio's depth picker, and it takes one to two seconds per picture on my laptop. The next step for a relief is wrapping it around a cup and making a mould, which I wrote about in [a separate post](/essays/designing-form-for-manufacture-sketches-sections-and-a-mould-case/).
