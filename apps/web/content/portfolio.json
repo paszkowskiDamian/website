@@ -1,143 +1,173 @@
 {
   "meta": {
     "title": "Portfolio — codeberg",
-    "description": "Four projects, told properly — the problem, the decisions, and where each landed — plus photographs from away from the screen."
+    "description": "Two projects where software ends in a physical object: the parametric structures my workshops built at full scale, and FORM, a pipeline from a drawn cup profile to a printable mother mould."
   },
-  "kicker": "Portfolio — four stories",
-  "title": "work, told\nproperly",
-  "intro": "A grid of thumbnails tells you nothing about how a thing got made. So instead: four projects, each with the problem that started it, the decisions that shaped it, and where it landed — followed by the photographs I make when I put the laptop away.",
+  "kicker": "Portfolio — two projects",
+  "title": "work that\nstands up",
+  "intro": "The projects I am proudest of all ended with something coming off a machine. The parametric structures came first — workshops where the model had to survive being cut, numbered and assembled by hand. FORM is the one I am building now: you draw a cup profile and it carries that shape through to tooling a printer can make.",
   "chapters": [
     {
-      "id": "ch-01",
-      "layout": "feature",
-      "title": "Peakfolio",
-      "meta": "Product — 2025 — Design lead & engineer",
+      "id": "parametric",
+      "layout": "dark",
+      "title": "Parametric structures",
+      "meta": "Workshops — 2015–2018 — Tutor & fabrication lead",
+      "paragraphs": [
+        {
+          "text": "Before the code I taught parametric design for three years — architects and students with no programming background, learning to build their own tools in Rhino and Grasshopper. Three of those workshops ended with something standing at full scale: two summers at the Gdynia Summer School and one in Piła.",
+          "label": "Where it started"
+        },
+        {
+          "text": "My part was the workflow and everything between the model and the finished structure. I taught it, co-authored the Grasshopper and Python definitions, and prepared the cut files: nesting, sheet thickness, cutter kerf, joint tolerance, and the numbered assembly order. Then we put the structures up together. They were designed and built with my students.",
+          "label": "What I did"
+        },
+        {
+          "text": "The rib shell holds by friction alone — every slot sized to real sheet thickness plus kerf, so each numbered rib has to be tapped home and stays there. The panel system is less forgiving: the error at each bolted edge joint accumulates, and the last panel only fits if the tolerances were right. The Piła canopy came out of a simulation that let gravity pull a surface spanned between the trees, then penalised it until every piece could be cut flat.",
+          "label": "What it took"
+        }
+      ],
+      "links": [],
+      "gallery": [
+        {
+          "ratio": "16/9",
+          "src": "/rib-shell-assembly.jpg",
+          "alt": "Two students seating a plywood rib with a wooden mallet while the shell is assembled on a lawn",
+          "caption": "Tapped home, held by friction",
+          "meta": "On site 2017",
+          "color": true
+        },
+        {
+          "ratio": "16/9",
+          "src": "/rib-shell-arch.jpg",
+          "alt": "The rib shell photographed from below against an overcast sky, ribs fanning along the arch",
+          "caption": "The shell from underneath",
+          "meta": "Gdynia 2017",
+          "color": true
+        },
+        {
+          "ratio": "16/9",
+          "src": "/panel-system-detail.jpg",
+          "alt": "Close-up of numbered plywood panels bolted through turned wooden connectors",
+          "caption": "Numbered panels, turned connectors",
+          "meta": "Gdynia 2018",
+          "color": true
+        },
+        {
+          "ratio": "2/3",
+          "src": "/panel-system-gdynia.jpg",
+          "alt": "The finished panel structure on sand below a wooded slope, flat triangular plywood panels bolted into a faceted shell",
+          "caption": "Flat panels into a faceted shell",
+          "meta": "Gdynia 2018",
+          "color": true
+        },
+        {
+          "ratio": "2/3",
+          "src": "/canopy-pila.jpg",
+          "alt": "A pale faceted canopy suspended between pine trunks in a forest, spanning the gap overhead",
+          "caption": "Hung between trees, cut flat",
+          "meta": "Piła",
+          "color": true
+        }
+      ],
       "heroImage": {
-        "ratio": "21/9",
-        "placeholder": "Drop the Peakfolio hero — a full product screen works best"
+        "ratio": "1500/844",
+        "src": "/rib-shell-gdynia.jpg",
+        "alt": "A CNC-cut plywood rib shell standing on sand in front of dense trees, its two rib families twisting into a curved canopy",
+        "color": true
+      }
+    },
+    {
+      "id": "form",
+      "layout": "feature",
+      "title": "FORM",
+      "meta": "Current work — 2026 — Design & build, solo",
+      "heroImage": {
+        "ratio": "1500/952",
+        "src": "/form-mould-split.jpg",
+        "alt": "FORM's studio: the unwrapped wall of a tumbler beside a 3D preview of the cup with its relief, and a casting assistant reporting how the mould splits",
+        "color": true,
+        "frame": "FORM · Unwrapped surface"
       },
       "paragraphs": [
         {
           "label": "The problem",
-          "text": "Developers kept telling me the same thing: they had years of work and nowhere to put it that didn't feel like a template. Every portfolio builder optimized for launch speed, and every result looked identical."
+          "text": "A cup with a relief on it is easy to draw and hard to make. The plaster mould has to come off the model, so every piece of ornament has to clear its own draft angle before anything is printed. In a normal workflow you find that out at the mould, once the modelling is already done."
         },
         {
           "label": "What I built",
-          "text": "A platform where the theming engine is the product: design tokens all the way down, MDX essays as first-class citizens, and a procedural cover system so no two sites ship looking the same. I led design and built the front end over eight months."
+          "text": "One chain from a drawn section to printable tooling, with the manufacturing check sitting inside each step rather than at the end. You draw a profile and it revolves a watertight solid; wall, capacity and foot resolve live. Ornament is generated on device from a prompt, and a depth model I post-trained turns that picture into a 16-bit height map you judge flat and in the round before accepting it. A draft check then reports how much of the wall is still locked once the mould is split, and at what angle, and a casting assistant eases the relief back until the pieces will release."
         }
       ],
       "aside": [
         {
           "label": "Where it landed",
-          "text": "Public beta in spring 2025; 4,000 sites live by year end."
+          "text": "In development. A mug currently comes out as six body pieces plus a base, arranged to fit the print bed."
         },
         {
           "label": "Stack",
-          "text": "React, MDX, design-token pipeline"
+          "text": "TypeScript, React, Next.js, Three.js, Python, FastAPI, diffusion + depth models, STL"
         }
       ],
       "links": [
         {
-          "label": "Explore the case study",
-          "href": "/projects/peakfolio/"
-        }
-      ]
-    },
-    {
-      "id": "ch-02",
-      "layout": "split",
-      "title": "Firelight CMS",
-      "meta": "Product — 2024 — Founding designer",
-      "paragraphs": [
-        {
-          "text": "Editorial teams don't think in database fields — they think in drafts, edits, and deadlines. Firelight started as a weekend prototype for a newsroom friend who was fighting her CMS more than her copy."
+          "label": "How the depth model was trained",
+          "href": "/essays/post-training-a-depth-model-on-relief-i-rendered-myself/"
         },
         {
-          "text": "That line became the spec. The editor reads like a manuscript, versioning works like a track-changes conversation, and the structured content lives underneath, invisible until a developer needs it. I designed the whole surface and half the API."
+          "label": "Designing the mould for manufacture",
+          "href": "/essays/designing-form-for-manufacture-sketches-sections-and-a-mould-case/"
         }
       ],
-      "quote": "\"The best CMS is the one the writer forgets they're using.\"",
-      "inlineImage": {
-        "ratio": "16/9",
-        "placeholder": "Drop a detail shot — the editor UI"
-      },
-      "tallImage": {
-        "ratio": "3/4",
-        "placeholder": "Drop a tall Firelight image — mobile view or poster crop"
-      },
-      "links": [
+      "gallery": [
         {
-          "label": "Explore Firelight",
-          "href": "/projects/firelight-cms/"
-        }
-      ]
-    },
-    {
-      "id": "ch-03",
-      "layout": "dark",
-      "title": "Gridly",
-      "meta": "Open source — 2024 — Maintainer",
-      "paragraphs": [
-        {
-          "text": "Gridly is the project that wasn't supposed to be one. I extracted the constraint-based layout engine from Peakfolio, wrote a README at 2am, and woke up to strangers filing issues. Two years later it's the piece of my work most people have touched without knowing my name — which is exactly what good infrastructure should be."
+          "ratio": "16/10",
+          "src": "/form-studio-profile.jpg",
+          "alt": "A side profile drawn on a grid, with the revolved tumbler previewed beside it and height, diameter, capacity and wall thickness read out below",
+          "caption": "Section in, watertight solid out",
+          "meta": "01 Profile",
+          "color": true,
+          "frame": "FORM · Form & foot"
         },
         {
-          "text": "Maintaining it taught me more about API design than any product role: every abstraction you expose is a promise you keep for years."
-        }
-      ],
-      "sideImage": {
-        "ratio": "4/3",
-        "placeholder": "Drop a Gridly image — terminal or docs screenshot"
-      },
-      "links": [
-        {
-          "label": "Explore Gridly",
-          "href": "/projects/gridly/"
+          "ratio": "16/10",
+          "src": "/form-relief-prompt.jpg",
+          "alt": "A prompt field describing bricklayers and a robot arm, with the generated bronze relief panel below it and a run history alongside",
+          "caption": "Ornament from a prompt, on device",
+          "meta": "02 Relief",
+          "color": true,
+          "frame": "FORM · Generate a relief"
         },
         {
-          "label": "GitHub",
-          "href": "#",
-          "variant": "paper"
-        }
-      ]
-    },
-    {
-      "id": "ch-04",
-      "layout": "pair",
-      "title": "Ridgeline",
-      "meta": "Product — 2023 — Design & data viz",
-      "pairImages": [
-        {
-          "ratio": "4/3",
-          "placeholder": "Drop a Ridgeline dashboard shot"
+          "ratio": "16/10",
+          "src": "/form-depth-review.jpg",
+          "alt": "A review step showing the generated picture as a grayscale depth map next to a rotatable 3D relief, ready to accept as a layer",
+          "caption": "A 16-bit height map, judged twice",
+          "meta": "03 Depth",
+          "color": true,
+          "frame": "FORM · Depth review"
         },
         {
           "ratio": "4/3",
-          "placeholder": "Drop a field photo — the trails behind the data"
-        }
-      ],
-      "paragraphs": [
+          "src": "/form-mother-mould-parts.jpg",
+          "alt": "A render of the printable tooling laid out flat: half masters on their boards, box walls, and the ring shells for casting the plug",
+          "caption": "Six body pieces plus a base",
+          "meta": "04 Mould",
+          "color": true
+        },
         {
-          "text": "Ridgeline is where the two halves of this page meet: a dashboard for trail and elevation analytics that started because I wanted better maps of the routes I was photographing. The charts had to feel like the terrain — so elevation profiles render as layered ridgeline plots, and the palette comes straight from fog, stone, and late light."
-        }
-      ],
-      "aside": [
-        {
-          "label": "Where it landed",
-          "text": "Acquired by a mapping company in 2024; the ridgeline chart lives on in their app."
-        }
-      ],
-      "links": [
-        {
-          "label": "Explore Ridgeline",
-          "href": "/projects/ridgeline/"
+          "ratio": "4/3",
+          "src": "/form-mould-cavity.jpg",
+          "alt": "A white render of two mould halves opened, the bricklayer relief carved into the inside of the cavity",
+          "caption": "Carved, not modelled",
+          "meta": "05 Cavity",
+          "color": true
         }
       ]
     }
   ],
   "interlude": [
-    "Everything above was made sitting down.",
-    "Everything below is why I stand up."
+    "The work above had to be measured.",
+    "The photographs below did not."
   ],
   "photography": {
     "id": "photography",

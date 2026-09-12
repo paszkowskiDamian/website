@@ -4,6 +4,7 @@
     "description": "Building digital folklore."
   },
   "nav": [
+    { "label": "Portfolio", "href": "/portfolio/" },
     { "label": "Essays", "href": "/essays/" },
     { "label": "System", "href": "/brand-system/" },
     { "label": "Contact", "href": "/contact/", "accent": true }

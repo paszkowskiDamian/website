@@ -233,6 +233,23 @@ export interface PortfolioImage {
   placeholder?: string;
   src?: string;
   alt?: string;
+  /**
+   * Skip the page's grayscale treatment. For images whose color carries
+   * meaning — product screenshots, renders, diagrams.
+   */
+  color?: boolean;
+  /**
+   * Window title. Set it to present the image as a mockup — a screenshot
+   * inside window chrome rather than a loose image.
+   */
+  frame?: string;
+}
+
+/** One numbered figure in a chapter's figure strip. */
+export interface PortfolioFigure extends PortfolioImage {
+  caption: string;
+  /** Right-hand label, e.g. "02 Relief" or a year. */
+  meta: string;
 }
 
 export interface PortfolioChapter {
@@ -249,6 +266,8 @@ export interface PortfolioChapter {
   tallImage?: PortfolioImage;
   sideImage?: PortfolioImage;
   pairImages?: PortfolioImage[];
+  /** Figure strip below the chapter's prose. Supported by feature + dark. */
+  gallery?: PortfolioFigure[];
 }
 
 export interface PageMeta {

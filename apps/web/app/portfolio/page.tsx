@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { GlyphGrid } from "@repo/ui/atoms/glyph-grid";
+import { MockupFrame } from "@repo/ui/atoms/mockup-frame";
 import { Container } from "@repo/ui/layouts/container";
+import { FigureGrid } from "@repo/ui/molecules/figure-grid";
 import { Footer } from "@repo/ui/molecules/footer";
 import { Header } from "@repo/ui/molecules/header";
 import { PhotoGallery } from "@repo/ui/molecules/photo-gallery";
@@ -34,7 +36,11 @@ function Lines({ text }: { text: string }) {
   );
 }
 
-/** An image if `src` is set; otherwise the design's gray slot with its hint. */
+/**
+ * An image if `src` is set; otherwise the design's gray slot with its hint.
+ * An image carrying a `frame` is presented as a mockup instead, and the
+ * caller's `className` then sits on the frame rather than on the image.
+ */
 function ImageSlot({
   image,
   dark = false,
@@ -44,16 +50,16 @@ function ImageSlot({
   dark?: boolean;
   className?: string;
 }) {
-  return (
+  const slot = (
     <div
-      className={`relative overflow-hidden ${dark ? "bg-copy" : "bg-[#E7E3DA]"} ${className ?? ""}`}
+      className={`relative overflow-hidden ${dark ? "bg-copy" : "bg-[#E7E3DA]"} ${image.frame ? "" : (className ?? "")}`}
       style={{ aspectRatio: image.ratio }}
     >
       {image.src ? (
         <img
           src={image.src}
           alt={image.alt ?? ""}
-          className="absolute inset-0 h-full w-full object-cover grayscale"
+          className={`absolute inset-0 h-full w-full object-cover ${image.color ? "" : "grayscale"}`}
         />
       ) : (
         <span
@@ -63,6 +69,13 @@ function ImageSlot({
         </span>
       )}
     </div>
+  );
+
+  if (!image.frame) return slot;
+  return (
+    <MockupFrame label={image.frame} dark={dark} className={className}>
+      {slot}
+    </MockupFrame>
   );
 }
 
@@ -94,9 +107,19 @@ function ChapterHeading({
   );
 }
 
-function LabeledParagraph({ label, children }: { label?: string; children: ReactNode }) {
+function LabeledParagraph({
+  label,
+  dark = false,
+  children,
+}: {
+  label?: string;
+  dark?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <p className="font-serif text-[clamp(17px,1.8vw,21px)] leading-[1.65] text-copy">
+    <p
+      className={`font-serif text-[clamp(17px,1.8vw,21px)] leading-[1.65] ${dark ? "text-line" : "text-copy"}`}
+    >
       {label && (
         <span className="mb-2.5 block font-mono text-meta uppercase tracking-[0.18em] text-accent">
           {label}
@@ -109,10 +132,10 @@ function LabeledParagraph({ label, children }: { label?: string; children: React
 
 function AsideRail({
   items,
-  link,
+  links = [],
 }: {
   items: { label: string; text: string }[];
-  link?: { label: string; href: string };
+  links?: { label: string; href: string; variant?: "accent" | "paper" }[];
 }) {
   return (
     <aside className="flex min-w-[240px] flex-1 basis-[280px] flex-col gap-4 border-l-2 border-ink pl-[clamp(18px,2vw,28px)] sm:flex-none sm:basis-[300px]">
@@ -124,14 +147,15 @@ function AsideRail({
           <p className="font-serif text-base leading-relaxed text-copy">{item.text}</p>
         </div>
       ))}
-      {link && (
+      {links.map((link) => (
         <a
+          key={link.label}
           href={link.href}
-          className="mt-1.5 font-mono text-label uppercase text-accent hover:text-accent-hover"
+          className="font-mono text-label uppercase text-accent hover:text-accent-hover"
         >
           {link.label} <span aria-hidden="true">↗</span>
         </a>
-      )}
+      ))}
     </aside>
   );
 }
@@ -168,8 +192,11 @@ function FeatureChapter({ chapter, number }: { chapter: PortfolioChapter; number
             </LabeledParagraph>
           ))}
         </div>
-        {chapter.aside && <AsideRail items={chapter.aside} link={chapter.links[0]} />}
+        {chapter.aside && <AsideRail items={chapter.aside} links={chapter.links} />}
       </div>
+      {chapter.gallery && (
+        <FigureGrid figures={chapter.gallery} className="mt-[clamp(20px,3vw,36px)]" />
+      )}
     </section>
   );
 }
@@ -210,18 +237,22 @@ function DarkChapter({ chapter, number }: { chapter: PortfolioChapter; number: s
     >
       <div className="mx-auto max-w-[1052px]">
         <ChapterHeading number={number} title={chapter.title} meta={chapter.meta} dark />
+        {chapter.heroImage && (
+          <ImageSlot
+            image={chapter.heroImage}
+            dark
+            className="mb-[clamp(24px,3vw,40px)] block"
+          />
+        )}
         <div className="flex flex-wrap items-start gap-[clamp(24px,4vw,56px)]">
           <div className="hidden flex-none sm:block">
             <GlyphGrid cols={3} rows={12} hotClassName="text-paper" />
           </div>
           <div className="flex min-w-[280px] flex-1 basis-[400px] flex-col gap-[18px]">
             {chapter.paragraphs.map((p) => (
-              <p
-                key={p.text.slice(0, 24)}
-                className="font-serif text-[clamp(17px,1.8vw,21px)] leading-[1.65] text-line"
-              >
+              <LabeledParagraph key={p.text.slice(0, 24)} label={p.label} dark>
                 {p.text}
-              </p>
+              </LabeledParagraph>
             ))}
             <div className="mt-1.5 flex flex-wrap items-center gap-6">
               {chapter.links.map((link) => (
@@ -237,6 +268,9 @@ function DarkChapter({ chapter, number }: { chapter: PortfolioChapter; number: s
             />
           )}
         </div>
+        {chapter.gallery && (
+          <FigureGrid figures={chapter.gallery} dark className="mt-[clamp(24px,3vw,40px)]" />
+        )}
       </div>
     </section>
   );
@@ -257,7 +291,7 @@ function PairChapter({ chapter, number }: { chapter: PortfolioChapter; number: s
             {chapter.paragraphs[0].text}
           </p>
         )}
-        {chapter.aside && <AsideRail items={chapter.aside} link={chapter.links[0]} />}
+        {chapter.aside && <AsideRail items={chapter.aside} links={chapter.links} />}
       </div>
     </section>
   );
