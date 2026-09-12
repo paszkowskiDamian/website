@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import type { ConnectLink } from "@repo/ui/molecules/connect-row";
+import type { ContactCtaCopy } from "@repo/ui/molecules/contact-cta";
 import type { NavLink } from "@repo/ui/molecules/header";
 import type { NewsletterCopy } from "@repo/ui/molecules/newsletter";
 
@@ -330,6 +331,8 @@ export interface HomePageConfig {
     /** Hero image used when the featured essay has none of its own. */
     fallbackImage: string;
   };
+  /** Copy for the closing contact band. */
+  contact: ContactCtaCopy;
   sections: {
     essays: { title: string; viewAllHref: string };
     projects: { title: string; viewAllHref: string };

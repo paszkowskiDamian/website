@@ -2,11 +2,11 @@ import { Fragment } from "react";
 import { ArrowLink } from "@repo/ui/atoms/arrow-link";
 import { GlyphGrid } from "@repo/ui/atoms/glyph-grid";
 import { Container } from "@repo/ui/layouts/container";
+import { ContactCta } from "@repo/ui/molecules/contact-cta";
 import { EssayListItem } from "@repo/ui/molecules/essay-list-item";
 import { FeaturedEssay } from "@repo/ui/molecules/featured-essay";
 import { Footer } from "@repo/ui/molecules/footer";
 import { Header } from "@repo/ui/molecules/header";
-import { Newsletter } from "@repo/ui/molecules/newsletter";
 import { SectionHeading } from "@repo/ui/molecules/section-heading";
 import { getAllEssays, getHomePage, getSite } from "../lib/content";
 
@@ -24,7 +24,7 @@ export default function Home() {
       {/* HERO */}
       <section className="relative z-10 flex flex-wrap items-start gap-[clamp(16px,4vw,40px)] pb-[clamp(28px,4vw,44px)] pt-[clamp(24px,4vw,48px)]">
         <div className="hidden flex-none self-stretch sm:block">
-          <GlyphGrid cols={2} rows={18} />
+          <GlyphGrid cols={3} rows={26} />
         </div>
 
         <div className="min-w-[280px] flex-1 basis-[340px]">
@@ -43,7 +43,7 @@ export default function Home() {
         </div>
 
         <div className="hidden flex-none pt-2 sm:block">
-          <GlyphGrid cols={8} rows={4} />
+          <GlyphGrid cols={16} rows={10} />
         </div>
       </section>
 
@@ -76,8 +76,12 @@ export default function Home() {
         ))}
       </section>
 
-      {/* NEWSLETTER */}
-      <Newsletter {...site.newsletter} className="mt-12 sm:mt-[88px]" />
+      {/* CONTACT CTA */}
+      <ContactCta
+        {...page.contact}
+        links={site.connect}
+        className="mt-12 sm:mt-[88px]"
+      />
       </main>
 
       <Footer copyright={site.footer.copyright} className="mt-10 sm:mt-16" />

@@ -335,7 +335,7 @@ export default function Portfolio() {
             <div className="relative min-w-[280px] flex-1 basis-[480px]">
               <div
                 aria-hidden="true"
-                className="absolute -right-16 -top-6 z-0 h-[200px] w-[200px] rounded-full bg-accent sm:-top-10 sm:left-[min(397px,60%)] sm:right-auto sm:h-[clamp(280px,34vw,460px)] sm:w-[clamp(280px,34vw,460px)] sm:translate-y-[10%]"
+                className="absolute -right-24 -top-6 z-0 h-[200px] w-[200px] rounded-full bg-accent sm:-top-10 sm:left-[min(470px,70%)] sm:right-auto sm:h-[clamp(280px,34vw,460px)] sm:w-[clamp(280px,34vw,460px)] sm:translate-y-[10%]"
               />
               <div className="relative z-10 mb-5 font-mono text-meta uppercase tracking-[0.22em] text-accent">
                 {portfolio.kicker}
@@ -347,8 +347,8 @@ export default function Portfolio() {
                 {portfolio.intro}
               </p>
             </div>
-            <div className="hidden flex-1 basis-[300px] items-end justify-start self-stretch overflow-hidden sm:flex">
-              <GlyphGrid cols={14} rows={8} />
+            <div className="hidden flex-1 basis-[300px] items-end justify-end self-stretch overflow-hidden sm:flex">
+              <GlyphGrid cols={14} rows={16} />
             </div>
           </div>
 
