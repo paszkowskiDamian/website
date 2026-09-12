@@ -24,7 +24,7 @@ export default function Home() {
       {/* HERO */}
       <section className="relative z-10 flex flex-wrap items-start gap-[clamp(16px,4vw,40px)] pb-[clamp(28px,4vw,44px)] pt-[clamp(24px,4vw,48px)]">
         <div className="hidden flex-none self-stretch sm:block">
-          <GlyphGrid cols={2} rows={13} size="lg" />
+          <GlyphGrid cols={3} rows={26} />
         </div>
 
         <div className="min-w-[280px] flex-1 basis-[340px]">
@@ -43,7 +43,7 @@ export default function Home() {
         </div>
 
         <div className="hidden flex-none pt-2 sm:block">
-          <GlyphGrid cols={6} rows={4} size="lg" />
+          <GlyphGrid cols={16} rows={10} />
         </div>
       </section>
 

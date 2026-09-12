@@ -348,7 +348,7 @@ export default function Portfolio() {
               </p>
             </div>
             <div className="hidden flex-1 basis-[300px] items-end justify-end self-stretch overflow-hidden sm:flex">
-              <GlyphGrid cols={9} rows={6} size="lg" />
+              <GlyphGrid cols={14} rows={16} />
             </div>
           </div>
 
