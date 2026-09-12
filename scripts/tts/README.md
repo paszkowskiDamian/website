@@ -52,8 +52,11 @@ in `apps/web/content/audio.json`.
 
 Rerunning skips any essay whose hash is unchanged and re-synthesises any essay whose
 hash moved. So the rule is simply: **edit an essay, then run `scripts/tts/run.sh` before
-committing.** Changing `DEFAULT_VOICE` re-narrates the whole site on the next run, which
-is intended — a half-swapped voice would be worse than either.
+committing.** Changing `DEFAULT_VOICE` or `DEFAULT_SPEED` re-narrates the whole site on the
+next run, which is intended — a half-swapped voice would be worse than either.
+
+`DEFAULT_SPEED` is 1.25. The speed is baked into the mp3 with Kokoro's own speed parameter,
+so the audio is faster at normal playback and the player's rate control still starts at 1×.
 
 An essay with no manifest entry renders no player, so the site builds fine before any
 audio exists.

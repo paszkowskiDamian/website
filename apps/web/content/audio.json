@@ -1,34 +1,34 @@
 {
   "designing-form-for-manufacture-sketches-sections-and-a-mould-case": {
     "src": "/audio/designing-form-for-manufacture-sketches-sections-and-a-mould-case.mp3",
-    "duration": 160.8,
-    "bytes": 1286784,
-    "voice": "breeze-tts-2/podcast-host-faster",
-    "speed": 1.0,
-    "hash": "dff57dabb5d1f780"
+    "duration": 163.9,
+    "bytes": 1312128,
+    "voice": "am_michael",
+    "speed": 1.25,
+    "hash": "57c720f966bf5aa9"
   },
   "how-i-work-with-claude-cards-branches-and-pull-requests": {
     "src": "/audio/how-i-work-with-claude-cards-branches-and-pull-requests.mp3",
-    "duration": 252.2,
-    "bytes": 2018304,
-    "voice": "breeze-tts-2/podcast-host-faster",
-    "speed": 1.0,
-    "hash": "4724711387b2f4cd"
+    "duration": 235.8,
+    "bytes": 1886784,
+    "voice": "am_michael",
+    "speed": 1.25,
+    "hash": "95c8567f5a1b6681"
   },
   "is-clean-code-still-relevant-in-the-vibe-coding-era": {
     "src": "/audio/is-clean-code-still-relevant-in-the-vibe-coding-era.mp3",
-    "duration": 221.9,
-    "bytes": 1775808,
+    "duration": 188.4,
+    "bytes": 1507968,
     "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "e4d7d5b75231b102"
+    "speed": 1.25,
+    "hash": "c5d0bad242b6df6c"
   },
   "post-training-a-depth-model-on-relief-i-rendered-myself": {
     "src": "/audio/post-training-a-depth-model-on-relief-i-rendered-myself.mp3",
-    "duration": 499.8,
-    "bytes": 3998976,
+    "duration": 423.1,
+    "bytes": 3385344,
     "voice": "am_michael",
-    "speed": 1.0,
-    "hash": "e3a027f247d0a339"
+    "speed": 1.25,
+    "hash": "2014878f2b6f4fcb"
   }
 }
